@@ -38,11 +38,15 @@ public:
 
   void open() noexcept { _state = state_t::opened; }
   void mark() noexcept {
-    if (_state == state_t::hidden) {
+    switch (_state) {
+    case state_t::hidden:
       _state = state_t::marked;
-    }
-    else {
+      break;
+    case state_t::marked:
       _state = state_t::hidden;
+      break;
+    case state_t::opened:
+      break;
     }
   }
 
