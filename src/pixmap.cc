@@ -41,6 +41,9 @@ void pixmap::update_pixmap() noexcept {
 }
 
 void pixmap::mousePressEvent(QMouseEvent* event) {
+  if (_board->is_done()) {
+    return;
+  }
   auto buttons = event->buttons();
   if ((buttons & Qt::LeftButton && buttons & Qt::RightButton) ||
       buttons & Qt::MiddleButton) {

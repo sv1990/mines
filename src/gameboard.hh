@@ -13,6 +13,7 @@
 class gameboard : public QWidget {
   field _field;
   QGridLayout* _layout;
+  bool _lost = false;
 
 public:
   gameboard(std::size_t rows, std::size_t cols, std::size_t num_bombs,
@@ -42,6 +43,8 @@ public:
   void mark(std::size_t row, std::size_t col) noexcept;
   entry::state_t state(std::size_t row, std::size_t col) noexcept;
   entry::value_t value(std::size_t row, std::size_t col) noexcept;
+
+  bool is_done() const noexcept;
 };
 
 #endif // MINES_NEW_SRC_GAMEBOARD_HH_1537958827568077733_

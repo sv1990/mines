@@ -10,7 +10,7 @@ void gameboard::update_pixmaps() noexcept {
 }
 
 void gameboard::open(std::size_t row, std::size_t col) noexcept {
-  _field.open(row, col);
+  _lost = !_field.open(row, col);
   update_pixmaps();
 }
 
@@ -30,4 +30,8 @@ entry::state_t gameboard::state(std::size_t row, std::size_t col) noexcept {
 
 entry::value_t gameboard::value(std::size_t row, std::size_t col) noexcept {
   return _field(row, col).value();
+}
+
+bool gameboard::is_done() const noexcept {
+  return _lost || _field.is_done();
 }
