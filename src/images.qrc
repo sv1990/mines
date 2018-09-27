@@ -1,0 +1,18 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+    <file>images/1.png</file>
+    <file>images/2.png</file>
+    <file>images/3.png</file>
+    <file>images/4.png</file>
+    <file>images/5.png</file>
+    <file>images/6.png</file>
+    <file>images/7.png</file>
+    <file>images/8.png</file>
+    <file>images/bomb.png</file>
+    <file>images/empty.png</file>
+    <file>images/hidden.png</file>
+    <file>images/marked_bomb.png</file>
+    <file>images/marked_empty.png</file>
+    <file>images/marked.png</file>
+</qresource>
+</RCC>
