@@ -18,12 +18,12 @@ class mines : public QMainWindow {
 
 public:
   mines() : QMainWindow(nullptr) {
-    int rows        = 8;  // 16;
-    int cols        = 8;  // 30;
-    int num_bombs   = 10; // 99;
+    int rows        = 16;
+    int cols        = 30;
+    int num_bombs   = 99;
     _central_widget = new QWidget(this);
     this->setCentralWidget(_central_widget);
-    this->setFixedSize(cols * 28, rows * 28);
+    this->setFixedSize(cols * 21, rows * 21);
 
     _layout    = new QVBoxLayout(this);
     _board     = new gameboard(rows, cols, num_bombs, this);
