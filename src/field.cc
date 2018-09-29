@@ -99,16 +99,17 @@ void field::mark(std::size_t row, std::size_t col) noexcept {
 }
 
 void field::open_around(std::size_t row, std::size_t col) noexcept {
-  if ((*this)(row, col).state() == entry::state_t::opened &&
-      (*this)(row, col).is_close_to()) {
+  const auto& selected_entry = (*this)(row, col);
+  if (selected_entry.state() == entry::state_t::opened &&
+      selected_entry.is_close_to()) {
     auto adjacent   = adjacent_entries(row, col);
     auto mark_count = ranges::count_if(adjacent, [this](const auto& p) {
       return (*this)(p.first, p.second).state() == entry::state_t::marked;
     });
-    if (mark_count == (*this)(row, col).is_close_to().value()) {
+    if (mark_count == selected_entry.is_close_to().value()) {
       for (const auto& [r, c] : adjacent_entries(row, col)) {
         if ((*this)(r, c).state() == entry::state_t::hidden) {
-          (*this)(r, c).open();
+          this->open(r, c);
         }
       }
     }
