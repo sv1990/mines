@@ -48,7 +48,7 @@ public:
   entry::value_t value(std::size_t row, std::size_t col) noexcept;
 
   bool is_done() const noexcept;
-
+  bool lost() const noexcept { return _lost; }
 signals:
   void game_started();
   void game_done();

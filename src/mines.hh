@@ -2,6 +2,7 @@
 #define MINES_SRC_MINES_HH_1537684785294630186_
 
 #include "gameboard.hh"
+#include "highscore.hh"
 #include "timer.hh"
 
 #include <QMainWindow>
@@ -13,19 +14,21 @@ class mines : public QMainWindow {
 
   gameboard* _board;
   timer* _timer;
+  highscore* _highscore;
 
 public:
   mines() : QMainWindow(nullptr) {
-    int rows        = 16;
-    int cols        = 30;
-    int num_bombs   = 99;
+    int rows        = 8;  // 16;
+    int cols        = 8;  // 30;
+    int num_bombs   = 10; // 99;
     _central_widget = new QWidget(this);
     this->setCentralWidget(_central_widget);
-    this->setFixedSize(cols * 21, rows * 21);
+    this->setFixedSize(cols * 28, rows * 28);
 
-    _layout = new QVBoxLayout(this);
-    _board  = new gameboard(rows, cols, num_bombs, this);
-    _timer  = new timer(this);
+    _layout    = new QVBoxLayout(this);
+    _board     = new gameboard(rows, cols, num_bombs, this);
+    _timer     = new timer(this);
+    _highscore = new highscore;
 
     _layout->addWidget(_timer);
     _layout->addWidget(_board);
@@ -34,6 +37,14 @@ public:
 
     connect(_board, &gameboard::game_started, _timer, &timer::start);
     connect(_board, &gameboard::game_done, _timer, &timer::stop);
+    connect(_board, &gameboard::game_done, this, &mines::show_highscore);
+  }
+
+  void show_highscore() {
+    if (!_board->lost()) {
+      _highscore->add(_timer->seconds());
+    }
+    _highscore->show();
   }
 };
 

@@ -1,6 +1,6 @@
-- Highscore list
 - Improve resizing when number of rows and cols was changed
 - Counter for remaining bombs
 - Restart button
 - Settings menu
 - Fix warning "QLayout: Attempting to add QLayout "" to QMainWindow "", which already has a layout"
+- Open remaining bombs when lost

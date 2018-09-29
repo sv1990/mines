@@ -17,6 +17,7 @@ public:
     connect(_timer, &QTimer::timeout, this, &timer::show_time);
     show_time();
   }
+  int seconds() const noexcept { return _seconds; }
 
 public slots:
   void show_time() { this->display(_seconds++); }
