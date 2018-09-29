@@ -123,6 +123,6 @@ bool field::open_around(std::size_t row, std::size_t col) noexcept {
 
 bool field::is_done() const noexcept {
   return ranges::count_if(_entries, [](const auto& entry) {
-           return entry.is_bomb() && entry.state() == entry::state_t::marked;
+           return entry.state() != entry::state_t::opened;
          }) == static_cast<long>(_num_bombs);
 }

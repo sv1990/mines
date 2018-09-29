@@ -19,7 +19,7 @@ void gameboard::start() noexcept {
 void gameboard::open(std::size_t row, std::size_t col) noexcept {
   start();
   _lost = !_field.open(row, col);
-  if (_lost) {
+  if (_lost || is_done()) {
     emit game_done();
   }
   update_pixmaps();
@@ -28,7 +28,7 @@ void gameboard::open(std::size_t row, std::size_t col) noexcept {
 void gameboard::open_around(std::size_t row, std::size_t col) noexcept {
   start();
   _lost = !_field.open_around(row, col);
-  if (_lost) {
+  if (_lost || is_done()) {
     emit game_done();
   }
   update_pixmaps();

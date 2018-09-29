@@ -1,6 +1,5 @@
-- Stop timer when game was won
-- Improve resizing when number of rows and cols was changed
 - Highscore list
+- Improve resizing when number of rows and cols was changed
 - Counter for remaining bombs
 - Restart button
 - Settings menu
