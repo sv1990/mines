@@ -11,9 +11,11 @@
 #include <vector>
 
 class gameboard : public QWidget {
+  Q_OBJECT
   field _field;
   QGridLayout* _layout;
-  bool _lost = false;
+  bool _lost    = false;
+  bool _started = false;
 
 public:
   gameboard(std::size_t rows, std::size_t cols, std::size_t num_bombs,
@@ -38,6 +40,7 @@ public:
 
   void update_pixmaps() noexcept;
 
+  void start() noexcept;
   void open(std::size_t row, std::size_t col) noexcept;
   void open_around(std::size_t row, std::size_t col) noexcept;
   void mark(std::size_t row, std::size_t col) noexcept;
@@ -45,6 +48,10 @@ public:
   entry::value_t value(std::size_t row, std::size_t col) noexcept;
 
   bool is_done() const noexcept;
+
+signals:
+  void game_started();
+  void game_done();
 };
 
 #endif // MINES_NEW_SRC_GAMEBOARD_HH_1537958827568077733_

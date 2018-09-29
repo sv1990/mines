@@ -2,26 +2,29 @@
 #define MINES_SRC_TIMER_HH_1538024709907504321_
 
 #include <QLCDNumber>
-#include <QTimer>
 #include <QString>
+#include <QTimer>
 
 class timer : public QLCDNumber {
   int _seconds = 0;
+  QTimer* _timer;
 
 public:
   explicit timer(QWidget* parent = nullptr) noexcept : QLCDNumber(parent) {
     this->setDigitCount(4);
     this->setSegmentStyle(Flat);
-
-    QTimer* timer = new QTimer(this);
-    connect(timer, &QTimer::timeout, this, &timer::show_time);
-    timer->start(1000);
-
+    _timer = new QTimer(this);
+    connect(_timer, &QTimer::timeout, this, &timer::show_time);
     show_time();
   }
-  void show_time() {
-    this->display(_seconds++);
+
+public slots:
+  void show_time() { this->display(_seconds++); }
+  void start() {
+    _timer->start(1000);
+    show_time();
   }
+  void stop() { _timer->stop(); }
 };
 
 #endif // MINES_SRC_TIMER_HH_1538024709907504321_

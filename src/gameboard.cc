@@ -9,17 +9,33 @@ void gameboard::update_pixmaps() noexcept {
   }
 }
 
+void gameboard::start() noexcept {
+  if (!_started) {
+    _started = true;
+    emit game_started();
+  }
+}
+
 void gameboard::open(std::size_t row, std::size_t col) noexcept {
+  start();
   _lost = !_field.open(row, col);
+  if (_lost) {
+    emit game_done();
+  }
   update_pixmaps();
 }
 
 void gameboard::open_around(std::size_t row, std::size_t col) noexcept {
-  _field.open_around(row, col);
+  start();
+  _lost = !_field.open_around(row, col);
+  if (_lost) {
+    emit game_done();
+  }
   update_pixmaps();
 }
 
 void gameboard::mark(std::size_t row, std::size_t col) noexcept {
+  start();
   _field.mark(row, col);
   (*this)(row, col)->update_pixmap();
 }

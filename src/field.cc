@@ -98,8 +98,10 @@ void field::mark(std::size_t row, std::size_t col) noexcept {
   (*this)(row, col).mark();
 }
 
-void field::open_around(std::size_t row, std::size_t col) noexcept {
+bool field::open_around(std::size_t row, std::size_t col) noexcept {
   const auto& selected_entry = (*this)(row, col);
+
+  bool ret = true;
   if (selected_entry.state() == entry::state_t::opened &&
       selected_entry.is_close_to()) {
     auto adjacent   = adjacent_entries(row, col);
@@ -109,11 +111,14 @@ void field::open_around(std::size_t row, std::size_t col) noexcept {
     if (mark_count == selected_entry.is_close_to().value()) {
       for (const auto& [r, c] : adjacent_entries(row, col)) {
         if ((*this)(r, c).state() == entry::state_t::hidden) {
-          this->open(r, c);
+          // this->open(r, c) needs to be on the left hand side of && since its
+          // side effects need to be performed
+          ret = this->open(r, c) && ret;
         }
       }
     }
   }
+  return ret;
 }
 
 bool field::is_done() const noexcept {

@@ -1,4 +1,4 @@
-- Timer should stop when done
+- Stop timer when game was won
 - Highscore list
 - Counter for remaining bombs
 - Restart button

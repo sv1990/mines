@@ -38,7 +38,7 @@ public:
       noexcept;
 
   bool open(std::size_t row, std::size_t col) noexcept;
-  void open_around(std::size_t row, std::size_t col) noexcept;
+  bool open_around(std::size_t row, std::size_t col) noexcept;
   void mark(std::size_t row, std::size_t col) noexcept;
 
   bool is_done() const noexcept;

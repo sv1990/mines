@@ -11,7 +11,7 @@ class mines : public QMainWindow {
   QWidget* _central_widget;
   QVBoxLayout* _layout;
 
-  gameboard* _field;
+  gameboard* _board;
   timer* _timer;
 
 public:
@@ -23,13 +23,16 @@ public:
     this->setFixedSize(cols * 21, rows * 21);
 
     _layout = new QVBoxLayout(this);
-    _field  = new gameboard(rows, cols, 99, this);
+    _board  = new gameboard(rows, cols, 99, this);
     _timer  = new timer(this);
 
     _layout->addWidget(_timer);
-    _layout->addWidget(_field);
+    _layout->addWidget(_board);
 
     _central_widget->setLayout(_layout);
+
+    connect(_board, &gameboard::game_started, _timer, &timer::start);
+    connect(_board, &gameboard::game_done, _timer, &timer::stop);
   }
 };
 
