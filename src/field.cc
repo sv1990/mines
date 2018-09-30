@@ -2,7 +2,12 @@
 
 #include "util/random_gen.hh"
 
-#include <range/v3/all.hpp>
+#include <range/v3/algorithm/count_if.hpp>
+#include <range/v3/algorithm/swap_ranges.hpp>
+#include <range/v3/view/filter.hpp>
+#include <range/v3/view/reverse.hpp>
+#include <range/v3/view/take.hpp>
+#include <range/v3/view/transform.hpp>
 
 #include <algorithm>
 #include <array>
