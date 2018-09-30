@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.8)
 
-set(CMAKE_BUILD_TYPE DEBUG)
+set(CMAKE_BUILD_TYPE RELEASE)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTORCC ON)
@@ -13,3 +13,6 @@ add_executable(mines main.cc gameboard.cc pixmap.cc field.cc timer.cc highscore.
 target_compile_options(mines PUBLIC "-Wall;-Wextra;-pedantic")
 target_compile_features(mines PUBLIC cxx_std_20)
 target_link_libraries(mines stdc++fs range-v3 Qt5::Widgets)
+
+install(TARGETS mines
+        RUNTIME DESTINATION bin)
