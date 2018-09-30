@@ -15,12 +15,15 @@ public:
     this->setSegmentStyle(Flat);
     _timer = new QTimer(this);
     connect(_timer, &QTimer::timeout, this, &timer::show_time);
-    show_time();
+    this->display(0);
   }
   int seconds() const noexcept { return _seconds; }
 
 public slots:
-  void show_time() { this->display(_seconds++); }
+  void show_time() {
+    ++_seconds;
+    this->display(_seconds);
+  }
   void start() {
     _timer->start(1000);
     show_time();
