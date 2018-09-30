@@ -64,12 +64,13 @@ void highscore::add(int seconds) noexcept {
 }
 
 void highscore::show() const noexcept {
-  auto h = new highscorelist(_scores);
-  h->setFixedSize(320, 320);
-  h->show();
-
-  std::ofstream ofs(_location);
-  for (const auto& [seconds, date, name] : _scores) {
-    ofs << seconds << ' ' << date << ' ' << std::quoted(name) << '\n';
+  if (!empty(_scores)) {
+    auto h = new highscorelist(_scores);
+    h->setFixedSize(320, 320);
+    h->show();
+    std::ofstream ofs(_location);
+    for (const auto& [seconds, date, name] : _scores) {
+      ofs << seconds << ' ' << date << ' ' << std::quoted(name) << '\n';
+    }
   }
 }
