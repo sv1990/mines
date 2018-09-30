@@ -6,9 +6,9 @@
 #include "highscore.hh"
 #include "timer.hh"
 
+#include <QHBoxLayout>
 #include <QMainWindow>
 #include <QVBoxLayout>
-#include <QHBoxLayout>
 
 class mines : public QMainWindow {
   QWidget* _central_widget;
@@ -34,7 +34,7 @@ public:
     _highscore  = new highscore;
     _bomb_count = new bomb_count(num_bombs, this);
 
-    auto top_bar = new QWidget(this);
+    auto top_bar    = new QWidget(this);
     auto top_layout = new QHBoxLayout(this);
     top_bar->setLayout(top_layout);
     top_layout->addWidget(_timer);
@@ -48,7 +48,8 @@ public:
     connect(_board, &gameboard::game_started, _timer, &timer::start);
     connect(_board, &gameboard::game_done, _timer, &timer::stop);
     connect(_board, &gameboard::game_done, this, &mines::show_highscore);
-    connect(_board, &gameboard::marks_changed, _bomb_count, &bomb_count::count_changed);
+    connect(_board, &gameboard::marks_changed, _bomb_count,
+            &bomb_count::count_changed);
   }
 
   void show_highscore() {
