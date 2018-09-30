@@ -1,6 +1,7 @@
 #include "mines.hh"
 
 #include <QHBoxLayout>
+#include <QPushButton>
 
 mines::mines() noexcept : QMainWindow(nullptr) {
   int rows      = 16;
@@ -12,10 +13,13 @@ mines::mines() noexcept : QMainWindow(nullptr) {
   _highscore  = new highscore;
   _bomb_count = new bomb_count(num_bombs, this);
 
-  auto top_bar    = new QWidget(this);
-  auto top_layout = new QHBoxLayout(top_bar);
+  auto top_bar        = new QWidget(this);
+  auto top_layout     = new QHBoxLayout(top_bar);
+  auto restart_button = new QPushButton(this);
+  restart_button->setText("Restart");
   top_bar->setLayout(top_layout);
   top_layout->addWidget(_timer);
+  top_layout->addWidget(restart_button);
   top_layout->addWidget(_bomb_count);
 
   _central_widget = new QWidget(this);
@@ -32,6 +36,9 @@ mines::mines() noexcept : QMainWindow(nullptr) {
   connect(_board, &gameboard::game_done, this, &mines::show_highscore);
   connect(_board, &gameboard::marks_changed, _bomb_count,
           &bomb_count::count_changed);
+  connect(restart_button, &QPushButton::clicked, _board, &gameboard::reset);
+  connect(restart_button, &QPushButton::clicked, _timer, &timer::reset);
+  connect(_board, &gameboard::resetted_bombs, _bomb_count, &bomb_count::restart);
 }
 
 void mines::show_highscore() noexcept {

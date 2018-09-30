@@ -18,6 +18,12 @@ public:
     _count -= mark_change;
     this->display(_count);
   }
+
+public slots:
+  void restart(int count) {
+    _count = count;
+    this->display(_count);
+  }
 };
 
 #endif // MINES_SRC_BOMB_COUNT_HH_1538292750862338912_

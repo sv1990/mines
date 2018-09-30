@@ -42,6 +42,7 @@ public:
 
   void uncover() noexcept;
 
+  void reset() noexcept;
   void start(std::size_t row, std::size_t col) noexcept;
   void open(std::size_t row, std::size_t col) noexcept;
   void open_around(std::size_t row, std::size_t col) noexcept;
@@ -56,6 +57,7 @@ signals:
   void game_started();
   void game_done();
   void marks_changed(int);
+  void resetted_bombs(std::size_t);
 };
 
 #endif // MINES_NEW_SRC_GAMEBOARD_HH_1537958827568077733_

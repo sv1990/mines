@@ -11,10 +11,6 @@
 using namespace ranges;
 
 void field::init(std::size_t row, std::size_t col) noexcept {
-  if (_initialized) {
-    return;
-  }
-
   // TODO: It should be possible to optimize this using the functions below and
   // then removing the bombs from the clicked region
   // std::fill_n(begin(_entries), _num_bombs, entry::bomb{});
@@ -48,7 +44,10 @@ void field::init(std::size_t row, std::size_t col) noexcept {
       }
     }
   }
-  _initialized = true;
+}
+
+void field::reset() noexcept {
+  _entries = std::vector<entry>(_rows * _cols);
 }
 
 field::field(std::size_t rows, std::size_t cols, std::size_t num_bombs) noexcept

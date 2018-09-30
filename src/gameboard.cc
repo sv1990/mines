@@ -19,6 +19,13 @@ void gameboard::uncover() noexcept {
   }
 }
 
+void gameboard::reset() noexcept {
+  _started = false;
+  _field.reset();
+  update_pixmaps();
+  emit(resetted_bombs(_field.bombs()));
+}
+
 void gameboard::start(std::size_t row, std::size_t col) noexcept {
   if (!_started) {
     _started = true;

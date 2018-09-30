@@ -28,6 +28,11 @@ public slots:
     _timer->start(1000);
     show_time();
   }
+  void reset() {
+    stop();
+    _seconds = 0;
+    this->display(_seconds);
+  }
   void stop() { _timer->stop(); }
 };
 
