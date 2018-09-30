@@ -54,6 +54,7 @@ public:
     case state_t::opened:
       return 0;
     }
+    __builtin_unreachable();
   }
 
   state_t state() const noexcept { return _state; }
