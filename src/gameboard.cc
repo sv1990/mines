@@ -21,6 +21,7 @@ void gameboard::uncover() noexcept {
 
 void gameboard::reset() noexcept {
   _started = false;
+  _lost    = false;
   _field.reset();
   update_pixmaps();
   emit(resetted_bombs(_field.bombs()));
