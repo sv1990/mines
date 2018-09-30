@@ -11,10 +11,13 @@ class field {
   std::size_t _rows;
   std::size_t _cols;
   std::size_t _num_bombs;
+  bool _initialized = false;
 
 public:
   field(std::size_t width, std::size_t height, std::size_t num_bombs) noexcept;
+  void init(std::size_t row, std::size_t col) noexcept;
 
+  bool initialized() const noexcept { return _initialized; }
   std::size_t rows() const noexcept { return _rows; }
   std::size_t cols() const noexcept { return _cols; }
 

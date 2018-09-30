@@ -10,22 +10,49 @@
 
 using namespace ranges;
 
-field::field(std::size_t rows, std::size_t cols, std::size_t num_bombs) noexcept
-    : _entries(rows * cols), _rows(rows), _cols(cols), _num_bombs(num_bombs) {
-  std::fill_n(begin(_entries), _num_bombs, entry::bomb{});
-  std::shuffle(begin(_entries), end(_entries), util::random_gen());
+void field::init(std::size_t row, std::size_t col) noexcept {
+  if (_initialized) {
+    return;
+  }
 
-  for (std::size_t row = 0; row < _rows; ++row) {
-    for (std::size_t col = 0; col < _cols; ++col) {
-      if ((*this)(row, col).is_bomb()) {
+  // TODO: It should be possible to optimize this using the functions below and
+  // then removing the bombs from the clicked region
+  // std::fill_n(begin(_entries), _num_bombs, entry::bomb{});
+  // std::shuffle(begin(_entries), end(_entries), util::random_gen());
+
+  auto clicked_fields = adjacent_entries(row, col);
+  clicked_fields.emplace_back(row, col);
+
+  auto bombs = _num_bombs;
+  while (bombs > 0) {
+    auto irow = std::uniform_int_distribution<std::size_t>{0, rows() - 1}(
+        util::random_gen());
+    auto icol = std::uniform_int_distribution<std::size_t>{0, cols() - 1}(
+        util::random_gen());
+    if (!(*this)(irow, icol).is_bomb() &&
+        ranges::find(clicked_fields, std::pair{irow, icol}) ==
+            ranges::end(clicked_fields)) {
+      (*this)(irow, icol) = entry::bomb{};
+      --bombs;
+    }
+  }
+
+  for (std::size_t irow = 0; irow < _rows; ++irow) {
+    for (std::size_t icol = 0; icol < _cols; ++icol) {
+      if ((*this)(irow, icol).is_bomb()) {
         continue;
       }
-      auto count = count_adjacent_bombs(row, col);
+      auto count = count_adjacent_bombs(irow, icol);
       if (count > 0) {
-        (*this)(row, col) = entry::close_to{count};
+        (*this)(irow, icol) = entry::close_to{count};
       }
     }
   }
+  _initialized = true;
+}
+
+field::field(std::size_t rows, std::size_t cols, std::size_t num_bombs) noexcept
+    : _entries(rows * cols), _rows(rows), _cols(cols), _num_bombs(num_bombs) {
 }
 
 std::vector<std::pair<std::size_t, std::size_t>>

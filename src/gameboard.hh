@@ -42,7 +42,7 @@ public:
 
   void uncover() noexcept;
 
-  void start() noexcept;
+  void start(std::size_t row, std::size_t col) noexcept;
   void open(std::size_t row, std::size_t col) noexcept;
   void open_around(std::size_t row, std::size_t col) noexcept;
   void mark(std::size_t row, std::size_t col) noexcept;
