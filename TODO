@@ -1,4 +1,5 @@
+- First click should always hit an empty field
 - Improve resizing when number of rows and cols was changed
 - Restart button
-- Settings menu
+- Settings menu (rows, cols, bombs)
 - Open remaining bombs when lost
