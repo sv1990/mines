@@ -9,6 +9,16 @@ void gameboard::update_pixmaps() noexcept {
   }
 }
 
+void gameboard::uncover() noexcept {
+  if (_lost) {
+    for (int irow = 0; irow < _layout->rowCount(); ++irow) {
+      for (int icol = 0; icol < _layout->columnCount(); ++icol) {
+        (*this)(irow, icol)->uncover();
+      }
+    }
+  }
+}
+
 void gameboard::start() noexcept {
   if (!_started) {
     _started = true;
@@ -21,8 +31,11 @@ void gameboard::open(std::size_t row, std::size_t col) noexcept {
   _lost = !_field.open(row, col);
   if (_lost || is_done()) {
     emit game_done();
+    uncover();
   }
-  update_pixmaps();
+  else {
+    update_pixmaps();
+  }
 }
 
 void gameboard::open_around(std::size_t row, std::size_t col) noexcept {
@@ -30,8 +43,11 @@ void gameboard::open_around(std::size_t row, std::size_t col) noexcept {
   _lost = !_field.open_around(row, col);
   if (_lost || is_done()) {
     emit game_done();
+    uncover();
   }
-  update_pixmaps();
+  else {
+    update_pixmaps();
+  }
 }
 
 void gameboard::mark(std::size_t row, std::size_t col) noexcept {
@@ -41,6 +57,10 @@ void gameboard::mark(std::size_t row, std::size_t col) noexcept {
     emit marks_changed(mark_change);
   }
   (*this)(row, col)->update_pixmap();
+}
+
+bool gameboard::is_bomb(std::size_t row, std::size_t col) const noexcept {
+  return _field(row, col).is_bomb();
 }
 
 entry::state_t gameboard::state(std::size_t row, std::size_t col) noexcept {

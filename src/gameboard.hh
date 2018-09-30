@@ -40,10 +40,13 @@ public:
 
   void update_pixmaps() noexcept;
 
+  void uncover() noexcept;
+
   void start() noexcept;
   void open(std::size_t row, std::size_t col) noexcept;
   void open_around(std::size_t row, std::size_t col) noexcept;
   void mark(std::size_t row, std::size_t col) noexcept;
+  bool is_bomb(std::size_t row, std::size_t col) const noexcept;
   entry::state_t state(std::size_t row, std::size_t col) noexcept;
   entry::value_t value(std::size_t row, std::size_t col) noexcept;
 
