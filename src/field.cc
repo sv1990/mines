@@ -11,27 +11,17 @@
 using namespace ranges;
 
 void field::init(std::size_t row, std::size_t col) noexcept {
-  // TODO: It should be possible to optimize this using the functions below and
-  // then removing the bombs from the clicked region
-  // std::fill_n(begin(_entries), _num_bombs, entry::bomb{});
-  // std::shuffle(begin(_entries), end(_entries), util::random_gen());
-
   auto clicked_fields = adjacent_entries(row, col);
   clicked_fields.emplace_back(row, col);
 
-  auto bombs = _num_bombs;
-  while (bombs > 0) {
-    auto irow = std::uniform_int_distribution<std::size_t>{0, rows() - 1}(
-        util::random_gen());
-    auto icol = std::uniform_int_distribution<std::size_t>{0, cols() - 1}(
-        util::random_gen());
-    if (!(*this)(irow, icol).is_bomb() &&
-        ranges::find(clicked_fields, std::pair{irow, icol}) ==
-            ranges::end(clicked_fields)) {
-      (*this)(irow, icol) = entry::bomb{};
-      --bombs;
-    }
-  }
+  std::fill_n(begin(_entries), _num_bombs, entry::bomb{});
+  std::shuffle(begin(_entries), prev(end(_entries), size(clicked_fields)),
+               util::random_gen());
+
+  swap_ranges(clicked_fields | view::transform([this](const auto& p) -> entry& {
+                return (*this)(p.first, p.second);
+              }),
+              _entries | view::reverse | view::take(size(clicked_fields)));
 
   for (std::size_t irow = 0; irow < _rows; ++irow) {
     for (std::size_t icol = 0; icol < _cols; ++icol) {
