@@ -62,8 +62,7 @@ bool field::open(std::size_t row, std::size_t col) noexcept {
   if (entry.state() == entry::state_t::hidden) {
     entry.open();
   }
-  else if (entry.state() == entry::state_t::marked ||
-           entry.state() == entry::state_t::opened) {
+  else {
     return true;
   }
   if (entry.is_bomb()) {
@@ -101,7 +100,7 @@ int field::mark(std::size_t row, std::size_t col) noexcept {
 bool field::open_around(std::size_t row, std::size_t col) noexcept {
   const auto& selected_entry = (*this)(row, col);
 
-  bool ret = true;
+  bool alive = true;
   if (selected_entry.state() == entry::state_t::opened &&
       selected_entry.is_close_to()) {
     auto adjacent   = adjacent_entries(row, col);
@@ -113,12 +112,12 @@ bool field::open_around(std::size_t row, std::size_t col) noexcept {
         if ((*this)(r, c).state() == entry::state_t::hidden) {
           // this->open(r, c) needs to be on the left hand side of && since its
           // side effects need to be performed
-          ret = this->open(r, c) && ret;
+          alive = this->open(r, c) && alive;
         }
       }
     }
   }
-  return ret;
+  return alive;
 }
 
 bool field::is_done() const noexcept {
