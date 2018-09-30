@@ -2,5 +2,6 @@
 - Improve resizing when number of rows and cols was changed
 - Restart button
 - Settings menu (rows, cols, bombs)
+- Use -Wconversion
 
 - Multiplayer
