@@ -24,7 +24,7 @@ void gameboard::reset() noexcept {
   _lost    = false;
   _field.reset();
   update_pixmaps();
-  emit(resetted_bombs(_field.bombs()));
+  emit resetted_bombs(_field.bombs());
 }
 
 void gameboard::start(std::size_t row, std::size_t col) noexcept {
