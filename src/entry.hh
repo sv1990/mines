@@ -37,16 +37,22 @@ public:
   }
 
   void open() noexcept { _state = state_t::opened; }
-  void mark() noexcept {
+
+  /**
+   * Mark entry
+   *
+   * @return 1 if marked, -1 if unmarked, 0 else
+   */
+  int mark() noexcept {
     switch (_state) {
     case state_t::hidden:
       _state = state_t::marked;
-      break;
+      return 1;
     case state_t::marked:
       _state = state_t::hidden;
-      break;
+      return -1;
     case state_t::opened:
-      break;
+      return 0;
     }
   }
 

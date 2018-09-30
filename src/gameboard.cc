@@ -36,7 +36,10 @@ void gameboard::open_around(std::size_t row, std::size_t col) noexcept {
 
 void gameboard::mark(std::size_t row, std::size_t col) noexcept {
   start();
-  _field.mark(row, col);
+  auto mark_change = _field.mark(row, col);
+  if (mark_change != 0) {
+    emit marks_changed(mark_change);
+  }
   (*this)(row, col)->update_pixmap();
 }
 

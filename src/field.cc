@@ -94,8 +94,8 @@ bool field::open(std::size_t row, std::size_t col) noexcept {
   return true;
 }
 
-void field::mark(std::size_t row, std::size_t col) noexcept {
-  (*this)(row, col).mark();
+int field::mark(std::size_t row, std::size_t col) noexcept {
+  return (*this)(row, col).mark();
 }
 
 bool field::open_around(std::size_t row, std::size_t col) noexcept {
