@@ -21,6 +21,7 @@ class mines : public QMainWindow {
 public:
   mines() noexcept;
   void show_highscore() noexcept;
+  void add_highscore() noexcept;
 };
 
 #endif // MINES_SRC_MINES_HH_1537684785294630186_

@@ -25,8 +25,8 @@ mines::mines() noexcept : QMainWindow(nullptr) {
   _layout->addWidget(_board);
   _central_widget->setLayout(_layout);
 
-  auto bottom_bar       = new QWidget(this);
-  auto bottom_layout    = new QHBoxLayout(bottom_bar);
+  auto bottom_bar    = new QWidget(this);
+  auto bottom_layout = new QHBoxLayout(bottom_bar);
   bottom_layout->addSpacing(256);
   auto highscore_button = new QPushButton(this);
   highscore_button->setText("Show Highscore");
@@ -41,7 +41,7 @@ mines::mines() noexcept : QMainWindow(nullptr) {
 
   connect(_board, &gameboard::game_started, _timer, &timer::start);
   connect(_board, &gameboard::game_done, _timer, &timer::stop);
-  connect(_board, &gameboard::game_done, this, &mines::show_highscore);
+  connect(_board, &gameboard::game_done, this, &mines::add_highscore);
   connect(_board, &gameboard::marks_changed, _bomb_count,
           &bomb_count::count_changed);
   connect(highscore_button, &QPushButton::clicked, this,
@@ -53,6 +53,10 @@ mines::mines() noexcept : QMainWindow(nullptr) {
 }
 
 void mines::show_highscore() noexcept {
+  _highscore->show();
+}
+
+void mines::add_highscore() noexcept {
   if (_board->is_done() && !_board->lost()) {
     _highscore->add(_timer->seconds());
   }
