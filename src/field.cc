@@ -162,5 +162,5 @@ bool field::open_around(int row, int col) noexcept {
 bool field::is_done() const noexcept {
   return ranges::count_if(_entries, [](const auto& entry) {
            return entry.state() != entry::state_t::opened;
-         }) == static_cast<long>(_num_bombs);
+         }) == _num_bombs;
 }
