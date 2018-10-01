@@ -6,7 +6,6 @@
 #include <range/v3/algorithm/swap_ranges.hpp>
 #include <range/v3/view/filter.hpp>
 #include <range/v3/view/reverse.hpp>
-#include <range/v3/view/take.hpp>
 #include <range/v3/view/transform.hpp>
 
 #include <algorithm>
@@ -28,8 +27,7 @@ void field::init(int row, int col) noexcept {
       clicked_fields | ranges::view::transform([this](const auto& p) -> entry& {
         return (*this)(p.first, p.second);
       }),
-      _entries | ranges::view::reverse |
-          ranges::view::take(size(clicked_fields)));
+      _entries | ranges::view::reverse);
 
   for (int irow = 0; irow < _rows; ++irow) {
     for (int icol = 0; icol < _cols; ++icol) {
