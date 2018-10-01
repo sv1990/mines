@@ -6,9 +6,11 @@
 #include <set>
 #include <string>
 
+#include <ctime>
+
 struct score {
   int seconds;
-  long date;
+  std::time_t date;
   std::string name;
 };
 

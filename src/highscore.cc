@@ -1,5 +1,7 @@
 #include "highscore.hh"
 
+#include <fmt/format.h>
+
 #include <QDir>
 #include <QInputDialog>
 #include <QLabel>
@@ -12,7 +14,17 @@
 #include <fstream>
 #include <iomanip>
 #include <set>
+#include <sstream>
 #include <tuple>
+
+#include <iostream>
+
+std::string to_date(std::time_t seconds) noexcept {
+  std::ostringstream oss;
+  std::tm tm = *std::localtime(&seconds);
+  oss << std::put_time(&tm, "%d.%m.%y %H:%M:%S");
+  return std::move(oss).str();
+}
 
 bool operator<(const score& lhs, const score& rhs) noexcept {
   return std::tie(lhs.seconds, lhs.date) < std::tie(rhs.seconds, rhs.date);
@@ -28,10 +40,9 @@ highscorelist::highscorelist(const std::multiset<score>& scores,
   int rang = 1;
   for (const auto& [seconds, date, name] : scores) {
     auto line = new QLabel(this);
-    line->setText(QString("%1 %2 %3s")
-                      .arg(rang++)
-                      .arg(QString::fromStdString(name))
-                      .arg(seconds));
+
+    line->setText(QString::fromStdString(
+        fmt::format("{:>4} {:>18} {:>14} {:>22}", rang++, name, seconds, to_date(date))));
     layout->addWidget(line);
   }
 }
@@ -61,9 +72,10 @@ void highscore::add(int seconds) noexcept {
         this, "Highscore",
         "You are in the Top 10! What is your name?:", QLineEdit::Normal,
         "Anonymous", &ok);
-    _scores.insert({seconds,
-                    std::chrono::system_clock::now().time_since_epoch().count(),
-                    name.toStdString()});
+    _scores.insert(
+        {seconds,
+         std::chrono::system_clock::to_time_t(std::chrono::system_clock::now()),
+         name.toStdString()});
     if (_scores.size() > 10) {
       _scores.erase(prev(end(_scores)));
     }
