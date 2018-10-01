@@ -13,8 +13,6 @@
 #include <array>
 #include <queue>
 
-using namespace ranges;
-
 void field::init(int row, int col) noexcept {
   assert(row >= 0 && row < _rows);
   assert(col >= 0 && col < _cols);
@@ -26,10 +24,12 @@ void field::init(int row, int col) noexcept {
                prev(end(_entries), static_cast<int>(size(clicked_fields))),
                util::random_gen());
 
-  swap_ranges(clicked_fields | view::transform([this](const auto& p) -> entry& {
-                return (*this)(p.first, p.second);
-              }),
-              _entries | view::reverse | view::take(size(clicked_fields)));
+  ranges::swap_ranges(
+      clicked_fields | ranges::view::transform([this](const auto& p) -> entry& {
+        return (*this)(p.first, p.second);
+      }),
+      _entries | ranges::view::reverse |
+          ranges::view::take(size(clicked_fields)));
 
   for (int irow = 0; irow < _rows; ++irow) {
     for (int icol = 0; icol < _cols; ++icol) {
@@ -67,13 +67,13 @@ std::vector<std::pair<int, int>> field::adjacent_entries(int row, int col) const
   };
   // clang-format on
   return indices //
-         | view::transform([row, col](const auto& p) {
+         | ranges::view::transform([row, col](const auto& p) {
              return std::pair<int, int>(row + p.first, col + p.second);
            }) //
-         | view::filter([this](const auto& p) {
+         | ranges::view::filter([this](const auto& p) {
              return this->at(p.first, p.second).has_value();
            }) //
-         | to_vector;
+         | ranges::to_vector;
 }
 
 int field::count_adjacent_bombs(int row, int col) const noexcept {
@@ -81,12 +81,13 @@ int field::count_adjacent_bombs(int row, int col) const noexcept {
   assert(col >= 0 && col < _cols);
 
   auto adjacent = adjacent_entries(row, col);
-  return static_cast<int>(distance(adjacent //
-                                   | view::transform([this](const auto& p) {
-                                       const auto& [r, c] = p;
-                                       return this->at(r, c);
-                                     }) //
-                                   | view::filter(&entry::is_bomb)));
+  return static_cast<int>(
+      ranges::distance(adjacent //
+                       | ranges::view::transform([this](const auto& p) {
+                           const auto& [r, c] = p;
+                           return this->at(r, c);
+                         }) //
+                       | ranges::view::filter(&entry::is_bomb)));
 }
 
 bool field::open(int row, int col) noexcept {
