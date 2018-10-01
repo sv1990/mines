@@ -39,7 +39,7 @@ const QPixmap& get_pixmap(const std::string& name) noexcept {
   assert(it != end(pixmaps));
   return it->second;
 }
-pixmap::pixmap(gameboard* field, std::size_t row, std::size_t col) noexcept
+pixmap::pixmap(gameboard* field, int row, int col) noexcept
     : QLabel(field), _board(field), _row(row), _col(col) {
   this->setPixmap(get_pixmap("hidden"));
   this->setFixedHeight(16);

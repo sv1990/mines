@@ -15,12 +15,15 @@
 
 using namespace ranges;
 
-void field::init(std::size_t row, std::size_t col) noexcept {
+void field::init(int row, int col) noexcept {
+  assert(util::in_range(row, 0, _rows - 1));
+  assert(util::in_range(col, 0, _cols - 1));
   auto clicked_fields = adjacent_entries(row, col);
   clicked_fields.emplace_back(row, col);
 
   std::fill_n(begin(_entries), _num_bombs, entry::bomb{});
-  std::shuffle(begin(_entries), prev(end(_entries), size(clicked_fields)),
+  std::shuffle(begin(_entries),
+               prev(end(_entries), static_cast<int>(size(clicked_fields))),
                util::random_gen());
 
   swap_ranges(clicked_fields | view::transform([this](const auto& p) -> entry& {
@@ -28,8 +31,8 @@ void field::init(std::size_t row, std::size_t col) noexcept {
               }),
               _entries | view::reverse | view::take(size(clicked_fields)));
 
-  for (std::size_t irow = 0; irow < _rows; ++irow) {
-    for (std::size_t icol = 0; icol < _cols; ++icol) {
+  for (int irow = 0; irow < _rows; ++irow) {
+    for (int icol = 0; icol < _cols; ++icol) {
       if ((*this)(irow, icol).is_bomb()) {
         continue;
       }
@@ -42,24 +45,30 @@ void field::init(std::size_t row, std::size_t col) noexcept {
 }
 
 void field::reset() noexcept {
-  _entries = std::vector<entry>(_rows * _cols);
+  _entries = std::vector<entry>(static_cast<std::size_t>(_rows * _cols));
 }
 
-field::field(std::size_t rows, std::size_t cols, std::size_t num_bombs) noexcept
-    : _entries(rows * cols), _rows(rows), _cols(cols), _num_bombs(num_bombs) {
+field::field(int rows, int cols, int num_bombs) noexcept
+    : _entries(), _rows(rows), _cols(cols), _num_bombs(num_bombs) {
+  assert(_rows > 0);
+  assert(_cols > 0);
+  assert(_num_bombs > 0);
+  reset();
 }
 
-std::vector<std::pair<std::size_t, std::size_t>>
-field::adjacent_entries(std::size_t row, std::size_t col) const noexcept {
+std::vector<std::pair<int, int>> field::adjacent_entries(int row, int col) const
+    noexcept {
+  assert(util::in_range(row, 0, _rows - 1));
+  assert(util::in_range(col, 0, _cols - 1));
+
   // clang-format off
-  std::array<std::pair<long, long>, 8> indices{
+  std::array<std::pair<int, int>, 8> indices{
       {{1, -1}, {1, 0}, {1, 1}, {0, -1}, {0, 1}, {-1, -1}, {-1, 0}, {-1, 1},}
   };
   // clang-format on
   return indices //
          | view::transform([row, col](const auto& p) {
-             return std::pair<std::size_t, std::size_t>(row + p.first,
-                                                        col + p.second);
+             return std::pair<int, int>(row + p.first, col + p.second);
            }) //
          | view::filter([this](const auto& p) {
              return this->at(p.first, p.second).has_value();
@@ -67,18 +76,23 @@ field::adjacent_entries(std::size_t row, std::size_t col) const noexcept {
          | to_vector;
 }
 
-unsigned field::count_adjacent_bombs(std::size_t row, std::size_t col) const
-    noexcept {
+int field::count_adjacent_bombs(int row, int col) const noexcept {
+  assert(util::in_range(row, 0, _rows - 1));
+  assert(util::in_range(col, 0, _cols - 1));
+
   auto adjacent = adjacent_entries(row, col);
-  return distance(adjacent //
-                  | view::transform([this](const auto& p) {
-                      const auto& [r, c] = p;
-                      return this->at(r, c);
-                    }) //
-                  | view::filter(&entry::is_bomb));
+  return static_cast<int>(distance(adjacent //
+                                   | view::transform([this](const auto& p) {
+                                       const auto& [r, c] = p;
+                                       return this->at(r, c);
+                                     }) //
+                                   | view::filter(&entry::is_bomb)));
 }
 
-bool field::open(std::size_t row, std::size_t col) noexcept {
+bool field::open(int row, int col) noexcept {
+  assert(util::in_range(row, 0, _rows - 1));
+  assert(util::in_range(col, 0, _cols - 1));
+
   auto& entry = (*this)(row, col);
   if (entry.state() == entry::state_t::hidden) {
     entry.open();
@@ -90,7 +104,7 @@ bool field::open(std::size_t row, std::size_t col) noexcept {
     return false;
   }
   if (entry.is_empty()) {
-    std::queue<std::pair<std::size_t, std::size_t>> todo;
+    std::queue<std::pair<int, int>> todo;
     for (const auto& p : adjacent_entries(row, col)) {
       todo.push(p);
       (*this)(p.first, p.second).open();
@@ -114,11 +128,16 @@ bool field::open(std::size_t row, std::size_t col) noexcept {
   return true;
 }
 
-int field::mark(std::size_t row, std::size_t col) noexcept {
+int field::mark(int row, int col) noexcept {
+  assert(util::in_range(row, 0, _rows - 1));
+  assert(util::in_range(col, 0, _cols - 1));
   return (*this)(row, col).mark();
 }
 
-bool field::open_around(std::size_t row, std::size_t col) noexcept {
+bool field::open_around(int row, int col) noexcept {
+  assert(util::in_range(row, 0, _rows - 1));
+  assert(util::in_range(col, 0, _cols - 1));
+
   const auto& selected_entry = (*this)(row, col);
 
   bool alive = true;

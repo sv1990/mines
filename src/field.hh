@@ -3,46 +3,53 @@
 
 #include "entry.hh"
 
+#include "util/in_range.hh"
+
 #include <optional>
 #include <vector>
 
+#include <cassert>
+
+#include <iostream>
+
 class field {
   std::vector<entry> _entries;
-  std::size_t _rows;
-  std::size_t _cols;
-  std::size_t _num_bombs;
+  int _rows;
+  int _cols;
+  int _num_bombs;
 
 public:
-  field(std::size_t width, std::size_t height, std::size_t num_bombs) noexcept;
-  void init(std::size_t row, std::size_t col) noexcept;
+  field(int width, int height, int num_bombs) noexcept;
+  void init(int row, int col) noexcept;
   void reset() noexcept;
 
-  std::size_t rows() const noexcept { return _rows; }
-  std::size_t cols() const noexcept { return _cols; }
-  std::size_t bombs() const noexcept { return _num_bombs; }
+  int rows() const noexcept { return _rows; }
+  int cols() const noexcept { return _cols; }
+  int bombs() const noexcept { return _num_bombs; }
 
-  entry& operator()(std::size_t row, std::size_t col) noexcept {
-    return _entries[row * _cols + col];
+  entry& operator()(int row, int col) noexcept {
+    assert(util::in_range(row, 0, _rows - 1));
+    assert(util::in_range(col, 0, _cols - 1));
+    return _entries[static_cast<std::size_t>(row * _cols + col)];
   }
-  const entry& operator()(std::size_t row, std::size_t col) const noexcept {
+  const entry& operator()(int row, int col) const noexcept {
     return const_cast<field&>(*this)(row, col);
   }
 
-  std::optional<entry> at(std::size_t row, std::size_t col) const noexcept {
-    if (row < _rows && col < _cols) {
+  std::optional<entry> at(int row, int col) const noexcept {
+    if (row >= 0 && row < _rows && col >= 0 && col < _cols) {
       return (*this)(row, col);
     }
     return {};
   }
 
-  std::vector<std::pair<std::size_t, std::size_t>>
-  adjacent_entries(std::size_t row, std::size_t col) const noexcept;
-  unsigned count_adjacent_bombs(std::size_t row, std::size_t col) const
+  std::vector<std::pair<int, int>> adjacent_entries(int row, int col) const
       noexcept;
+  int count_adjacent_bombs(int row, int col) const noexcept;
 
-  bool open(std::size_t row, std::size_t col) noexcept;
-  bool open_around(std::size_t row, std::size_t col) noexcept;
-  int mark(std::size_t row, std::size_t col) noexcept;
+  bool open(int row, int col) noexcept;
+  bool open_around(int row, int col) noexcept;
+  int mark(int row, int col) noexcept;
 
   bool is_done() const noexcept;
 };

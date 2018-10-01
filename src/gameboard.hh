@@ -18,12 +18,12 @@ class gameboard : public QWidget {
   bool _started = false;
 
 public:
-  gameboard(std::size_t rows, std::size_t cols, std::size_t num_bombs,
+  gameboard(int rows, int cols, int num_bombs,
             QWidget* parent = nullptr) noexcept
       : QWidget(parent), _field(rows, cols, num_bombs) {
     _layout = new QGridLayout(this);
-    for (std::size_t row = 0; row < rows; ++row) {
-      for (std::size_t col = 0; col < cols; ++col) {
+    for (int row = 0; row < rows; ++row) {
+      for (int col = 0; col < cols; ++col) {
         _layout->addWidget(new pixmap(this, row, col), row, col);
       }
     }
@@ -31,10 +31,10 @@ public:
     this->setLayout(_layout);
   }
 
-  pixmap* operator()(std::size_t row, std::size_t col) noexcept {
+  pixmap* operator()(int row, int col) noexcept {
     return dynamic_cast<pixmap*>(_layout->itemAtPosition(row, col)->widget());
   }
-  const pixmap* operator()(std::size_t row, std::size_t col) const noexcept {
+  const pixmap* operator()(int row, int col) const noexcept {
     return const_cast<gameboard&>(*this)(row, col);
   }
 
@@ -43,13 +43,13 @@ public:
   void uncover() noexcept;
 
   void reset() noexcept;
-  void start(std::size_t row, std::size_t col) noexcept;
-  void open(std::size_t row, std::size_t col) noexcept;
-  void open_around(std::size_t row, std::size_t col) noexcept;
-  void mark(std::size_t row, std::size_t col) noexcept;
-  bool is_bomb(std::size_t row, std::size_t col) const noexcept;
-  entry::state_t state(std::size_t row, std::size_t col) noexcept;
-  entry::value_t value(std::size_t row, std::size_t col) noexcept;
+  void start(int row, int col) noexcept;
+  void open(int row, int col) noexcept;
+  void open_around(int row, int col) noexcept;
+  void mark(int row, int col) noexcept;
+  bool is_bomb(int row, int col) const noexcept;
+  entry::state_t state(int row, int col) noexcept;
+  entry::value_t value(int row, int col) noexcept;
 
   bool is_done() const noexcept;
   bool lost() const noexcept { return _lost; }
@@ -57,7 +57,7 @@ signals:
   void game_started();
   void game_done();
   void marks_changed(int);
-  void resetted_bombs(std::size_t);
+  void resetted_bombs(int);
 };
 
 #endif // MINES_NEW_SRC_GAMEBOARD_HH_1537958827568077733_

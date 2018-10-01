@@ -8,7 +8,7 @@ class entry {
 public:
   struct empty {};
   struct close_to {
-    unsigned num;
+    int num;
   };
   struct bomb {};
 

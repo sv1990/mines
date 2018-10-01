@@ -27,7 +27,7 @@ void gameboard::reset() noexcept {
   emit resetted_bombs(_field.bombs());
 }
 
-void gameboard::start(std::size_t row, std::size_t col) noexcept {
+void gameboard::start(int row, int col) noexcept {
   if (!_started) {
     _started = true;
     _field.init(row, col);
@@ -35,7 +35,7 @@ void gameboard::start(std::size_t row, std::size_t col) noexcept {
   }
 }
 
-void gameboard::open(std::size_t row, std::size_t col) noexcept {
+void gameboard::open(int row, int col) noexcept {
   start(row, col);
   _lost = !_field.open(row, col);
   if (_lost || is_done()) {
@@ -47,7 +47,7 @@ void gameboard::open(std::size_t row, std::size_t col) noexcept {
   }
 }
 
-void gameboard::open_around(std::size_t row, std::size_t col) noexcept {
+void gameboard::open_around(int row, int col) noexcept {
   start(row, col);
   _lost = !_field.open_around(row, col);
   if (_lost || is_done()) {
@@ -59,7 +59,7 @@ void gameboard::open_around(std::size_t row, std::size_t col) noexcept {
   }
 }
 
-void gameboard::mark(std::size_t row, std::size_t col) noexcept {
+void gameboard::mark(int row, int col) noexcept {
   start(row, col);
   auto mark_change = _field.mark(row, col);
   if (mark_change != 0) {
@@ -68,15 +68,15 @@ void gameboard::mark(std::size_t row, std::size_t col) noexcept {
   (*this)(row, col)->update_pixmap();
 }
 
-bool gameboard::is_bomb(std::size_t row, std::size_t col) const noexcept {
+bool gameboard::is_bomb(int row, int col) const noexcept {
   return _field(row, col).is_bomb();
 }
 
-entry::state_t gameboard::state(std::size_t row, std::size_t col) noexcept {
+entry::state_t gameboard::state(int row, int col) noexcept {
   return _field(row, col).state();
 }
 
-entry::value_t gameboard::value(std::size_t row, std::size_t col) noexcept {
+entry::value_t gameboard::value(int row, int col) noexcept {
   return _field(row, col).value();
 }
 
