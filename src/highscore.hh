@@ -1,11 +1,6 @@
 #ifndef MINES_SRC_HIGHSCORE_HH_1538249909205925627_
 #define MINES_SRC_HIGHSCORE_HH_1538249909205925627_
 
-#include <QDir>
-#include <QInputDialog>
-#include <QLabel>
-#include <QStandardPaths>
-#include <QVBoxLayout>
 #include <QWidget>
 
 #include <set>
@@ -32,7 +27,7 @@ class highscore : QWidget {
 public:
   explicit highscore() noexcept;
   void add(int seconds) noexcept;
-  void show() const noexcept;
+  void show() noexcept;
 };
 
 #endif // MINES_SRC_HIGHSCORE_HH_1538249909205925627_

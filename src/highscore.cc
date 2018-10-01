@@ -1,5 +1,12 @@
 #include "highscore.hh"
 
+#include <QDir>
+#include <QInputDialog>
+#include <QLabel>
+#include <QMessageBox>
+#include <QStandardPaths>
+#include <QVBoxLayout>
+
 #include <chrono>
 #include <filesystem>
 #include <fstream>
@@ -63,7 +70,7 @@ void highscore::add(int seconds) noexcept {
   }
 }
 
-void highscore::show() const noexcept {
+void highscore::show() noexcept {
   if (!empty(_scores)) {
     auto h = new highscorelist(_scores);
     h->setFixedSize(320, 320);
@@ -72,5 +79,8 @@ void highscore::show() const noexcept {
     for (const auto& [seconds, date, name] : _scores) {
       ofs << seconds << ' ' << date << ' ' << std::quoted(name) << '\n';
     }
+  }
+  else {
+    QMessageBox::information(this, "Highscore", "No highscores yet!");
   }
 }
