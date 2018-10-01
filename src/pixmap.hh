@@ -6,7 +6,6 @@
 #include <QLabel>
 #include <QMouseEvent>
 
-#include <iostream>
 #include <variant>
 
 class gameboard;

@@ -4,18 +4,44 @@
 
 #include "util/overloaded.hh"
 
+#include <QPixmap>
+
 #include <range/v3/algorithm/count_if.hpp>
 
-#include <show/all.hh>
+#include <string_view>
+#include <unordered_map>
+
+#include <cassert>
 
 inline QPixmap make_pixmap(const char* filepath) noexcept {
   return QPixmap(filepath).scaled(16, 16, Qt::KeepAspectRatio,
                                   Qt::SmoothTransformation);
 }
 
+const QPixmap& get_pixmap(const std::string& name) noexcept {
+  static const std::unordered_map<std::string, QPixmap> pixmaps{
+      {"1", make_pixmap(":/images/1.png")},
+      {"2", make_pixmap(":/images/2.png")},
+      {"3", make_pixmap(":/images/3.png")},
+      {"4", make_pixmap(":/images/4.png")},
+      {"5", make_pixmap(":/images/5.png")},
+      {"6", make_pixmap(":/images/6.png")},
+      {"7", make_pixmap(":/images/7.png")},
+      {"8", make_pixmap(":/images/8.png")},
+      {"bomb", make_pixmap(":/images/bomb.png")},
+      {"empty", make_pixmap(":/images/empty.png")},
+      {"hidden", make_pixmap(":/images/hidden.png")},
+      {"marked_bomb", make_pixmap(":/images/marked_bomb.png")},
+      {"marked_empty", make_pixmap(":/images/marked_empty.png")},
+      {"marked", make_pixmap(":/images/marked.png")},
+  };
+  auto it = pixmaps.find(name);
+  assert(it != end(pixmaps));
+  return it->second;
+}
 pixmap::pixmap(gameboard* field, std::size_t row, std::size_t col) noexcept
     : QLabel(field), _board(field), _row(row), _col(col) {
-  this->setPixmap(make_pixmap(":/images/hidden.png"));
+  this->setPixmap(get_pixmap("hidden"));
   this->setFixedHeight(16);
   this->setFixedWidth(16);
 }
@@ -25,21 +51,21 @@ void pixmap::uncover() noexcept {
   switch (_board->state(_row, _col)) {
   case entry::state_t::hidden:
     if (is_bomb) {
-      this->setPixmap(make_pixmap(":/images/bomb.png"));
+      this->setPixmap(get_pixmap("bomb"));
     }
     break;
   case entry::state_t::marked:
     if (is_bomb) {
-      this->setPixmap(make_pixmap(":/images/marked_bomb.png"));
+      this->setPixmap(get_pixmap("marked_bomb"));
     }
     else {
-      this->setPixmap(make_pixmap(":/images/marked_empty.png"));
+      this->setPixmap(get_pixmap("marked_empty"));
     }
     break;
   case entry::state_t::opened:
     // This is needed since the last update_pixmaps is not called
     if (is_bomb) {
-      this->setPixmap(make_pixmap(":/images/bomb.png"));
+      this->setPixmap(get_pixmap("bomb"));
     }
     break;
   }
@@ -48,26 +74,23 @@ void pixmap::uncover() noexcept {
 void pixmap::update_pixmap() noexcept {
   switch (_board->state(_row, _col)) {
   case entry::state_t::hidden:
-    this->setPixmap(make_pixmap(":/images/hidden.png"));
+    this->setPixmap(get_pixmap("hidden"));
     break;
   case entry::state_t::marked:
-    this->setPixmap(make_pixmap(":/images/marked.png"));
+    this->setPixmap(get_pixmap("marked"));
     break;
   case entry::state_t::opened:
-    std::visit(
-        util::overloaded{
-            [this](const entry::empty&) {
-              this->setPixmap(make_pixmap(":/images/empty.png"));
-            },
-            [this](const entry::close_to& close_to) {
-              this->setPixmap(make_pixmap(
-                  (":/images/" + std::to_string(close_to.num) + ".png")
-                      .c_str()));
-            },
-            [this](const entry::bomb&) {
-              this->setPixmap(make_pixmap(":/images/bomb.png"));
-            }},
-        _board->value(_row, _col));
+    std::visit(util::overloaded{[this](const entry::empty&) {
+                                  this->setPixmap(get_pixmap("empty"));
+                                },
+                                [this](const entry::close_to& close_to) {
+                                  this->setPixmap(
+                                      get_pixmap(std::to_string(close_to.num)));
+                                },
+                                [this](const entry::bomb&) {
+                                  this->setPixmap(get_pixmap("bomb"));
+                                }},
+               _board->value(_row, _col));
     break;
   }
 }
