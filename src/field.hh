@@ -3,8 +3,6 @@
 
 #include "entry.hh"
 
-#include "util/in_range.hh"
-
 #include <optional>
 #include <vector>
 
@@ -28,8 +26,8 @@ public:
   int bombs() const noexcept { return _num_bombs; }
 
   entry& operator()(int row, int col) noexcept {
-    assert(util::in_range(row, 0, _rows - 1));
-    assert(util::in_range(col, 0, _cols - 1));
+    assert(row >= 0 && row < _rows);
+    assert(col >= 0 && col < _cols);
     return _entries[static_cast<std::size_t>(row * _cols + col)];
   }
   const entry& operator()(int row, int col) const noexcept {

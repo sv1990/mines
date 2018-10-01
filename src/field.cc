@@ -16,8 +16,8 @@
 using namespace ranges;
 
 void field::init(int row, int col) noexcept {
-  assert(util::in_range(row, 0, _rows - 1));
-  assert(util::in_range(col, 0, _cols - 1));
+  assert(row >= 0 && row < _rows);
+  assert(col >= 0 && col < _cols);
   auto clicked_fields = adjacent_entries(row, col);
   clicked_fields.emplace_back(row, col);
 
@@ -58,8 +58,8 @@ field::field(int rows, int cols, int num_bombs) noexcept
 
 std::vector<std::pair<int, int>> field::adjacent_entries(int row, int col) const
     noexcept {
-  assert(util::in_range(row, 0, _rows - 1));
-  assert(util::in_range(col, 0, _cols - 1));
+  assert(row >= 0 && row < _rows);
+  assert(col >= 0 && col < _cols);
 
   // clang-format off
   std::array<std::pair<int, int>, 8> indices{
@@ -77,8 +77,8 @@ std::vector<std::pair<int, int>> field::adjacent_entries(int row, int col) const
 }
 
 int field::count_adjacent_bombs(int row, int col) const noexcept {
-  assert(util::in_range(row, 0, _rows - 1));
-  assert(util::in_range(col, 0, _cols - 1));
+  assert(row >= 0 && row < _rows);
+  assert(col >= 0 && col < _cols);
 
   auto adjacent = adjacent_entries(row, col);
   return static_cast<int>(distance(adjacent //
@@ -90,8 +90,8 @@ int field::count_adjacent_bombs(int row, int col) const noexcept {
 }
 
 bool field::open(int row, int col) noexcept {
-  assert(util::in_range(row, 0, _rows - 1));
-  assert(util::in_range(col, 0, _cols - 1));
+  assert(row >= 0 && row < _rows);
+  assert(col >= 0 && col < _cols);
 
   auto& entry = (*this)(row, col);
   if (entry.state() == entry::state_t::hidden) {
@@ -129,14 +129,14 @@ bool field::open(int row, int col) noexcept {
 }
 
 int field::mark(int row, int col) noexcept {
-  assert(util::in_range(row, 0, _rows - 1));
-  assert(util::in_range(col, 0, _cols - 1));
+  assert(row >= 0 && row < _rows);
+  assert(col >= 0 && col < _cols);
   return (*this)(row, col).mark();
 }
 
 bool field::open_around(int row, int col) noexcept {
-  assert(util::in_range(row, 0, _rows - 1));
-  assert(util::in_range(col, 0, _cols - 1));
+  assert(row >= 0 && row < _rows);
+  assert(col >= 0 && col < _cols);
 
   const auto& selected_entry = (*this)(row, col);
 
