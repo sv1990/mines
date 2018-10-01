@@ -17,7 +17,7 @@ public:
 
 private:
   value_t _value;
-  mutable state_t _state = state_t::hidden;
+  state_t _state;
 
 public:
   entry& operator=(const value_t& rhs) noexcept {
