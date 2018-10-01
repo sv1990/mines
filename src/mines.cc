@@ -59,6 +59,6 @@ void mines::show_highscore() noexcept {
 void mines::add_highscore() noexcept {
   if (_board->is_done() && !_board->lost()) {
     _highscore->add(_timer->seconds());
+    _highscore->show();
   }
-  _highscore->show();
 }
