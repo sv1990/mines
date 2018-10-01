@@ -9,7 +9,7 @@ set(CMAKE_AUTOMOC ON)
 find_package(Qt5Widgets REQUIRED)
 find_package(range-v3 REQUIRED)
 
-add_executable(mines main.cc gameboard.cc pixmap.cc field.cc timer.cc highscore.cc mines.cc images.qrc)
+add_executable(mines main.cc gameboard.cc pixmap.cc field.cc highscore.cc mines.cc images.qrc)
 target_compile_options(mines PUBLIC "-Wall;-Wextra;-pedantic")
 target_compile_features(mines PUBLIC cxx_std_20)
 target_link_libraries(mines stdc++fs range-v3 Qt5::Widgets)
