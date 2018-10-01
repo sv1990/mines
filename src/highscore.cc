@@ -41,8 +41,8 @@ highscorelist::highscorelist(const std::multiset<score>& scores,
   for (const auto& [seconds, date, name] : scores) {
     auto line = new QLabel(this);
 
-    line->setText(QString::fromStdString(
-        fmt::format("{:>4} {:>18} {:>14} {:>22}", rang++, name, seconds, to_date(date))));
+    line->setText(QString::fromStdString(fmt::format(
+        "{:>4} {:>18} {:>14}s {:>22}", rang++, name, seconds, to_date(date))));
     layout->addWidget(line);
   }
 }
