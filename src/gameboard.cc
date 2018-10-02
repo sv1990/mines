@@ -23,6 +23,7 @@ void gameboard::reset() noexcept {
   _started = false;
   _lost    = false;
   _field.reset();
+  resize_grid(_field.rows(), _field.cols());
   update_pixmaps();
   emit resetted_bombs(_field.bombs());
 }

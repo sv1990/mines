@@ -22,6 +22,10 @@ public:
   mines() noexcept;
   void show_highscore() noexcept;
   void add_highscore() noexcept;
+
+  void set_rows(int rows);
+  void set_cols(int cols);
+  void set_bombs(int bombs);
 };
 
 #endif // MINES_SRC_MINES_HH_1537684785294630186_

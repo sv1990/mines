@@ -22,8 +22,20 @@ public:
   void reset() noexcept;
 
   int rows() const noexcept { return _rows; }
+  void set_rows(int rows) noexcept {
+    assert(rows > 0);
+    _rows = rows;
+  }
   int cols() const noexcept { return _cols; }
+  void set_cols(int cols) noexcept {
+    assert(cols > 0);
+    _cols = cols;
+  }
   int bombs() const noexcept { return _num_bombs; }
+  void set_bombs(int bombs) noexcept {
+    assert(bombs > 0);
+    _num_bombs = bombs;
+  }
 
   entry& operator()(int row, int col) noexcept {
     assert(row >= 0 && row < _rows);

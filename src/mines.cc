@@ -2,6 +2,7 @@
 
 #include <QHBoxLayout>
 #include <QPushButton>
+#include <QSpinBox>
 
 mines::mines() noexcept : QMainWindow(nullptr) {
   int rows      = 16;
@@ -13,6 +14,19 @@ mines::mines() noexcept : QMainWindow(nullptr) {
   _highscore  = new highscore;
   _bomb_count = new bomb_count(num_bombs, this);
 
+  auto settings_bar    = new QWidget(this);
+  auto settings_layout = new QHBoxLayout(settings_bar);
+  settings_bar->setLayout(settings_layout);
+  auto rows_box = new QSpinBox(settings_bar);
+  rows_box->setValue(rows);
+  settings_layout->addWidget(rows_box);
+  auto cols_box = new QSpinBox(settings_bar);
+  cols_box->setValue(cols);
+  settings_layout->addWidget(cols_box);
+  auto bombs_box = new QSpinBox(settings_bar);
+  bombs_box->setValue(num_bombs);
+  settings_layout->addWidget(bombs_box);
+
   auto top_bar    = new QWidget(this);
   auto top_layout = new QHBoxLayout(top_bar);
   top_bar->setLayout(top_layout);
@@ -21,13 +35,14 @@ mines::mines() noexcept : QMainWindow(nullptr) {
 
   _central_widget = new QWidget(this);
   _layout         = new QVBoxLayout(_central_widget);
+  _layout->addWidget(settings_bar);
   _layout->addWidget(top_bar);
   _layout->addWidget(_board);
   _central_widget->setLayout(_layout);
 
   auto bottom_bar    = new QWidget(this);
   auto bottom_layout = new QHBoxLayout(bottom_bar);
-  bottom_layout->addSpacing(256);
+  // bottom_layout->addSpacing(256);
   auto highscore_button = new QPushButton(this);
   highscore_button->setText("Show Highscore");
   bottom_layout->addWidget(highscore_button);
@@ -37,7 +52,7 @@ mines::mines() noexcept : QMainWindow(nullptr) {
   _layout->addWidget(bottom_bar);
 
   this->setCentralWidget(_central_widget);
-  this->setFixedSize(cols * 20, rows * 26);
+  // this->setFixedSize(cols * 20, rows * 26);
 
   connect(_board, &gameboard::game_started, _timer, &timer::start);
   connect(_board, &gameboard::game_done, _timer, &timer::stop);
@@ -50,6 +65,12 @@ mines::mines() noexcept : QMainWindow(nullptr) {
   connect(restart_button, &QPushButton::clicked, _timer, &timer::reset);
   connect(_board, &gameboard::resetted_bombs, _bomb_count,
           &bomb_count::restart);
+  connect(rows_box, QOverload<int>::of(&QSpinBox::valueChanged), this,
+          &mines::set_rows);
+  connect(cols_box, QOverload<int>::of(&QSpinBox::valueChanged), this,
+          &mines::set_cols);
+  connect(bombs_box, QOverload<int>::of(&QSpinBox::valueChanged), this,
+          &mines::set_bombs);
 }
 
 void mines::show_highscore() noexcept {
@@ -61,4 +82,14 @@ void mines::add_highscore() noexcept {
     _highscore->add(_timer->seconds());
     _highscore->show();
   }
+}
+
+void mines::set_rows(int rows) {
+  _board->set_rows(rows);
+}
+void mines::set_cols(int cols) {
+  _board->set_cols(cols);
+}
+void mines::set_bombs(int bombs) {
+  _board->set_bombs(bombs);
 }

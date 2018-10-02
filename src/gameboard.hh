@@ -17,10 +17,9 @@ class gameboard : public QWidget {
   bool _lost    = false;
   bool _started = false;
 
-public:
-  gameboard(int rows, int cols, int num_bombs,
-            QWidget* parent = nullptr) noexcept
-      : QWidget(parent), _field(rows, cols, num_bombs) {
+  void resize_grid(int rows, int cols) noexcept {
+    // TODO: Resize grid inplace
+    delete _layout;
     _layout = new QGridLayout(this);
     for (int row = 0; row < rows; ++row) {
       for (int col = 0; col < cols; ++col) {
@@ -29,6 +28,13 @@ public:
     }
     _layout->setSpacing(1);
     this->setLayout(_layout);
+  }
+
+public:
+  gameboard(int rows, int cols, int num_bombs,
+            QWidget* parent = nullptr) noexcept
+      : QWidget(parent), _field(rows, cols, num_bombs), _layout(nullptr) {
+    resize_grid(rows, cols);
   }
 
   pixmap* operator()(int row, int col) noexcept {
@@ -41,6 +47,21 @@ public:
   void update_pixmaps() noexcept;
 
   void uncover() noexcept;
+
+  void set_rows(int rows) noexcept {
+    _field.set_rows(rows);
+    resize_grid(_field.rows(), _field.cols());
+    reset();
+  }
+  void set_cols(int cols) noexcept {
+    _field.set_cols(cols);
+    resize_grid(_field.rows(), _field.cols());
+    reset();
+  };
+  void set_bombs(int bombs) noexcept {
+    _field.set_bombs(bombs);
+    reset();
+  };
 
   void reset() noexcept;
   void start(int row, int col) noexcept;
