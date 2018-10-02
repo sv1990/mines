@@ -38,24 +38,20 @@ void gameboard::start(int row, int col) noexcept {
 void gameboard::open(int row, int col) noexcept {
   start(row, col);
   _lost = !_field.open(row, col);
+  update_pixmaps();
   if (_lost || is_done()) {
     uncover();
     emit game_done();
-  }
-  else {
-    update_pixmaps();
   }
 }
 
 void gameboard::open_around(int row, int col) noexcept {
   start(row, col);
   _lost = !_field.open_around(row, col);
+  update_pixmaps();
   if (_lost || is_done()) {
     uncover();
     emit game_done();
-  }
-  else {
-    update_pixmaps();
   }
 }
 
