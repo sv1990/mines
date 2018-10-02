@@ -38,6 +38,7 @@ highscorelist::highscorelist(const std::multiset<score>& scores,
   auto title = new QLabel(this);
   title->setText("Highscores");
   int rang = 1;
+  layout->addStretch(1);
   for (const auto& [seconds, date, name] : scores) {
     auto line = new QLabel(this);
 
@@ -45,6 +46,7 @@ highscorelist::highscorelist(const std::multiset<score>& scores,
         "{:>4} {:>18} {:>14}s {:>22}", rang++, name, seconds, to_date(date))));
     layout->addWidget(line);
   }
+  layout->addStretch(8);
 }
 
 highscore::highscore() noexcept

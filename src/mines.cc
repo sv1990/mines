@@ -27,9 +27,9 @@ mines::mines() noexcept : QMainWindow(nullptr) {
 
   auto bottom_bar    = new QWidget(this);
   auto bottom_layout = new QHBoxLayout(bottom_bar);
-  bottom_layout->addSpacing(256);
+  bottom_layout->addStretch(1);
   auto highscore_button = new QPushButton(this);
-  highscore_button->setText("Show Highscore");
+  highscore_button->setText("Highscore");
   bottom_layout->addWidget(highscore_button);
   auto restart_button = new QPushButton(this);
   restart_button->setText("Restart");
