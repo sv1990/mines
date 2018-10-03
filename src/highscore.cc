@@ -20,9 +20,9 @@
 
 #include <iostream>
 
-std::string to_date(std::time_t seconds) noexcept {
+std::string to_date(std::time_t seconds_since_epoch) noexcept {
   std::ostringstream oss;
-  std::tm tm = *std::localtime(&seconds);
+  std::tm tm = *std::localtime(&seconds_since_epoch);
   oss << std::put_time(&tm, "%d.%m.%y %H:%M:%S");
   return std::move(oss).str();
 }
