@@ -34,6 +34,7 @@ highscorelist::highscorelist(const std::multiset<score>& scores,
                              QWidget* parent) noexcept
     : QWidget(parent) {
   QVBoxLayout* layout = new QVBoxLayout(this);
+  this->setWindowTitle("Highscores");
   this->setLayout(layout);
   auto title = new QLabel(this);
   title->setText("Highscores");

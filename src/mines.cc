@@ -4,6 +4,8 @@
 #include <QPushButton>
 
 mines::mines() noexcept : QMainWindow(nullptr) {
+  this->setWindowTitle("Mines");
+
   int rows      = 16;
   int cols      = 30;
   int num_bombs = 99;
