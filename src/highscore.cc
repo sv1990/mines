@@ -6,6 +6,7 @@
 #include <QInputDialog>
 #include <QLabel>
 #include <QMessageBox>
+#include <QPushButton>
 #include <QStandardPaths>
 #include <QVBoxLayout>
 
@@ -48,6 +49,15 @@ highscorelist::highscorelist(const std::multiset<score>& scores,
     layout->addWidget(line);
   }
   layout->addStretch(8);
+  auto botton_bar    = new QWidget(this);
+  auto bottom_layout = new QHBoxLayout(botton_bar);
+  botton_bar->setLayout(bottom_layout);
+  bottom_layout->addStretch(1);
+  auto ok_button = new QPushButton(botton_bar);
+  ok_button->setText("Ok");
+  bottom_layout->addWidget(ok_button);
+  connect(ok_button, &QPushButton::clicked, this, &highscorelist::close);
+  layout->addWidget(botton_bar);
 }
 
 highscore::highscore() noexcept
