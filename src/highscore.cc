@@ -18,8 +18,6 @@
 #include <sstream>
 #include <tuple>
 
-#include <iostream>
-
 std::string to_date(std::time_t seconds_since_epoch) noexcept {
   std::ostringstream oss;
   std::tm tm = *std::localtime(&seconds_since_epoch);
