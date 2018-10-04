@@ -14,17 +14,52 @@ class gameboard : public QWidget {
   Q_OBJECT
   field _field;
   QGridLayout* _layout;
+  int _rows;
+  int _cols;
   bool _lost    = false;
   bool _started = false;
 
-  void resize_grid(int rows, int cols) noexcept {
-    // TODO: Resize grid inplace
+  void resize_rows(int new_rows) noexcept {
+    if (new_rows > _rows) {
+      for (int row = _rows; row < new_rows; ++row) {
+        for (int col = 0; col < _cols; ++col) {
+          _layout->addWidget(new pixmap(this, row, col), row, col);
+        }
+      }
+    }
+    else if (new_rows < _rows) {
+      for (int row = _rows - 1; row >= new_rows; --row) {
+        for (int col = 0; col < _cols; ++col) {
+          _layout->removeWidget(_layout->itemAtPosition(row, col)->widget());
+        }
+      }
+    }
+    _rows = new_rows;
+  }
+
+  void resize_cols(int new_cols) noexcept {
+    if (new_cols > _cols) {
+      for (int row = 0; row < _rows; ++row) {
+        for (int col = _cols; col < new_cols; ++col) {
+          _layout->addWidget(new pixmap(this, row, col), row, col);
+        }
+      }
+    }
+    else if (new_cols < _cols) {
+      for (int row = 0; row < _rows; ++row) {
+        for (int col = _cols - 1; col >= new_cols; --col) {
+          _layout->removeWidget(_layout->itemAtPosition(row, col)->widget());
+        }
+      }
+    }
+    _cols = new_cols;
   }
 
 public:
   gameboard(int rows, int cols, int num_bombs,
             QWidget* parent = nullptr) noexcept
-      : QWidget(parent), _field(rows, cols, num_bombs), _layout(nullptr) {
+      : QWidget(parent), _field(rows, cols, num_bombs), _layout(nullptr),
+        _rows(rows), _cols(cols) {
     _layout = new QGridLayout(this);
     for (int row = 0; row < rows; ++row) {
       for (int col = 0; col < cols; ++col) {
@@ -48,12 +83,12 @@ public:
 
   void set_rows(int rows) noexcept {
     _field.set_rows(rows);
-    resize_grid(_field.rows(), _field.cols());
+    resize_rows(_field.rows());
     reset();
   }
   void set_cols(int cols) noexcept {
     _field.set_cols(cols);
-    resize_grid(_field.rows(), _field.cols());
+    resize_cols(_field.cols());
     reset();
   };
   void set_bombs(int bombs) noexcept {

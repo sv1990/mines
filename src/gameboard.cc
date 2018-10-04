@@ -2,8 +2,8 @@
 
 void gameboard::update_pixmaps() noexcept {
   // TODO: This is inefficient!
-  for (int irow = 0; irow < _layout->rowCount(); ++irow) {
-    for (int icol = 0; icol < _layout->columnCount(); ++icol) {
+  for (int irow = 0; irow < _rows; ++irow) {
+    for (int icol = 0; icol < _cols; ++icol) {
       (*this)(irow, icol)->update_pixmap();
     }
   }
@@ -11,8 +11,8 @@ void gameboard::update_pixmaps() noexcept {
 
 void gameboard::uncover() noexcept {
   if (_lost) {
-    for (int irow = 0; irow < _layout->rowCount(); ++irow) {
-      for (int icol = 0; icol < _layout->columnCount(); ++icol) {
+    for (int irow = 0; irow < _rows; ++irow) {
+      for (int icol = 0; icol < _cols; ++icol) {
         (*this)(irow, icol)->uncover();
       }
     }
@@ -23,7 +23,8 @@ void gameboard::reset() noexcept {
   _started = false;
   _lost    = false;
   _field.reset();
-  resize_grid(_field.rows(), _field.cols());
+  resize_rows(_field.rows());
+  resize_cols(_field.cols());
   update_pixmaps();
   emit resetted_bombs(_field.bombs());
 }
