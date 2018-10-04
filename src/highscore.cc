@@ -47,24 +47,29 @@ highscorelist::highscorelist(const std::multiset<score>& scores,
   }
 }
 
-highscore::highscore() noexcept
+highscore::highscore(int rows, int cols, int bombs) noexcept
     : _location(QStandardPaths::writableLocation(QStandardPaths::CacheLocation)
                     .toStdString() +
-                "/highscore") {
+                "/highscore"),
+      _rows(rows), _cols(cols), _bombs(bombs) {
   const auto dir =
       QStandardPaths::writableLocation(QStandardPaths::CacheLocation)
           .toStdString();
   if (!std::filesystem::exists(dir)) {
     std::filesystem::create_directories(dir);
   }
-  std::ifstream ifs{_location};
+}
+
+std::string highscore::current_location() const noexcept {
+  return fmt::format("{}.{}.{}.{}", _location, _rows, _cols, _bombs);
+}
+
+void highscore::add(int seconds) noexcept {
+  std::ifstream ifs{current_location()};
   for (auto [sec, date, name] = std::tuple<int, long, std::string>{};
        ifs >> sec >> date >> std::quoted(name);) {
     _scores.insert({sec, date, name});
   }
-}
-
-void highscore::add(int seconds) noexcept {
   if (_scores.size() < 10 ||
       (!empty(_scores) && seconds < prev(end(_scores))->seconds)) {
     bool ok;
@@ -83,6 +88,13 @@ void highscore::add(int seconds) noexcept {
 }
 
 void highscore::show() noexcept {
+  if (empty(_scores)) {
+    std::ifstream ifs{current_location()};
+    for (auto [sec, date, name] = std::tuple<int, long, std::string>{};
+         ifs >> sec >> date >> std::quoted(name);) {
+      _scores.insert({sec, date, name});
+    }
+  }
   if (!empty(_scores)) {
     auto h = new highscorelist(_scores);
     h->setFixedSize(320, 320);
