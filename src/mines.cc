@@ -14,28 +14,25 @@ mines::mines() noexcept : QMainWindow(nullptr) {
   _highscore  = new highscore;
   _bomb_count = new bomb_count(num_bombs, this);
 
-  auto settings_bar    = new QWidget(this);
-  auto settings_layout = new QHBoxLayout(settings_bar);
-  settings_bar->setLayout(settings_layout);
-  auto rows_box = new QSpinBox(settings_bar);
-  rows_box->setValue(rows);
-  settings_layout->addWidget(rows_box);
-  auto cols_box = new QSpinBox(settings_bar);
-  cols_box->setValue(cols);
-  settings_layout->addWidget(cols_box);
-  auto bombs_box = new QSpinBox(settings_bar);
-  bombs_box->setValue(num_bombs);
-  settings_layout->addWidget(bombs_box);
-
   auto top_bar    = new QWidget(this);
   auto top_layout = new QHBoxLayout(top_bar);
   top_bar->setLayout(top_layout);
+
+  auto rows_box = new QSpinBox(top_bar);
+  rows_box->setValue(rows);
+  top_layout->addWidget(rows_box);
+  auto cols_box = new QSpinBox(top_bar);
+  cols_box->setValue(cols);
+  top_layout->addWidget(cols_box);
+  auto bombs_box = new QSpinBox(top_bar);
+  bombs_box->setValue(num_bombs);
+  top_layout->addWidget(bombs_box);
+
   top_layout->addWidget(_timer);
   top_layout->addWidget(_bomb_count);
 
   _central_widget = new QWidget(this);
   _layout         = new QVBoxLayout(_central_widget);
-  _layout->addWidget(settings_bar);
   _layout->addWidget(top_bar);
   _layout->addWidget(_board);
   _central_widget->setLayout(_layout);

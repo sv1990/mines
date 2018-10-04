@@ -19,7 +19,12 @@ class gameboard : public QWidget {
 
   void resize_grid(int rows, int cols) noexcept {
     // TODO: Resize grid inplace
-    delete _layout;
+  }
+
+public:
+  gameboard(int rows, int cols, int num_bombs,
+            QWidget* parent = nullptr) noexcept
+      : QWidget(parent), _field(rows, cols, num_bombs), _layout(nullptr) {
     _layout = new QGridLayout(this);
     for (int row = 0; row < rows; ++row) {
       for (int col = 0; col < cols; ++col) {
@@ -28,13 +33,6 @@ class gameboard : public QWidget {
     }
     _layout->setSpacing(1);
     this->setLayout(_layout);
-  }
-
-public:
-  gameboard(int rows, int cols, int num_bombs,
-            QWidget* parent = nullptr) noexcept
-      : QWidget(parent), _field(rows, cols, num_bombs), _layout(nullptr) {
-    resize_grid(rows, cols);
   }
 
   pixmap* operator()(int row, int col) noexcept {
