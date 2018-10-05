@@ -5,6 +5,10 @@
 
 mines::mines() noexcept : QMainWindow(nullptr) {
   this->setWindowTitle("Mines");
+  auto palette = this->palette();
+  palette.setColor(QPalette::Background, QColor(55, 55, 55));
+  this->setPalette(palette);
+
 
   int rows      = 16;
   int cols      = 30;
