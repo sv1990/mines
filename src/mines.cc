@@ -11,7 +11,7 @@ mines::mines() noexcept : QMainWindow(nullptr) {
 
   _board      = new gameboard(rows, cols, num_bombs, this);
   _timer      = new timer(this);
-  _highscore  = new highscore;
+  _highscore  = new highscore(rows, cols, num_bombs);
   _bomb_count = new bomb_count(num_bombs, this);
 
   auto top_bar    = new QWidget(this);
