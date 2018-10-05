@@ -4,7 +4,7 @@
 #include <QPushButton>
 #include <QSpinBox>
 
-const std::vector<mines::difficulty> mines::_difficulties{
+const std::vector<difficulty> mines::_difficulties{
     {8, 8, 10},   // Easy
     {16, 16, 40}, // Intermediate
     {19, 30, 99}, // Hard
@@ -15,7 +15,6 @@ mines::mines() noexcept : QMainWindow(nullptr) {
 
   _board      = new gameboard(rows, cols, num_bombs, this);
   _timer      = new timer(this);
-  _highscore  = new highscore(rows, cols, num_bombs);
   _bomb_count = new bomb_count(num_bombs, this);
 
   auto top_bar    = new QWidget(this);
@@ -27,6 +26,8 @@ mines::mines() noexcept : QMainWindow(nullptr) {
   _difficulty_box->addItem("Intermediate");
   _difficulty_box->addItem("Hard");
   _difficulty_box->setCurrentIndex(2);
+
+  _highscore = new highscore(_difficulty_box->currentText().toStdString());
 
   top_layout->addWidget(_difficulty_box);
   top_layout->addWidget(_timer);
@@ -81,6 +82,7 @@ void mines::change_difficulty(int index) {
   set_rows(rows);
   set_cols(cols);
   set_bombs(num_bombs);
+  _highscore->change_difficulty(_difficulty_box->currentText().toStdString());
   restart();
 }
 

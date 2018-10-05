@@ -1,6 +1,8 @@
 #ifndef MINES_SRC_HIGHSCORE_HH_1538249909205925627_
 #define MINES_SRC_HIGHSCORE_HH_1538249909205925627_
 
+#include "difficulty.hh"
+
 #include <QWidget>
 
 #include <set>
@@ -25,20 +27,18 @@ public:
 class highscore : QWidget {
   std::string _location;
   std::multiset<score> _scores;
-  int _rows;
-  int _cols;
-  int _bombs;
+  std::string _difficulty;
 
   std::string current_location() const noexcept;
 
 public:
-  explicit highscore(int rows, int cols, int bombs) noexcept;
+  explicit highscore(const std::string& difficulty_name) noexcept;
   void add(int seconds) noexcept;
   void show() noexcept;
-
-  void set_rows(int rows) noexcept { _rows = rows; }
-  void set_cols(int cols) noexcept { _cols = cols; }
-  void set_bombs(int bombs) noexcept { _bombs = bombs; }
+  void change_difficulty(const std::string& difficulty) {
+    _difficulty = difficulty;
+    _scores.clear();
+  }
 };
 
 #endif // MINES_SRC_HIGHSCORE_HH_1538249909205925627_

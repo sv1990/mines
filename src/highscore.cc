@@ -17,8 +17,6 @@
 #include <sstream>
 #include <tuple>
 
-#include <iostream>
-
 std::string to_date(std::time_t seconds) noexcept {
   std::ostringstream oss;
   std::tm tm = *std::localtime(&seconds);
@@ -47,11 +45,11 @@ highscorelist::highscorelist(const std::multiset<score>& scores,
   }
 }
 
-highscore::highscore(int rows, int cols, int bombs) noexcept
+highscore::highscore(const std::string& difficulty_name) noexcept
     : _location(QStandardPaths::writableLocation(QStandardPaths::CacheLocation)
                     .toStdString() +
                 "/highscore"),
-      _rows(rows), _cols(cols), _bombs(bombs) {
+      _difficulty(difficulty_name) {
   const auto dir =
       QStandardPaths::writableLocation(QStandardPaths::CacheLocation)
           .toStdString();
@@ -61,7 +59,7 @@ highscore::highscore(int rows, int cols, int bombs) noexcept
 }
 
 std::string highscore::current_location() const noexcept {
-  return fmt::format("{}.{}.{}.{}", _location, _rows, _cols, _bombs);
+  return fmt::format("{}.{}", _location, _difficulty);
 }
 
 void highscore::add(int seconds) noexcept {
@@ -96,10 +94,11 @@ void highscore::show() noexcept {
     }
   }
   if (!empty(_scores)) {
+    // TODO: Fix leak
     auto h = new highscorelist(_scores);
     h->setFixedSize(320, 320);
     h->show();
-    std::ofstream ofs(_location);
+    std::ofstream ofs(current_location());
     for (const auto& [seconds, date, name] : _scores) {
       ofs << seconds << ' ' << date << ' ' << std::quoted(name) << '\n';
     }
