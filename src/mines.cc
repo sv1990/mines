@@ -46,7 +46,7 @@ mines::mines() noexcept : QMainWindow(nullptr) {
 
   connect(_board, &gameboard::game_started, _timer, &timer::start);
   connect(_board, &gameboard::game_done, _timer, &timer::stop);
-  connect(_board, &gameboard::game_done, _bomb_count, [&] {
+  connect(_board, &gameboard::game_done, [&] {
     if (_board->lost()) {
       _bomb_count->set_text_color(Qt::red);
     }
