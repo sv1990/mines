@@ -73,6 +73,12 @@ highscore::highscore() noexcept
        ifs >> sec >> date >> std::quoted(name);) {
     _scores.insert({sec, date, name});
   }
+  if (!empty(_scores)) {
+    _first = begin(_scores)->seconds;
+    if (std::size(_scores) == 10) {
+      _last = prev(end(_scores))->seconds;
+    }
+  }
 }
 
 void highscore::add(int seconds) noexcept {
