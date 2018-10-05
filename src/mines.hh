@@ -30,7 +30,7 @@ public:
   void show_highscore() noexcept;
   void add_highscore() noexcept;
 
-  void change_difficulty(int index);
+  void change_difficulty();
   void restart();
 
   void set_rows(int rows);

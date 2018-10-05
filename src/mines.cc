@@ -76,9 +76,9 @@ void mines::add_highscore() noexcept {
   }
 }
 
-void mines::change_difficulty(int index) {
-  assert(index >= 0 && index < _difficulties.size());
-  auto [rows, cols, num_bombs] = _difficulties[static_cast<std::size_t>(index)];
+void mines::change_difficulty() {
+  auto [rows, cols, num_bombs] =
+      _difficulties[static_cast<std::size_t>(_difficulty_box->currentIndex())];
   set_rows(rows);
   set_cols(cols);
   set_bombs(num_bombs);
