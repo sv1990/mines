@@ -12,6 +12,13 @@ public:
     this->setDigitCount(4);
     this->setSegmentStyle(Flat);
     this->display(_count);
+    set_text_color(Qt::white);
+  }
+
+  void set_text_color(QColor color) noexcept {
+    auto palette = this->palette();
+    palette.setColor(QPalette::Foreground, color);
+    this->setPalette(palette);
   }
 
   void count_changed(int mark_change) noexcept {
@@ -22,6 +29,7 @@ public:
 public slots:
   void restart(int count) {
     _count = count;
+    set_text_color(Qt::white);
     this->display(_count);
   }
 };

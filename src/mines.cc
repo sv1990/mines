@@ -47,6 +47,8 @@ mines::mines() noexcept : QMainWindow(nullptr) {
 
   connect(_board, &gameboard::game_started, _timer, &timer::start);
   connect(_board, &gameboard::game_done, _timer, &timer::stop);
+  connect(_board, &gameboard::game_done, _bomb_count,
+          [&] { _bomb_count->set_text_color(Qt::green); });
   connect(_board, &gameboard::game_done, this, &mines::add_highscore);
   connect(_board, &gameboard::marks_changed, _bomb_count,
           &bomb_count::count_changed);
