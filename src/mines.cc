@@ -4,10 +4,14 @@
 #include <QPushButton>
 #include <QSpinBox>
 
+const std::vector<mines::difficulty> mines::_difficulties{
+    {8, 8, 10},   // Easy
+    {16, 16, 40}, // Intermediate
+    {19, 30, 99}, // Hard
+};
+
 mines::mines() noexcept : QMainWindow(nullptr) {
-  int rows      = 16;
-  int cols      = 30;
-  int num_bombs = 99;
+  auto [rows, cols, num_bombs] = _difficulties[2];
 
   _board      = new gameboard(rows, cols, num_bombs, this);
   _timer      = new timer(this);
@@ -18,16 +22,13 @@ mines::mines() noexcept : QMainWindow(nullptr) {
   auto top_layout = new QHBoxLayout(top_bar);
   top_bar->setLayout(top_layout);
 
-  auto rows_box = new QSpinBox(top_bar);
-  rows_box->setValue(rows);
-  top_layout->addWidget(rows_box);
-  auto cols_box = new QSpinBox(top_bar);
-  cols_box->setValue(cols);
-  top_layout->addWidget(cols_box);
-  auto bombs_box = new QSpinBox(top_bar);
-  bombs_box->setValue(num_bombs);
-  top_layout->addWidget(bombs_box);
+  _difficulty_box = new QComboBox(this);
+  _difficulty_box->addItem("Easy");
+  _difficulty_box->addItem("Intermediate");
+  _difficulty_box->addItem("Hard");
+  _difficulty_box->setCurrentIndex(2);
 
+  top_layout->addWidget(_difficulty_box);
   top_layout->addWidget(_timer);
   top_layout->addWidget(_bomb_count);
 
@@ -58,16 +59,9 @@ mines::mines() noexcept : QMainWindow(nullptr) {
           &bomb_count::count_changed);
   connect(highscore_button, &QPushButton::clicked, this,
           &mines::show_highscore);
-  connect(restart_button, &QPushButton::clicked, _board, &gameboard::reset);
-  connect(restart_button, &QPushButton::clicked, _timer, &timer::reset);
-  connect(_board, &gameboard::resetted_bombs, _bomb_count,
-          &bomb_count::restart);
-  connect(rows_box, QOverload<int>::of(&QSpinBox::valueChanged), this,
-          &mines::set_rows);
-  connect(cols_box, QOverload<int>::of(&QSpinBox::valueChanged), this,
-          &mines::set_cols);
-  connect(bombs_box, QOverload<int>::of(&QSpinBox::valueChanged), this,
-          &mines::set_bombs);
+  connect(restart_button, &QPushButton::clicked, this, &mines::restart);
+  connect(_difficulty_box, QOverload<int>::of(&QComboBox::currentIndexChanged),
+          this, &mines::change_difficulty);
 }
 
 void mines::show_highscore() noexcept {
@@ -79,6 +73,25 @@ void mines::add_highscore() noexcept {
     _highscore->add(_timer->seconds());
     _highscore->show();
   }
+}
+
+void mines::change_difficulty(int index) {
+  assert(index >= 0 && index < _difficulties.size());
+  auto [rows, cols, num_bombs] = _difficulties[static_cast<std::size_t>(index)];
+  set_rows(rows);
+  set_cols(cols);
+  set_bombs(num_bombs);
+  restart();
+}
+
+void mines::restart() {
+  _board->reset();
+  _timer->reset();
+  auto [rows, cols, bombs] =
+      _difficulties[static_cast<std::size_t>(_difficulty_box->currentIndex())];
+  _bomb_count->restart(bombs);
+  connect(_board, &gameboard::resetted_bombs, _bomb_count,
+          &bomb_count::restart);
 }
 
 void mines::set_rows(int rows) {
