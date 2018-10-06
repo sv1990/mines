@@ -102,7 +102,7 @@ void highscore::add(int seconds) noexcept {
 void highscore::show() noexcept {
   if (!empty(_scores)) {
     auto h = new highscorelist(_scores);
-    h->setFixedSize(320, 320);
+    h->setFixedSize(320, 360);
     h->show();
     std::ofstream ofs(_location);
     for (const auto& [seconds, date, name] : _scores) {
