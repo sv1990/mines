@@ -1,4 +1,3 @@
-- Store highscore as binary file to prevent manipulation
 - Improve resizing when number of rows and cols was changed
 - Settings menu (rows, cols, bombs)
 
