@@ -1,4 +1,4 @@
-- Color codes for the timer: Green for highscore, yellow for top 10 and red else
+- Store highscore as binary file to prevent manipulation
 - Improve resizing when number of rows and cols was changed
 - Settings menu (rows, cols, bombs)
 
