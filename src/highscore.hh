@@ -13,6 +13,15 @@ struct score {
   int seconds;
   std::time_t date;
   std::string name;
+
+  template <class Archive>
+  void serialize(Archive& ar, const unsigned int /*version*/) {
+    // clang-format off
+    ar & seconds;
+    ar & date;
+    ar & name;
+    // clang-format on
+  }
 };
 
 bool operator<(const score& lhs, const score& rhs) noexcept;
