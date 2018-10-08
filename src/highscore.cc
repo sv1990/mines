@@ -45,30 +45,34 @@ bool operator<(const score& lhs, const score& rhs) noexcept {
   return std::tie(lhs.seconds, lhs.date) < std::tie(rhs.seconds, rhs.date);
 }
 
-highscorelist::highscorelist(const std::multiset<score>& scores,
-                             QWidget* parent) noexcept
-    : QWidget(parent) {
-  QVBoxLayout* layout = new QVBoxLayout(this);
-  this->setWindowTitle("Highscores");
-  this->setLayout(layout);
-  int rang = 1;
-  for (const auto& [seconds, date, name] : scores) {
-    auto line = new QLabel(this);
+class highscorelist : public QWidget {
+public:
+  explicit highscorelist(const std::multiset<score>& scores,
+                         QWidget* parent = nullptr) noexcept
+      : QWidget(parent) {
+    QVBoxLayout* layout = new QVBoxLayout(this);
+    this->setWindowTitle("Highscores");
+    this->setLayout(layout);
+    int rang = 1;
+    for (const auto& [seconds, date, name] : scores) {
+      auto line = new QLabel(this);
 
-    line->setText(QString::fromStdString(fmt::format(
-        "{:>4} {:>18} {:>14}s {:>22}", rang++, name, seconds, to_date(date))));
-    layout->addWidget(line);
+      line->setText(QString::fromStdString(
+          fmt::format("{:>4} {:>18} {:>14}s {:>22}", rang++, name, seconds,
+                      to_date(date))));
+      layout->addWidget(line);
+    }
+    auto botton_bar    = new QWidget(this);
+    auto bottom_layout = new QHBoxLayout(botton_bar);
+    botton_bar->setLayout(bottom_layout);
+    bottom_layout->addStretch(1);
+    auto ok_button = new QPushButton(botton_bar);
+    ok_button->setText("Ok");
+    bottom_layout->addWidget(ok_button);
+    connect(ok_button, &QPushButton::clicked, this, &highscorelist::close);
+    layout->addWidget(botton_bar);
   }
-  auto botton_bar    = new QWidget(this);
-  auto bottom_layout = new QHBoxLayout(botton_bar);
-  botton_bar->setLayout(bottom_layout);
-  bottom_layout->addStretch(1);
-  auto ok_button = new QPushButton(botton_bar);
-  ok_button->setText("Ok");
-  bottom_layout->addWidget(ok_button);
-  connect(ok_button, &QPushButton::clicked, this, &highscorelist::close);
-  layout->addWidget(botton_bar);
-}
+};
 
 highscore::highscore() noexcept
     : _location(QStandardPaths::writableLocation(QStandardPaths::CacheLocation)

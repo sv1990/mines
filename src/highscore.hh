@@ -26,12 +26,6 @@ struct score {
 
 bool operator<(const score& lhs, const score& rhs) noexcept;
 
-class highscorelist : public QWidget {
-public:
-  explicit highscorelist(const std::multiset<score>& scores,
-                         QWidget* parent = nullptr) noexcept;
-};
-
 class highscore : QWidget {
   std::string _location;
   std::multiset<score> _scores;
