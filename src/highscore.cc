@@ -73,7 +73,7 @@ highscorelist::highscorelist(const std::multiset<score>& scores,
 highscore::highscore() noexcept
     : _location(QStandardPaths::writableLocation(QStandardPaths::CacheLocation)
                     .toStdString() +
-                "/highscore.bin") {
+                "/highscore") {
   const auto dir =
       QStandardPaths::writableLocation(QStandardPaths::CacheLocation)
           .toStdString();
