@@ -2,6 +2,11 @@
 
 #include <fmt/format.h>
 
+#include <boost/archive/binary_iarchive.hpp>
+#include <boost/archive/binary_oarchive.hpp>
+#include <boost/serialization/set.hpp>
+#include <boost/serialization/string.hpp>
+
 #include <QDir>
 #include <QInputDialog>
 #include <QLabel>
@@ -17,6 +22,17 @@
 #include <set>
 #include <sstream>
 #include <tuple>
+
+std::multiset<score> load_highscore(std::istream& is) {
+  boost::archive::binary_iarchive ia{is};
+  std::multiset<score> scores;
+  ia >> scores;
+  return scores;
+}
+void save_highscore(std::ostream& os, const std::multiset<score>& scores) {
+  boost::archive::binary_oarchive oa{os};
+  oa << scores;
+}
 
 std::string to_date(std::time_t seconds_since_epoch) noexcept {
   std::ostringstream oss;
@@ -35,10 +51,7 @@ highscorelist::highscorelist(const std::multiset<score>& scores,
   QVBoxLayout* layout = new QVBoxLayout(this);
   this->setWindowTitle("Highscores");
   this->setLayout(layout);
-  auto title = new QLabel(this);
-  title->setText("Highscores");
   int rang = 1;
-  layout->addStretch(3);
   for (const auto& [seconds, date, name] : scores) {
     auto line = new QLabel(this);
 
@@ -46,7 +59,6 @@ highscorelist::highscorelist(const std::multiset<score>& scores,
         "{:>4} {:>18} {:>14}s {:>22}", rang++, name, seconds, to_date(date))));
     layout->addWidget(line);
   }
-  layout->addStretch(8);
   auto botton_bar    = new QWidget(this);
   auto bottom_layout = new QHBoxLayout(botton_bar);
   botton_bar->setLayout(bottom_layout);
@@ -61,23 +73,24 @@ highscorelist::highscorelist(const std::multiset<score>& scores,
 highscore::highscore() noexcept
     : _location(QStandardPaths::writableLocation(QStandardPaths::CacheLocation)
                     .toStdString() +
-                "/highscore") {
+                "/highscore.bin") {
   const auto dir =
       QStandardPaths::writableLocation(QStandardPaths::CacheLocation)
           .toStdString();
   if (!std::filesystem::exists(dir)) {
     std::filesystem::create_directories(dir);
   }
-  std::ifstream ifs{_location};
-  for (auto [sec, date, name] = std::tuple<int, long, std::string>{};
-       ifs >> sec >> date >> std::quoted(name);) {
-    _scores.insert({sec, date, name});
+  if (!std::filesystem::exists(_location)) {
+    return;
   }
-  if (!empty(_scores)) {
-    _first = begin(_scores)->seconds;
-    if (std::size(_scores) == 10) {
-      _last = prev(end(_scores))->seconds;
-    }
+  std::ifstream ifs{_location};
+  _scores = load_highscore(ifs);
+  if (empty(_scores)) {
+    return;
+  }
+  _first = begin(_scores)->seconds;
+  if (std::size(_scores) == 10) {
+    _last = prev(end(_scores))->seconds;
   }
 }
 
@@ -102,12 +115,9 @@ void highscore::add(int seconds) noexcept {
 void highscore::show() noexcept {
   if (!empty(_scores)) {
     auto h = new highscorelist(_scores);
-    h->setFixedSize(320, 360);
     h->show();
     std::ofstream ofs(_location);
-    for (const auto& [seconds, date, name] : _scores) {
-      ofs << seconds << ' ' << date << ' ' << std::quoted(name) << '\n';
-    }
+    save_highscore(ofs, _scores);
   }
   else {
     QMessageBox::information(this, "Highscore", "No highscores yet!");
