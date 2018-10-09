@@ -34,10 +34,10 @@ mines::mines() noexcept : QMainWindow(nullptr) {
   auto bottom_layout = new QHBoxLayout(bottom_bar);
   bottom_layout->addStretch(1);
   auto highscore_button = new QPushButton(this);
-  highscore_button->setText("Highscores");
+  highscore_button->setText("&Highscores");
   bottom_layout->addWidget(highscore_button);
   auto restart_button = new QPushButton(this);
-  restart_button->setText("Restart");
+  restart_button->setText("&Restart");
   bottom_layout->addWidget(restart_button);
   _layout->addWidget(bottom_bar);
 
