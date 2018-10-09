@@ -4,12 +4,14 @@
 
 #include <range/v3/algorithm/count_if.hpp>
 #include <range/v3/algorithm/swap_ranges.hpp>
+#include <range/v3/numeric/accumulate.hpp>
 #include <range/v3/view/filter.hpp>
 #include <range/v3/view/reverse.hpp>
 #include <range/v3/view/transform.hpp>
 
 #include <algorithm>
 #include <array>
+#include <functional>
 #include <queue>
 
 void field::init(int row, int col) noexcept {
@@ -147,13 +149,14 @@ bool field::open_around(int row, int col) noexcept {
       return (*this)(p.first, p.second).state() == entry::state_t::marked;
     });
     if (mark_count == selected_entry.is_close_to().value()) {
-      for (const auto& [r, c] : adjacent_entries(row, col)) {
-        if ((*this)(r, c).state() == entry::state_t::hidden) {
-          // this->open(r, c) needs to be on the left hand side of && since its
-          // side effects need to be performed
-          alive = this->open(r, c) && alive;
-        }
-      }
+      alive = ranges::accumulate(
+          adjacent //
+              | ranges::view::filter([this](const auto& p) {
+                  return (*this)(p.first, p.second).state() //
+                         == entry::state_t::hidden;
+                }),
+          true, std::logical_and<bool>{},
+          [this](const auto& p) { return this->open(p.first, p.second); });
     }
   }
   return alive;
