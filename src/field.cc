@@ -20,6 +20,11 @@ void field::init(int row, int col) noexcept {
   auto clicked_fields = adjacent_entries(row, col);
   clicked_fields.emplace_back(row, col);
 
+  // Let n be the number of entries around (row, col) and itself. Place the
+  // bombs in the beginning of the entries vector and shuffle them while keeping
+  // the last n entries in its place. The last n entries are then swapped with
+  // the clicked ones.
+
   std::fill_n(begin(_entries), _num_bombs, entry::bomb{});
   std::shuffle(begin(_entries),
                prev(end(_entries), static_cast<int>(size(clicked_fields))),
