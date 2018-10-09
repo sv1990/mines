@@ -40,9 +40,16 @@ public:
 
   void update_pixmaps() noexcept;
 
+  /**
+   * Uncover all bombs
+   */
   void uncover() noexcept;
 
   void reset() noexcept;
+  /**
+   * Start a new game with a click on (row, col)
+   *
+   */
   void start(int row, int col) noexcept;
   void open(int row, int col) noexcept;
   void open_around(int row, int col) noexcept;

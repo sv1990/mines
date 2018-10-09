@@ -17,7 +17,16 @@ class field {
   int _num_bombs;
 
 public:
+  /**
+   * Construct `width` x `height` minesweeper field with `num_bombs` bombs
+   *
+   */
   field(int width, int height, int num_bombs) noexcept;
+  /**
+   * Initializes the bombs on the field while keeping all fields surrounding
+   * (row, col) empty
+   *
+   */
   void init(int row, int col) noexcept;
   void reset() noexcept;
 
@@ -41,15 +50,27 @@ public:
     return {};
   }
 
+  /**
+   * Returns the indices of the surrounding fields of (row, col)
+   */
   std::vector<std::pair<int, int>> adjacent_entries(int row, int col) const
       noexcept;
   int count_adjacent_bombs(int row, int col) const noexcept;
 
 private:
+  /**
+   * Performs breadth first search around (row, col) to find all empty fields
+   * around (row, col) and opens them.
+   *
+   */
   void open_bfs(int row, int col) noexcept;
 
 public:
   bool open(int row, int col) noexcept;
+  /**
+   * Opens all entries around (row, col) if it is open and empty
+   *
+   */
   bool open_around(int row, int col) noexcept;
   int mark(int row, int col) noexcept;
 
