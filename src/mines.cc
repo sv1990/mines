@@ -14,7 +14,7 @@ mines::mines() noexcept : QMainWindow(nullptr) {
   int num_bombs = 99;
 
   _board      = new gameboard(rows, cols, num_bombs, this);
-  _highscore  = new highscore;
+  _highscore  = new highscore(this);
   _timer      = new timer(_highscore->first(), _highscore->last(), this);
   _bomb_count = new bomb_count(num_bombs, this);
 
