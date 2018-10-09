@@ -22,6 +22,8 @@
 #include <sstream>
 #include <tuple>
 
+#include <cassert>
+
 std::multiset<score> load_highscore(std::istream& is) {
   boost::archive::binary_iarchive ia{is};
   std::multiset<score> scores;
@@ -41,6 +43,7 @@ std::string to_date(std::time_t seconds_since_epoch) noexcept {
 }
 
 void clear_layout(QLayout* layout) noexcept {
+  assert(layout);
   QLayoutItem* item;
   while ((item = layout->takeAt(0))) {
     auto widget = item->widget();
@@ -71,7 +74,9 @@ void highscore::initialize_ui() noexcept {
   _layout = new QVBoxLayout(this);
   this->setWindowTitle("Highscores");
   this->setLayout(_layout);
-  print_scores();
+  if (!empty(_scores)) {
+    print_scores();
+  }
   add_ok_button();
   this->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 }
@@ -98,11 +103,11 @@ highscore::highscore(QWidget* parent) noexcept
   if (!std::filesystem::exists(dir)) {
     std::filesystem::create_directories(dir);
   }
-  if (!std::filesystem::exists(_location)) {
-    return;
+  if (std::filesystem::exists(_location)) {
+    std::ifstream ifs{_location};
+    _scores = load_highscore(ifs);
   }
-  std::ifstream ifs{_location};
-  _scores = load_highscore(ifs);
+  initialize_ui();
   if (empty(_scores)) {
     return;
   }
@@ -110,8 +115,6 @@ highscore::highscore(QWidget* parent) noexcept
   if (std::size(_scores) == 10) {
     _last = prev(end(_scores))->seconds;
   }
-
-  initialize_ui();
 }
 
 void highscore::add(int seconds) noexcept {
