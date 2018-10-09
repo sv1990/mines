@@ -13,7 +13,6 @@
 #include <QMessageBox>
 #include <QPushButton>
 #include <QStandardPaths>
-#include <QVBoxLayout>
 
 #include <chrono>
 #include <filesystem>
@@ -41,41 +40,56 @@ std::string to_date(std::time_t seconds_since_epoch) noexcept {
   return std::move(oss).str();
 }
 
+void clear_layout(QLayout* layout) noexcept {
+  QLayoutItem* item;
+  while ((item = layout->takeAt(0))) {
+    auto widget = item->widget();
+    if (widget) {
+      widget->deleteLater();
+    }
+    layout->removeItem(item);
+  }
+}
+
 bool operator<(const score& lhs, const score& rhs) noexcept {
   return std::tie(lhs.seconds, lhs.date) < std::tie(rhs.seconds, rhs.date);
 }
 
-class highscorelist : public QWidget {
-public:
-  explicit highscorelist(const std::multiset<score>& scores,
-                         QWidget* parent = nullptr) noexcept
-      : QWidget(parent) {
-    QVBoxLayout* layout = new QVBoxLayout(this);
-    this->setWindowTitle("Highscores");
-    this->setLayout(layout);
-    int rang = 1;
-    for (const auto& [seconds, date, name] : scores) {
-      auto line = new QLabel(this);
+void highscore::add_ok_button() noexcept {
+  auto botton_bar    = new QWidget(this);
+  auto bottom_layout = new QHBoxLayout(botton_bar);
+  botton_bar->setLayout(bottom_layout);
+  bottom_layout->addStretch(1);
+  auto ok_button = new QPushButton(botton_bar);
+  ok_button->setText("Ok");
+  bottom_layout->addWidget(ok_button);
+  connect(ok_button, &QPushButton::clicked, this, &highscore::close);
+  _layout->addWidget(botton_bar);
+}
 
-      line->setText(QString::fromStdString(
-          fmt::format("{:>4} {:>18} {:>14}s {:>22}", rang++, name, seconds,
-                      to_date(date))));
-      layout->addWidget(line);
-    }
-    auto botton_bar    = new QWidget(this);
-    auto bottom_layout = new QHBoxLayout(botton_bar);
-    botton_bar->setLayout(bottom_layout);
-    bottom_layout->addStretch(1);
-    auto ok_button = new QPushButton(botton_bar);
-    ok_button->setText("Ok");
-    bottom_layout->addWidget(ok_button);
-    connect(ok_button, &QPushButton::clicked, this, &highscorelist::close);
-    layout->addWidget(botton_bar);
+void highscore::initialize_ui() noexcept {
+  _layout = new QVBoxLayout(this);
+  this->setWindowTitle("Highscores");
+  this->setLayout(_layout);
+  print_scores();
+  add_ok_button();
+  this->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+}
+
+void highscore::print_scores() noexcept {
+  int rang = 1;
+  for (const auto& [seconds, date, name] : _scores) {
+    auto line = new QLabel(this);
+
+    line->setText(QString::fromStdString(fmt::format(
+        "{:>4} {:>18} {:>14}s {:>22}", rang++, name, seconds, to_date(date))));
+    _layout->addWidget(line);
   }
-};
+}
 
-highscore::highscore() noexcept
-    : _location(QStandardPaths::writableLocation(QStandardPaths::CacheLocation)
+highscore::highscore(QWidget* parent) noexcept
+    : QWidget(parent),
+      _location(QStandardPaths::writableLocation(QStandardPaths::CacheLocation)
                     .toStdString() +
                 "/highscore") {
   const auto dir =
@@ -96,6 +110,8 @@ highscore::highscore() noexcept
   if (std::size(_scores) == 10) {
     _last = prev(end(_scores))->seconds;
   }
+
+  initialize_ui();
 }
 
 void highscore::add(int seconds) noexcept {
@@ -106,20 +122,25 @@ void highscore::add(int seconds) noexcept {
         this, "Highscore",
         "You are in the Top 10! What is your name?:", QLineEdit::Normal,
         "Anonymous", &ok);
-    _scores.insert(
+    auto it = _scores.insert(
         {seconds,
          std::chrono::system_clock::to_time_t(std::chrono::system_clock::now()),
          name.toStdString()});
+    auto pos = std::distance(begin(_scores), it);
     if (_scores.size() > 10) {
       _scores.erase(prev(end(_scores)));
+    }
+    if (pos <= 10) {
+      clear_layout(_layout);
+      print_scores();
+      add_ok_button();
     }
   }
 }
 
 void highscore::show() noexcept {
   if (!empty(_scores)) {
-    auto h = new highscorelist(_scores);
-    h->show();
+    this->QWidget::show();
     std::ofstream ofs(_location);
     save_highscore(ofs, _scores);
   }
