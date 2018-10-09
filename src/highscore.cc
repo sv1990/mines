@@ -107,14 +107,13 @@ highscore::highscore(QWidget* parent) noexcept
     std::ifstream ifs{_location};
     _scores = load_highscore(ifs);
   }
+  if (!empty(_scores)) {
+    _first = begin(_scores)->seconds;
+    if (std::size(_scores) == 10) {
+      _last = prev(end(_scores))->seconds;
+    }
+  }
   initialize_ui();
-  if (empty(_scores)) {
-    return;
-  }
-  _first = begin(_scores)->seconds;
-  if (std::size(_scores) == 10) {
-    _last = prev(end(_scores))->seconds;
-  }
 }
 
 void highscore::add(int seconds) noexcept {
