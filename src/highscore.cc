@@ -78,7 +78,6 @@ void highscore::initialize_ui() noexcept {
     print_scores();
   }
   add_ok_button();
-  this->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 }
 
 void highscore::print_scores() noexcept {

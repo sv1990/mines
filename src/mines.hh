@@ -22,6 +22,11 @@ public:
   mines() noexcept;
   void show_highscore() noexcept;
   void add_highscore() noexcept;
+  virtual ~mines() {
+    if (_highscore) {
+      delete _highscore;
+    }
+  }
 };
 
 #endif // MINES_SRC_MINES_HH_1537684785294630186_
