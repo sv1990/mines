@@ -57,15 +57,6 @@ public:
       noexcept;
   int count_adjacent_bombs(int row, int col) const noexcept;
 
-private:
-  /**
-   * Performs breadth first search around (row, col) to find all empty fields
-   * around (row, col) and opens them.
-   *
-   */
-  void open_bfs(int row, int col) noexcept;
-
-public:
   bool open(int row, int col) noexcept;
   /**
    * Opens all entries around (row, col) if it is open and empty
