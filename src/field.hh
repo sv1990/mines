@@ -45,6 +45,10 @@ public:
       noexcept;
   int count_adjacent_bombs(int row, int col) const noexcept;
 
+private:
+  void open_bfs(int row, int col) noexcept;
+
+public:
   bool open(int row, int col) noexcept;
   bool open_around(int row, int col) noexcept;
   int mark(int row, int col) noexcept;
