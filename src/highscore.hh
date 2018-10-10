@@ -16,7 +16,7 @@ struct score {
   std::string name;
 
   template <class Archive>
-  void serialize(Archive& ar, const unsigned int /*version*/) {
+  void serialize(Archive& ar, [[maybe_unused]] const unsigned int version) {
     // clang-format off
     ar & seconds;
     ar & date;
