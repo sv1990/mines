@@ -95,7 +95,9 @@ int field::count_adjacent_bombs(int row, int col) const noexcept {
                        | ranges::view::filter(&entry::is_bomb)));
 }
 
-void field::open_bfs(int row, int col) noexcept {
+void field::open_empty_around(int row, int col) noexcept {
+  // Perform breadth first search
+
   std::queue<std::pair<int, int>> todo;
 
   todo.push({row, col});
@@ -133,7 +135,7 @@ bool field::open(int row, int col) noexcept {
     return false;
   }
   if (entry.is_empty()) {
-    open_bfs(row, col);
+    open_empty_around(row, col);
   }
   return true;
 }

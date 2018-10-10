@@ -59,11 +59,10 @@ public:
 
 private:
   /**
-   * Performs breadth first search around (row, col) to find all empty fields
-   * around (row, col) and opens them.
+   * Open all empty entries around (row, col)
    *
    */
-  void open_bfs(int row, int col) noexcept;
+  void open_empty_around(int row, int col) noexcept;
 
 public:
   bool open(int row, int col) noexcept;
