@@ -160,6 +160,8 @@ bool field::open_around(int row, int col) noexcept {
       return (*this)(p.first, p.second).state() == entry::state_t::marked;
     });
     if (mark_count == selected_entry.is_close_to().value()) {
+      // Use accumulate instead of all_of to prevent short circuiting on the
+      // first false return value
       alive = ranges::accumulate(
           adjacent //
               | ranges::view::filter([this](const auto& p) {
