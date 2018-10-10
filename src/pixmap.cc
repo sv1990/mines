@@ -6,10 +6,8 @@
 
 #include <QPixmap>
 
-#include <range/v3/algorithm/count_if.hpp>
-
-#include <string_view>
 #include <unordered_map>
+#include <variant>
 
 #include <cassert>
 

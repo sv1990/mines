@@ -6,8 +6,6 @@
 #include <QLabel>
 #include <QMouseEvent>
 
-#include <variant>
-
 class gameboard;
 
 class pixmap : public QLabel {
