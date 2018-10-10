@@ -133,9 +133,7 @@ bool field::open(int row, int col) noexcept {
     return false;
   }
   if (entry.is_empty()) {
-    for (const auto& [r, c] : adjacent_entries(row, col)) {
-      open_bfs(r, c);
-    }
+    open_bfs(row, col);
   }
   return true;
 }
