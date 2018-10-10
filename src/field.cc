@@ -95,6 +95,29 @@ int field::count_adjacent_bombs(int row, int col) const noexcept {
                        | ranges::view::filter(&entry::is_bomb)));
 }
 
+void field::open_bfs(int row, int col) noexcept {
+  std::queue<std::pair<int, int>> todo;
+
+  todo.push({row, col});
+  (*this)(row, col).open();
+
+  while (!empty(todo)) {
+    auto next = todo.front();
+    if ((*this)(next.first, next.second).is_empty()) {
+      for (const auto& p : adjacent_entries(next.first, next.second)) {
+        if ((*this)(p.first, p.second).state() == entry::state_t::opened) {
+          continue;
+        }
+        (*this)(p.first, p.second).open();
+        if ((*this)(p.first, p.second).is_empty()) {
+          todo.push(p);
+        }
+      }
+    }
+    todo.pop();
+  }
+}
+
 bool field::open(int row, int col) noexcept {
   assert(row >= 0 && row < _rows);
   assert(col >= 0 && col < _cols);
@@ -111,7 +134,7 @@ bool field::open(int row, int col) noexcept {
   }
   if (entry.is_empty()) {
     for (const auto& [r, c] : adjacent_entries(row, col)) {
-      open(r, c);
+      open_bfs(r, c);
     }
   }
   return true;
