@@ -5,7 +5,9 @@
 #include <range/v3/algorithm/count_if.hpp>
 #include <range/v3/algorithm/swap_ranges.hpp>
 #include <range/v3/numeric/accumulate.hpp>
+#include <range/v3/view/cartesian_product.hpp>
 #include <range/v3/view/filter.hpp>
+#include <range/v3/view/iota.hpp>
 #include <range/v3/view/reverse.hpp>
 #include <range/v3/view/transform.hpp>
 
@@ -14,10 +16,34 @@
 #include <functional>
 #include <queue>
 
+/**
+ * Returns the a view of the indices of the surrounding fields of (row, col)
+ */
+auto adjacent_entries(const field& f, int row, int col) noexcept {
+  assert(row >= 0 && row < _rows);
+  assert(col >= 0 && col < _cols);
+
+  auto indices = ranges::view::cartesian_product(ranges::view::ints(-1, 2),
+                                                 ranges::view::ints(-1, 2)) //
+                 | ranges::view::filter([](const auto& tpl) {
+                     const auto& [x, y] = tpl;
+                     return x != 0 || y != 0;
+                   });
+
+  return indices //
+         | ranges::view::transform([row, col](const auto& p) {
+             auto [dr, dc] = p;
+             return std::pair(row + dr, col + dc);
+           }) //
+         | ranges::view::filter([&f](const auto& p) {
+             return f.at(p.first, p.second).has_value();
+           });
+}
+
 void field::init(int row, int col) noexcept {
   assert(row >= 0 && row < _rows);
   assert(col >= 0 && col < _cols);
-  auto clicked_fields = adjacent_entries(row, col);
+  auto clicked_fields = adjacent_entries(*this, row, col) | ranges::to_vector;
   clicked_fields.emplace_back(row, col);
 
   // Let n be the number of entries around (row, col) and itself. Place the
@@ -61,31 +87,11 @@ field::field(int rows, int cols, int num_bombs) noexcept
   reset();
 }
 
-std::vector<std::pair<int, int>> field::adjacent_entries(int row, int col) const
-    noexcept {
-  assert(row >= 0 && row < _rows);
-  assert(col >= 0 && col < _cols);
-
-  // clang-format off
-  std::array<std::pair<int, int>, 8> indices{
-      {{1, -1}, {1, 0}, {1, 1}, {0, -1}, {0, 1}, {-1, -1}, {-1, 0}, {-1, 1},}
-  };
-  // clang-format on
-  return indices //
-         | ranges::view::transform([row, col](const auto& p) {
-             return std::pair<int, int>(row + p.first, col + p.second);
-           }) //
-         | ranges::view::filter([this](const auto& p) {
-             return this->at(p.first, p.second).has_value();
-           }) //
-         | ranges::to_vector;
-}
-
 int field::count_adjacent_bombs(int row, int col) const noexcept {
   assert(row >= 0 && row < _rows);
   assert(col >= 0 && col < _cols);
 
-  auto adjacent = adjacent_entries(row, col);
+  auto adjacent = adjacent_entries(*this, row, col);
   return static_cast<int>(
       ranges::distance(adjacent //
                        | ranges::view::transform([this](const auto& p) {
@@ -106,7 +112,7 @@ void field::open_empty_around(int row, int col) noexcept {
   while (!empty(todo)) {
     auto next = todo.front();
     if ((*this)(next.first, next.second).is_empty()) {
-      for (const auto& p : adjacent_entries(next.first, next.second)) {
+      for (const auto& p : adjacent_entries(*this, next.first, next.second)) {
         if ((*this)(p.first, p.second).state() == entry::state_t::opened) {
           continue;
         }
@@ -155,7 +161,7 @@ bool field::open_around(int row, int col) noexcept {
   bool alive = true;
   if (selected_entry.state() == entry::state_t::opened &&
       selected_entry.is_close_to()) {
-    auto adjacent   = adjacent_entries(row, col);
+    auto adjacent   = adjacent_entries(*this, row, col);
     auto mark_count = ranges::count_if(adjacent, [this](const auto& p) {
       return (*this)(p.first, p.second).state() == entry::state_t::marked;
     });

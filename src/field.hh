@@ -50,11 +50,6 @@ public:
     return {};
   }
 
-  /**
-   * Returns the indices of the surrounding fields of (row, col)
-   */
-  std::vector<std::pair<int, int>> adjacent_entries(int row, int col) const
-      noexcept;
   int count_adjacent_bombs(int row, int col) const noexcept;
 
 private:
