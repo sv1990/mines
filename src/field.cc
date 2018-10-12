@@ -23,14 +23,12 @@ auto adjacent_entries(const field& f, int row, int col) noexcept {
   assert(row >= 0 && row < _rows);
   assert(col >= 0 && col < _cols);
 
-  auto indices = ranges::view::cartesian_product(ranges::view::ints(-1, 2),
-                                                 ranges::view::ints(-1, 2)) //
-                 | ranges::view::filter([](const auto& tpl) {
-                     const auto& [x, y] = tpl;
-                     return x != 0 || y != 0;
-                   });
-
-  return indices //
+  return ranges::view::cartesian_product(ranges::view::ints(-1, 2),
+                                         ranges::view::ints(-1, 2)) //
+         | ranges::view::filter([](const auto& tpl) {
+             const auto& [x, y] = tpl;
+             return x != 0 || y != 0;
+           }) //
          | ranges::view::transform([row, col](const auto& p) {
              auto [dr, dc] = p;
              return std::pair(row + dr, col + dc);
