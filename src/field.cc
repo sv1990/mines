@@ -3,6 +3,7 @@
 #include "util/random_gen.hh"
 
 #include <range/v3/algorithm/count_if.hpp>
+#include <range/v3/algorithm/fill.hpp>
 #include <range/v3/algorithm/swap_ranges.hpp>
 #include <range/v3/numeric/accumulate.hpp>
 #include <range/v3/view/cartesian_product.hpp>
@@ -74,7 +75,7 @@ void field::init(int row, int col) noexcept {
 }
 
 void field::reset() noexcept {
-  _entries = std::vector<entry>(static_cast<std::size_t>(_rows * _cols));
+  ranges::fill(_entries, entry{});
 }
 
 field::field(int rows, int cols, int num_bombs) noexcept
@@ -82,7 +83,7 @@ field::field(int rows, int cols, int num_bombs) noexcept
   assert(_rows > 0);
   assert(_cols > 0);
   assert(_num_bombs > 0);
-  reset();
+  _entries.resize(static_cast<std::size_t>(_rows * _cols));
 }
 
 int field::count_adjacent_bombs(int row, int col) const noexcept {
