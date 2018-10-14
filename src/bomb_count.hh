@@ -13,6 +13,7 @@ public:
     this->setSegmentStyle(Flat);
     this->display(_count);
     set_text_color(Qt::white);
+    this->setToolTip("Remaining Bombs");
   }
 
   void set_text_color(QColor color) noexcept {

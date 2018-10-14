@@ -23,6 +23,7 @@ public:
     connect(_timer, &QTimer::timeout, this, &timer::show_time);
     set_text_color(Qt::green);
     this->display(0);
+    this->setToolTip("Green: Highscore\nYellow: Top 10\nRed: Below Top 10");
   }
   int seconds() const noexcept { return _seconds; }
 
