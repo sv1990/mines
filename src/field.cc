@@ -92,12 +92,12 @@ int field::count_adjacent_bombs(int row, int col) const noexcept {
 
   auto adjacent = adjacent_entries(*this, row, col);
   return static_cast<int>(
-      ranges::distance(adjacent //
-                       | ranges::view::transform([this](const auto& p) {
-                           const auto& [r, c] = p;
-                           return this->at(r, c);
-                         }) //
-                       | ranges::view::filter(&entry::is_bomb)));
+      ranges::count_if(adjacent //
+                           | ranges::view::transform([this](const auto& p) {
+                               const auto& [r, c] = p;
+                               return this->at(r, c);
+                             }),
+                       &entry::is_bomb));
 }
 
 void field::open_empty_around(int row, int col) noexcept {
