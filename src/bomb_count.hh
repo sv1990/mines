@@ -7,32 +7,12 @@ class bomb_count : public QLCDNumber {
   int _count;
 
 public:
-  explicit bomb_count(int count, QWidget* parent = nullptr) noexcept
-      : QLCDNumber(parent), _count(count) {
-    this->setDigitCount(4);
-    this->setSegmentStyle(Flat);
-    this->display(_count);
-    set_text_color(Qt::white);
-    this->setToolTip("Remaining Bombs");
-  }
-
-  void set_text_color(QColor color) noexcept {
-    auto palette = this->palette();
-    palette.setColor(QPalette::Foreground, color);
-    this->setPalette(palette);
-  }
-
-  void count_changed(int mark_change) noexcept {
-    _count -= mark_change;
-    this->display(_count);
-  }
+  explicit bomb_count(int count, QWidget* parent = nullptr) noexcept;
+  void set_text_color(QColor color) noexcept;
+  void count_changed(int mark_change) noexcept;
 
 public slots:
-  void restart(int count) {
-    _count = count;
-    set_text_color(Qt::white);
-    this->display(_count);
-  }
+  void restart(int count);
 };
 
 #endif // MINES_SRC_BOMB_COUNT_HH_1538292750862338912_
