@@ -33,7 +33,7 @@ public slots:
     if (_last.has_value() && _seconds >= _last.value()) {
       set_text_color(Qt::red);
     }
-    if (_first.has_value() && _seconds >= _first.value()) {
+    else if (_first.has_value() && _seconds >= _first.value()) {
       set_text_color(Qt::yellow);
     }
     this->display(_seconds);
