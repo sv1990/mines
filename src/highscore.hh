@@ -40,7 +40,7 @@ class highscore : public QWidget {
   void add_ok_button() noexcept;
 
 public:
-  explicit highscore(QWidget* parent = nullptr) noexcept;
+  explicit highscore(QWidget* parent = nullptr);
   void add(int seconds) noexcept;
   void show() noexcept;
   std::optional<int> first() const noexcept { return _first; }

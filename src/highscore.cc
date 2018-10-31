@@ -18,6 +18,7 @@
 #include <filesystem>
 #include <fstream>
 #include <iomanip>
+#include <iostream>
 #include <set>
 #include <sstream>
 #include <tuple>
@@ -91,7 +92,7 @@ void highscore::print_scores() noexcept {
   }
 }
 
-highscore::highscore(QWidget* parent) noexcept
+highscore::highscore(QWidget* parent)
     : QWidget(parent),
       _location(QStandardPaths::writableLocation(QStandardPaths::CacheLocation)
                     .toStdString() +
@@ -104,7 +105,13 @@ highscore::highscore(QWidget* parent) noexcept
   }
   if (std::filesystem::exists(_location)) {
     std::ifstream ifs{_location};
-    _scores = load_highscore(ifs);
+    try {
+      _scores = load_highscore(ifs);
+    }
+    catch (const std::exception& e) {
+      std::cerr << "Cannot load highscore from " << _location << '\n';
+      throw;
+    }
   }
   if (!empty(_scores)) {
     _first = begin(_scores)->seconds;
