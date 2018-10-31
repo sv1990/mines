@@ -21,8 +21,8 @@
  * Returns the a view of the indices of the surrounding fields of (row, col)
  */
 auto adjacent_entries(const field& f, int row, int col) noexcept {
-  assert(row >= 0 && row < _rows);
-  assert(col >= 0 && col < _cols);
+  assert(row >= 0 && row < f.rows());
+  assert(col >= 0 && col < f.cols());
 
   return ranges::view::cartesian_product(ranges::view::ints(-1, 2),
                                          ranges::view::ints(-1, 2)) //
