@@ -19,9 +19,9 @@ class mines : public QMainWindow {
   bomb_count* _bomb_count;
 
 public:
-  mines() noexcept;
-  void show_highscore() noexcept;
-  void add_highscore() noexcept;
+  mines();
+  void show_highscore();
+  void add_highscore();
   virtual ~mines() {
     if (_highscore) {
       delete _highscore;

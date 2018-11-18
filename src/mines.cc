@@ -3,7 +3,7 @@
 #include <QHBoxLayout>
 #include <QPushButton>
 
-mines::mines() noexcept : QMainWindow(nullptr) {
+mines::mines() : QMainWindow(nullptr) {
   this->setWindowTitle("Mines");
   auto palette = this->palette();
   palette.setColor(QPalette::Background, QColor(55, 55, 55));
@@ -65,11 +65,11 @@ mines::mines() noexcept : QMainWindow(nullptr) {
           &bomb_count::restart);
 }
 
-void mines::show_highscore() noexcept {
+void mines::show_highscore() {
   _highscore->show();
 }
 
-void mines::add_highscore() noexcept {
+void mines::add_highscore() {
   if (_board->is_done() && !_board->lost()) {
     _highscore->add(_timer->seconds());
     _highscore->show();

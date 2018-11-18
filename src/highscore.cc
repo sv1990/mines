@@ -105,13 +105,7 @@ highscore::highscore(QWidget* parent)
   }
   if (std::filesystem::exists(_location)) {
     std::ifstream ifs{_location};
-    try {
-      _scores = load_highscore(ifs);
-    }
-    catch (const std::exception& e) {
-      std::cerr << "Cannot load highscore from " << _location << '\n';
-      throw;
-    }
+    _scores = load_highscore(ifs);
   }
   if (!empty(_scores)) {
     _first = begin(_scores)->seconds;
