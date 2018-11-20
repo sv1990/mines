@@ -1,5 +1,7 @@
 #include "highscore.hh"
 
+#include "util/enumerate.hh"
+
 #include <fmt/format.h>
 
 #include <boost/archive/binary_iarchive.hpp>
@@ -82,12 +84,14 @@ void highscore::initialize_ui() noexcept {
 }
 
 void highscore::print_scores() noexcept {
-  int rang = 1;
-  for (const auto& [seconds, date, name] : _scores) {
+  for (const auto& [rang, score] : util::enumerate(_scores)) {
+    const auto& [seconds, date, name] = score;
+
     auto line = new QLabel(this);
 
-    line->setText(QString::fromStdString(fmt::format(
-        "{:>4} {:>18} {:>14}s {:>22}", rang++, name, seconds, to_date(date))));
+    line->setText(QString::fromStdString(
+        fmt::format("{:>4} {:>18} {:>14}s {:>22}", rang + 1, name, seconds,
+                    to_date(date))));
     _layout->addWidget(line);
   }
 }
