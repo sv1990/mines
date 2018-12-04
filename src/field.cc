@@ -1,6 +1,7 @@
 #include "field.hh"
 
 #include "util/random_gen.hh"
+#include "util/ssize.hh"
 
 #include <range/v3/algorithm/count_if.hpp>
 #include <range/v3/algorithm/fill.hpp>
@@ -52,7 +53,7 @@ void field::init(int row, int col) noexcept {
 
   std::fill_n(begin(_entries), _num_bombs, entry::bomb{});
   std::shuffle(begin(_entries),
-               prev(end(_entries), static_cast<int>(size(clicked_fields))),
+               prev(end(_entries), util::ssize(clicked_fields)),
                util::random_gen());
 
   ranges::swap_ranges(
