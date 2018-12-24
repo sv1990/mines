@@ -35,9 +35,8 @@ auto adjacent_entries(const field& f, int row, int col) noexcept {
              auto [dr, dc] = p;
              return std::pair(row + dr, col + dc);
            }) //
-         | ranges::view::filter([&f](const auto& p) {
-             return f.at(p.first, p.second).has_value();
-           });
+         | ranges::view::filter(
+               [&f](const auto& point) { return f.at(point).has_value(); });
 }
 
 void field::init(int row, int col) noexcept {

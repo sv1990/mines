@@ -49,6 +49,9 @@ public:
     }
     return {};
   }
+  std::optional<entry> as(const std::pair<int, int>& point) const noexcept {
+    return at(point.first, point.second);
+  }
 
   int count_adjacent_bombs(int row, int col) const noexcept;
 
