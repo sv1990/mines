@@ -7,6 +7,9 @@
 
 #include <optional>
 
+/**
+ * Shows the elapsed time
+ */
 class timer : public QLCDNumber {
   int _seconds = 0;
   QTimer* _timer;

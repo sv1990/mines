@@ -8,6 +8,9 @@
 
 class gameboard;
 
+/**
+ * One square of the minesweeper gameboard
+ */
 class pixmap : public QLabel {
   gameboard* _board;
   int _row;

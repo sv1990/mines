@@ -10,6 +10,9 @@
 
 #include <iostream>
 
+/**
+ * Implements game logic
+ */
 class field {
   std::vector<entry> _entries;
   int _rows;

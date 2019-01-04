@@ -3,6 +3,9 @@
 
 #include <QLCDNumber>
 
+/**
+ * Displays remaining number of bombs
+ */
 class bomb_count : public QLCDNumber {
   int _count;
 
