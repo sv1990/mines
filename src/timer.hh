@@ -26,7 +26,7 @@ public slots:
   void start();
   void reset();
   void stop();
-  void set_text_color(QColor color) noexcept;
+  void set_text_color(const QColor& color) noexcept;
 };
 
 #endif // MINES_SRC_TIMER_HH_1538024709907504321_

@@ -11,7 +11,7 @@ class bomb_count : public QLCDNumber {
 
 public:
   explicit bomb_count(int count, QWidget* parent = nullptr) noexcept;
-  void set_text_color(QColor color) noexcept;
+  void set_text_color(const QColor& color) noexcept;
   void count_changed(int mark_change) noexcept;
 
 public slots:

@@ -9,7 +9,7 @@ bomb_count::bomb_count(int count, QWidget* parent) noexcept
   this->setToolTip("Remaining Bombs");
 }
 
-void bomb_count::set_text_color(QColor color) noexcept {
+void bomb_count::set_text_color(const QColor& color) noexcept {
   auto palette = this->palette();
   palette.setColor(QPalette::Foreground, color);
   this->setPalette(palette);

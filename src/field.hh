@@ -24,7 +24,7 @@ public:
    * Construct `width` x `height` minesweeper field with `num_bombs` bombs
    *
    */
-  field(int width, int height, int num_bombs) noexcept;
+  field(int rows, int cols, int num_bombs) noexcept;
   /**
    * Initializes the bombs on the field while keeping all fields surrounding
    * (row, col) empty

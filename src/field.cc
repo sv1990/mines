@@ -112,7 +112,7 @@ void field::open_empty_around(int row, int col) noexcept {
   while (!empty(todo)) {
     auto next = todo.front();
     if ((*this)(next.first, next.second).is_empty()) {
-      for (const auto& p : adjacent_entries(*this, next.first, next.second)) {
+      for (auto p : adjacent_entries(*this, next.first, next.second)) {
         if ((*this)(p.first, p.second).state() == entry::state_t::opened) {
           continue;
         }
