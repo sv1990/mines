@@ -1,6 +1,6 @@
 #include "highscore.hh"
 
-#include "util/enumerate.hh"
+#include <range/v3/view/enumerate.hpp>
 
 #include <fmt/format.h>
 
@@ -84,7 +84,7 @@ void highscore::initialize_ui() noexcept {
 }
 
 void highscore::print_scores() noexcept {
-  for (auto [rang, score] : util::enumerate(_scores)) {
+  for (auto [rang, score] : ranges::view::enumerate(_scores)) {
     const auto& [seconds, date, name] = score;
 
     auto line = new QLabel(this);
