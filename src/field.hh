@@ -47,6 +47,7 @@ public:
     return const_cast<field&>(*this)(row, col);
   }
 
+  // std::optional doesn't support optional references
   boost::optional<const entry&> at(int row, int col) const noexcept {
     if (row >= 0 && row < _rows && col >= 0 && col < _cols) {
       return (*this)(row, col);
