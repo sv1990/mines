@@ -3,8 +3,9 @@
 
 #include "entry.hh"
 
-#include <optional>
 #include <vector>
+
+#include <boost/optional.hpp>
 
 #include <cassert>
 
@@ -46,7 +47,7 @@ public:
     return const_cast<field&>(*this)(row, col);
   }
 
-  std::optional<entry> at(int row, int col) const noexcept {
+  boost::optional<const entry&> at(int row, int col) const noexcept {
     if (row >= 0 && row < _rows && col >= 0 && col < _cols) {
       return (*this)(row, col);
     }
