@@ -9,8 +9,8 @@
 namespace util {
 template <typename T>
 std::ptrdiff_t ssize(const T& x) noexcept {
-  assert(x <= std::numeric_limits<std::ptrdiff_t>::max());
   using std::size;
+  assert(size(x) <= std::numeric_limits<std::ptrdiff_t>::max());
   return static_cast<std::ptrdiff_t>(size(x));
 }
 } // namespace util
