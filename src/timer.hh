@@ -11,6 +11,7 @@
  * Shows the elapsed time
  */
 class timer : public QLCDNumber {
+  Q_OBJECT
   int _seconds = 0;
   QTimer* _timer;
   std::optional<int> _first = std::nullopt;

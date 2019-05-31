@@ -7,6 +7,7 @@
  * Displays remaining number of bombs
  */
 class bomb_count : public QLCDNumber {
+  Q_OBJECT
   int _count;
 
 public:

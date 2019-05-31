@@ -28,6 +28,7 @@ struct score {
 bool operator<(const score& lhs, const score& rhs) noexcept;
 
 class highscore : public QWidget {
+  Q_OBJECT
   std::string _location;
   std::multiset<score> _scores;
   std::optional<int> _first = std::nullopt;

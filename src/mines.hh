@@ -10,6 +10,7 @@
 #include <QVBoxLayout>
 
 class mines : public QMainWindow {
+  Q_OBJECT
   QWidget* _central_widget;
   QVBoxLayout* _layout;
 
