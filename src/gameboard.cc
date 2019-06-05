@@ -31,6 +31,7 @@ void gameboard::start(int row, int col) noexcept {
   if (!_started) {
     _started = true;
     _field.init(row, col);
+    _cheated = false;
     emit game_started();
   }
 }
@@ -52,6 +53,17 @@ void gameboard::open_around(int row, int col) noexcept {
   if (_lost || is_done()) {
     uncover();
     emit game_done();
+  }
+}
+
+void gameboard::open_around_all_numbers() noexcept {
+  _cheated = true;
+  for (int row = 0; row < _field.rows(); ++row) {
+    for (int col = 0; col < _field.cols(); ++col) {
+      if (_field(row, col).is_close_to()) {
+        open_around(row, col);
+      }
+    }
   }
 }
 

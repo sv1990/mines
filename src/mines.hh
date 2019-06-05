@@ -6,13 +6,16 @@
 #include "highscore.hh"
 #include "timer.hh"
 
+#include <QKeySequence>
 #include <QMainWindow>
+#include <QShortcut>
 #include <QVBoxLayout>
 
 class mines : public QMainWindow {
   Q_OBJECT
   QWidget* _central_widget;
   QVBoxLayout* _layout;
+  QShortcut* _cheat;
 
   gameboard* _board;
   timer* _timer;
