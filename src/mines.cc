@@ -44,8 +44,8 @@ mines::mines() : QMainWindow(nullptr) {
   this->setCentralWidget(_central_widget);
   this->setFixedSize(cols * 20, rows * 26);
 
-  _cheat = new QShortcut(QKeySequence(Qt::Key_O), this);
-  connect(_cheat, &QShortcut::activated, _board,
+  _open_all_shortcut = new QShortcut(QKeySequence(Qt::Key_O), this);
+  connect(_open_all_shortcut, &QShortcut::activated, _board,
           &gameboard::open_around_all_numbers);
 
   connect(_board, &gameboard::game_started, _timer, &timer::start);

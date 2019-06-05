@@ -15,7 +15,7 @@ class mines : public QMainWindow {
   Q_OBJECT
   QWidget* _central_widget;
   QVBoxLayout* _layout;
-  QShortcut* _cheat;
+  QShortcut* _open_all_shortcut;
 
   gameboard* _board;
   timer* _timer;
