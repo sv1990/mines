@@ -3,15 +3,20 @@
 
 #include <iterator>
 #include <limits>
+#include <type_traits>
 
 #include <cassert>
 
 namespace util {
+using std::size;
 template <typename T>
-std::ptrdiff_t ssize(const T& x) noexcept {
-  using std::size;
-  assert(size(x) <= std::numeric_limits<std::ptrdiff_t>::max());
-  return static_cast<std::ptrdiff_t>(size(x));
+auto ssize(const T& x) noexcept
+    -> std::common_type_t<std::ptrdiff_t,
+                          std::make_signed_t<decltype(size(x))>> {
+  using Ret =
+      std::common_type_t<std::ptrdiff_t, std::make_signed_t<decltype(size(x))>>;
+  assert(size(x) <= std::numeric_limits<Ret>::max());
+  return static_cast<Ret>(size(x));
 }
 } // namespace util
 
