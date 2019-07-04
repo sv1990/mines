@@ -15,6 +15,8 @@ class random_seed_seq {
   random_seed_seq() = default;
 
 public:
+  using result_type = typename std::random_device::result_type;
+
   template <typename It>
   void generate(It begin, It end) noexcept {
     std::generate(begin, end, std::ref(device));
