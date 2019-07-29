@@ -109,3 +109,13 @@ void pixmap::mousePressEvent(QMouseEvent* event) {
     _board->mark(_row, _col);
   }
 }
+
+void pixmap::mouseDoubleClickEvent(QMouseEvent* event) {
+  if (_board->is_done()) {
+    return;
+  }
+  auto buttons = event->buttons();
+  if (buttons & Qt::LeftButton) {
+    _board->open_around(_row, _col);
+  }
+}
