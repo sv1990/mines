@@ -6,7 +6,7 @@
 mines::mines() : QMainWindow(nullptr) {
   this->setWindowTitle("Mines");
   auto palette = this->palette();
-  palette.setColor(QPalette::Background, QColor(55, 55, 55));
+  palette.setColor(QPalette::Window, QColor(55, 55, 55));
   this->setPalette(palette);
 
   int rows      = 16;
