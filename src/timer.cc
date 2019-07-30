@@ -41,6 +41,6 @@ void timer::stop() {
 
 void timer::set_text_color(const QColor& color) noexcept {
   auto palette = this->palette();
-  palette.setColor(QPalette::Foreground, color);
+  palette.setColor(QPalette::WindowText, color);
   this->setPalette(palette);
 }
