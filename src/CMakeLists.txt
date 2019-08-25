@@ -9,7 +9,7 @@ set(CMAKE_AUTOMOC ON)
 include(CheckCXXCompilerFlag)
 
 find_package(Qt5Widgets REQUIRED)
-find_package(range-v3 REQUIRED)
+find_package(range-v3 REQUIRED VERSION 0.9)
 find_package(fmt REQUIRED)
 find_package(Boost REQUIRED COMPONENTS serialization)
 
