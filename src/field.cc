@@ -25,17 +25,17 @@ auto adjacent_entries(const field& f, int row, int col) noexcept {
   assert(row >= 0 && row < f.rows());
   assert(col >= 0 && col < f.cols());
 
-  return ranges::view::cartesian_product(ranges::view::ints(-1, 2),
-                                         ranges::view::ints(-1, 2)) //
-         | ranges::view::filter([](const auto& tpl) {
+  return ranges::views::cartesian_product(ranges::views::ints(-1, 2),
+                                          ranges::views::ints(-1, 2)) //
+         | ranges::views::filter([](const auto& tpl) {
              const auto& [x, y] = tpl;
              return x != 0 || y != 0;
            }) //
-         | ranges::view::transform([row, col](const auto& p) {
+         | ranges::views::transform([row, col](const auto& p) {
              auto [dr, dc] = p;
              return std::pair(row + dr, col + dc);
            }) //
-         | ranges::view::filter([&f](const auto& point) {
+         | ranges::views::filter([&f](const auto& point) {
              return f.at(point.first, point.second).has_value();
            });
 }
@@ -57,10 +57,11 @@ void field::init(int row, int col) noexcept {
                util::random_gen());
 
   ranges::swap_ranges(
-      clicked_fields | ranges::view::transform([this](const auto& p) -> entry& {
-        return (*this)(p.first, p.second);
-      }),
-      _entries | ranges::view::reverse);
+      clicked_fields //
+          | ranges::views::transform([this](const auto& p) -> entry& {
+              return (*this)(p.first, p.second);
+            }),
+      _entries | ranges::views::reverse);
 
   for (int irow = 0; irow < _rows; ++irow) {
     for (int icol = 0; icol < _cols; ++icol) {
@@ -94,7 +95,7 @@ int field::count_adjacent_bombs(int row, int col) const noexcept {
   auto adjacent = adjacent_entries(*this, row, col);
   return static_cast<int>(
       ranges::count_if(adjacent //
-                           | ranges::view::transform([this](const auto& p) {
+                           | ranges::views::transform([this](const auto& p) {
                                const auto& [r, c] = p;
                                return this->at(r, c);
                              }),
@@ -170,7 +171,7 @@ bool field::open_around(int row, int col) noexcept {
       // first false return value
       alive = ranges::accumulate(
           adjacent //
-              | ranges::view::filter([this](const auto& p) {
+              | ranges::views::filter([this](const auto& p) {
                   return (*this)(p.first, p.second).state() //
                          == entry::state_t::hidden;
                 }),

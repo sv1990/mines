@@ -84,7 +84,7 @@ void highscore::initialize_ui() noexcept {
 }
 
 void highscore::print_scores() noexcept {
-  for (auto [rang, score] : ranges::view::enumerate(_scores)) {
+  for (auto [rang, score] : ranges::views::enumerate(_scores)) {
     const auto& [seconds, date, name] = score;
 
     auto line = new QLabel(this);
