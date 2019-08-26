@@ -46,6 +46,12 @@ public:
   const entry& operator()(int row, int col) const noexcept {
     return const_cast<field&>(*this)(row, col);
   }
+  entry& operator()(const std::pair<int, int>& p) noexcept {
+    return (*this)(p.first, p.second);
+  }
+  const entry& operator()(const std::pair<int, int>& p) const noexcept {
+    return (*this)(p.first, p.second);
+  }
 
   // std::optional doesn't support optional references
   boost::optional<const entry&> at(int row, int col) const noexcept {

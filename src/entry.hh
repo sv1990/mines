@@ -25,6 +25,9 @@ public:
   bool is_bomb() const noexcept;
   bool is_empty() const noexcept;
   std::optional<unsigned> is_close_to() const noexcept;
+  bool is_hidden() const noexcept;
+  bool is_marked() const noexcept;
+  bool is_opened() const noexcept;
 
   void open() noexcept;
 

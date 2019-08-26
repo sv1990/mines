@@ -115,7 +115,7 @@ void field::open_empty_around(int row, int col) noexcept {
     auto next = todo.front();
     if ((*this)(next.first, next.second).is_empty()) {
       for (auto p : adjacent_entries(*this, next.first, next.second)) {
-        if ((*this)(p.first, p.second).state() == entry::state_t::opened) {
+        if ((*this)(p).is_opened()) {
           continue;
         }
         (*this)(p.first, p.second).open();
@@ -133,7 +133,7 @@ bool field::open(int row, int col) noexcept {
   assert(col >= 0 && col < _cols);
 
   auto& entry = (*this)(row, col);
-  if (entry.state() == entry::state_t::hidden) {
+  if (entry.is_hidden()) {
     entry.open();
   }
   else {
@@ -161,21 +161,17 @@ bool field::open_around(int row, int col) noexcept {
   const auto& selected_entry = (*this)(row, col);
 
   bool alive = true;
-  if (selected_entry.state() == entry::state_t::opened &&
-      selected_entry.is_close_to()) {
+  if (selected_entry.is_opened() && selected_entry.is_close_to()) {
     auto adjacent   = adjacent_entries(*this, row, col);
-    auto mark_count = ranges::count_if(adjacent, [this](const auto& p) {
-      return (*this)(p.first, p.second).state() == entry::state_t::marked;
-    });
+    auto mark_count = ranges::count_if(
+        adjacent, [this](const auto& p) { return (*this)(p).is_marked(); });
     if (mark_count == selected_entry.is_close_to().value()) {
       // Use accumulate instead of all_of to prevent short circuiting on the
       // first false return value
       alive = ranges::accumulate(
           adjacent //
-              | ranges::views::filter([this](const auto& p) {
-                  return (*this)(p.first, p.second).state() //
-                         == entry::state_t::hidden;
-                }),
+              | ranges::views::filter(
+                    [this](const auto& p) { return (*this)(p).is_hidden(); }),
           true, std::logical_and<bool>{},
           [this](const auto& p) { return this->open(p.first, p.second); });
     }
@@ -184,7 +180,5 @@ bool field::open_around(int row, int col) noexcept {
 }
 
 bool field::is_done() const noexcept {
-  return ranges::count_if(_entries, [](const auto& entry) {
-           return entry.state() != entry::state_t::opened;
-         }) == _num_bombs;
+  return ranges::count_if(_entries, &entry::is_opened) == _num_bombs;
 }

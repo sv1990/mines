@@ -18,6 +18,16 @@ std::optional<unsigned> entry::is_close_to() const noexcept {
   return {};
 }
 
+bool entry::is_hidden() const noexcept {
+  return _state == state_t::hidden;
+}
+bool entry::is_marked() const noexcept {
+  return _state == state_t::marked;
+}
+bool entry::is_opened() const noexcept {
+  return _state == state_t::opened;
+}
+
 void entry::open() noexcept {
   _state = state_t::opened;
 }
