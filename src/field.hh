@@ -55,7 +55,7 @@ public:
     return {};
   }
 
-  int count_adjacent_bombs(int row, int col) const noexcept;
+  int count_bombs_adjacent_to(int row, int col) const noexcept;
 
 private:
   /**

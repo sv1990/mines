@@ -68,7 +68,7 @@ void field::init(int row, int col) noexcept {
       if ((*this)(irow, icol).is_bomb()) {
         continue;
       }
-      auto count = count_adjacent_bombs(irow, icol);
+      auto count = count_bombs_adjacent_to(irow, icol);
       if (count > 0) {
         (*this)(irow, icol) = entry::close_to{count};
       }
@@ -88,7 +88,7 @@ field::field(int rows, int cols, int num_bombs) noexcept
   _entries.resize(static_cast<std::size_t>(_rows * _cols));
 }
 
-int field::count_adjacent_bombs(int row, int col) const noexcept {
+int field::count_bombs_adjacent_to(int row, int col) const noexcept {
   assert(row >= 0 && row < _rows);
   assert(col >= 0 && col < _cols);
 
@@ -103,6 +103,7 @@ int field::count_adjacent_bombs(int row, int col) const noexcept {
 }
 
 void field::open_empty_around(int row, int col) noexcept {
+  assert((*this)(row, col).is_empty());
   // Perform breadth first search
 
   std::queue<std::pair<int, int>> todo;
