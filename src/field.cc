@@ -94,12 +94,9 @@ int field::count_bombs_adjacent_to(int row, int col) const noexcept {
 
   auto adjacent = adjacent_entries(*this, row, col);
   return static_cast<int>(
-      ranges::count_if(adjacent //
-                           | ranges::views::transform([this](const auto& p) {
-                               const auto& [r, c] = p;
-                               return this->at(r, c);
-                             }),
-                       &entry::is_bomb));
+      ranges::count_if(adjacent, &entry::is_bomb, [this](auto&& p) {
+        return this->at(p.first, p.second);
+      }));
 }
 
 void field::open_empty_around(int row, int col) noexcept {
@@ -163,15 +160,15 @@ bool field::open_around(int row, int col) noexcept {
   bool alive = true;
   if (selected_entry.is_opened() && selected_entry.is_close_to()) {
     auto adjacent   = adjacent_entries(*this, row, col);
-    auto mark_count = ranges::count_if(
-        adjacent, [this](const auto& p) { return (*this)(p).is_marked(); });
+    auto mark_count = ranges::count_if(adjacent, &entry::is_marked,
+                                       [this](auto&& p) { return (*this)(p); });
     if (mark_count == selected_entry.is_close_to().value()) {
       // Use accumulate instead of all_of to prevent short circuiting on the
       // first false return value
       alive = ranges::accumulate(
           adjacent //
-              | ranges::views::filter(
-                    [this](const auto& p) { return (*this)(p).is_hidden(); }),
+              | ranges::views::filter(&entry::is_hidden,
+                                      [this](auto&& p) { return (*this)(p); }),
           true, std::logical_and<bool>{},
           [this](const auto& p) { return this->open(p.first, p.second); });
     }
