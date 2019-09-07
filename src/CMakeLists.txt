@@ -9,7 +9,10 @@ set(CMAKE_AUTOMOC ON)
 include(CheckCXXCompilerFlag)
 
 find_package(Qt5Widgets REQUIRED)
-find_package(range-v3 0.9.0 REQUIRED)
+find_package(range-v3 REQUIRED)
+if ("${range-v3_VERSION}" VERSION_LESS "0.9.0")
+  message(FATAL_ERROR "mines requires range-v3 version 0.9.0 or above")
+endif()
 find_package(fmt REQUIRED)
 find_package(Boost REQUIRED COMPONENTS serialization)
 
