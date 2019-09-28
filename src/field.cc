@@ -177,5 +177,5 @@ bool field::open_around(int row, int col) noexcept {
 }
 
 bool field::is_done() const noexcept {
-  return ranges::count_if(_entries, &entry::is_opened) == _num_bombs;
+  return ranges::count_if(_entries, &entry::is_hidden) == _num_bombs;
 }
