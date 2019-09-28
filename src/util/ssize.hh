@@ -15,7 +15,8 @@ auto ssize(const T& x) noexcept
                           std::make_signed_t<decltype(size(x))>> {
   using Ret =
       std::common_type_t<std::ptrdiff_t, std::make_signed_t<decltype(size(x))>>;
-  assert(size(x) <= std::numeric_limits<Ret>::max());
+  assert(size(x) <=
+         static_cast<decltype(size(x))>(std::numeric_limits<Ret>::max()));
   return static_cast<Ret>(size(x));
 }
 } // namespace util
