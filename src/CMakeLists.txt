@@ -12,10 +12,27 @@ find_package(Qt5Widgets REQUIRED)
 find_package(range-v3 REQUIRED)
 if ("${range-v3_VERSION}" VERSION_LESS "0.9.0")
   message(FATAL_ERROR "mines requires range-v3 version 0.9.0 or above")
-endif()
+endif ()
 find_package(fmt REQUIRED)
 find_package(Boost REQUIRED COMPONENTS serialization)
 
+option(USE_CLANG_TIDY "Use Clang-Tidy" OFF)
+option(CLANG_TIDY_FIX "Perform fixes for Clang-Tidy" OFF)
+find_program(
+  CLANG_TIDY_EXE
+  NAMES "clang-tidy"
+  DOC "Path to clang-tidy executable"
+)
+
+if (USE_CLANG_TIDY AND CLANG_TIDY_EXE)
+  if (CLANG_TIDY_FIX)
+    set(CMAKE_CXX_CLANG_TIDY "${CLANG_TIDY_EXE}" "-fix")
+  else ()
+    set(CMAKE_CXX_CLANG_TIDY "${CLANG_TIDY_EXE}")
+  endif ()
+endif ()
+
+option(USE_CONCEPTS "Add the concepts ts" ON)
 check_cxx_compiler_flag("-fconcepts" HAVE_CONCEPTS)
 
 add_executable(
@@ -45,7 +62,7 @@ target_link_libraries(
     Qt5::Widgets
     Boost::serialization
 )
-if (HAVE_CONCEPTS)
+if (USE_CONCEPTS AND HAVE_CONCEPTS AND NOT USE_CLANG_TIDY)
   target_compile_options(mines PRIVATE -fconcepts)
 endif ()
 
