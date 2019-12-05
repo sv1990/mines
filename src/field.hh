@@ -9,8 +9,6 @@
 
 #include <cassert>
 
-#include <iostream>
-
 /**
  * Implements game logic
  */

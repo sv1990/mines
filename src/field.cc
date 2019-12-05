@@ -1,5 +1,7 @@
 #include "field.hh"
 
+#include "log.hh"
+
 #include "util/random_gen.hh"
 #include "util/ssize.hh"
 
@@ -177,5 +179,7 @@ bool field::open_around(int row, int col) noexcept {
 }
 
 bool field::is_done() const noexcept {
-  return ranges::count_if(_entries, &entry::is_hidden) == _num_bombs;
+  const auto hidden = ranges::count_if(_entries, &entry::is_hidden);
+  logger().info("number of bombs: {}; open fields: {}", _num_bombs, hidden);
+  return hidden == _num_bombs;
 }

@@ -15,6 +15,7 @@ if ("${range-v3_VERSION}" VERSION_LESS "0.9.0")
 endif ()
 find_package(fmt REQUIRED)
 find_package(Boost REQUIRED COMPONENTS serialization)
+find_package(spdlog REQUIRED)
 
 option(USE_CLANG_TIDY "Use Clang-Tidy" OFF)
 option(CLANG_TIDY_FIX "Perform fixes for Clang-Tidy" OFF)
@@ -46,6 +47,7 @@ add_executable(
   bomb_count.cc
   entry.cc
   timer.cc
+  log.cc
   images.qrc
 )
 target_compile_options(
@@ -61,6 +63,7 @@ target_link_libraries(
     fmt
     Qt5::Widgets
     Boost::serialization
+    spdlog::spdlog
 )
 if (USE_CONCEPTS AND HAVE_CONCEPTS AND NOT USE_CLANG_TIDY)
   target_compile_options(mines PRIVATE -fconcepts)
