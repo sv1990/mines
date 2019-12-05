@@ -128,6 +128,9 @@ void highscore::add(int seconds) noexcept {
         this, "Highscore",
         "You are in the Top 10! What is your name?:", QLineEdit::Normal,
         "Anonymous", &ok);
+    if (name.isEmpty()) {
+      return;
+    }
     auto it = _scores.insert(
         {seconds,
          std::chrono::system_clock::to_time_t(std::chrono::system_clock::now()),
