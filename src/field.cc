@@ -1,10 +1,9 @@
 #include "field.hh"
 
-#include "log.hh"
-
 #include "util/random_gen.hh"
 #include "util/ssize.hh"
 
+#include <range/v3/algorithm/all_of.hpp>
 #include <range/v3/algorithm/count_if.hpp>
 #include <range/v3/algorithm/fill.hpp>
 #include <range/v3/algorithm/swap_ranges.hpp>
@@ -179,7 +178,7 @@ bool field::open_around(int row, int col) noexcept {
 }
 
 bool field::is_done() const noexcept {
-  const auto hidden = ranges::count_if(_entries, &entry::is_hidden);
-  logger().info("number of bombs: {}; open fields: {}", _num_bombs, hidden);
-  return hidden == _num_bombs;
+  return ranges::all_of(_entries, [](const auto& entry) {
+    return entry.is_opened() || entry.is_bomb();
+  });
 }
