@@ -40,7 +40,7 @@ void gameboard::open(int row, int col) noexcept {
   start(row, col);
   _lost = !_field.open(row, col);
   update_pixmaps();
-  if (_lost || is_done()) {
+  if (_lost || is_finished()) {
     uncover();
     emit game_done();
   }
@@ -50,7 +50,7 @@ void gameboard::open_around(int row, int col) noexcept {
   start(row, col);
   _lost = !_field.open_around(row, col);
   update_pixmaps();
-  if (_lost || is_done()) {
+  if (_lost || is_finished()) {
     uncover();
     emit game_done();
   }
@@ -88,6 +88,6 @@ entry::value_t gameboard::value(int row, int col) noexcept {
   return _field(row, col).value();
 }
 
-bool gameboard::is_done() const noexcept {
-  return _lost || _field.is_done();
+bool gameboard::is_finished() const noexcept {
+  return _field.is_finished();
 }

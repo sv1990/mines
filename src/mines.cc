@@ -74,7 +74,7 @@ void mines::show_highscore() {
 }
 
 void mines::add_highscore() {
-  if (_board->is_done() && !_board->lost() && !_board->cheated()) {
+  if (_board->is_finished() && !_board->lost() && !_board->cheated()) {
     _highscore->add(_timer->seconds());
     _highscore->show();
   }

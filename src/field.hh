@@ -77,7 +77,7 @@ public:
   bool open_around(int row, int col) noexcept;
   int mark(int row, int col) noexcept;
 
-  bool is_done() const noexcept;
+  bool is_finished() const noexcept;
 };
 
 #endif // MINES_SRC_FIELD_HH_1537645753731530997_

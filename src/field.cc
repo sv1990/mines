@@ -113,7 +113,7 @@ void field::open_empty_around(int row, int col) noexcept {
     auto next = todo.front();
     if ((*this)(next.first, next.second).is_empty()) {
       for (auto p : adjacent_entries(*this, next.first, next.second)) {
-        if ((*this)(p).is_opened()) {
+        if ((*this)(p).is_open()) {
           continue;
         }
         (*this)(p.first, p.second).open();
@@ -159,7 +159,7 @@ bool field::open_around(int row, int col) noexcept {
   const auto& selected_entry = (*this)(row, col);
 
   bool alive = true;
-  if (selected_entry.is_opened() && selected_entry.is_close_to()) {
+  if (selected_entry.is_open() && selected_entry.is_close_to()) {
     auto adjacent   = adjacent_entries(*this, row, col);
     auto mark_count = ranges::count_if(adjacent, &entry::is_marked,
                                        [this](auto&& p) { return (*this)(p); });
@@ -177,8 +177,8 @@ bool field::open_around(int row, int col) noexcept {
   return alive;
 }
 
-bool field::is_done() const noexcept {
+bool field::is_finished() const noexcept {
   return ranges::all_of(_entries, [](const auto& entry) {
-    return entry.is_opened() || entry.is_bomb();
+    return entry.is_open() || entry.is_bomb();
   });
 }

@@ -24,7 +24,7 @@ bool entry::is_hidden() const noexcept {
 bool entry::is_marked() const noexcept {
   return _state == state_t::marked;
 }
-bool entry::is_opened() const noexcept {
+bool entry::is_open() const noexcept {
   return _state == state_t::opened;
 }
 

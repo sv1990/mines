@@ -27,7 +27,7 @@ public:
   std::optional<unsigned> is_close_to() const noexcept;
   bool is_hidden() const noexcept;
   bool is_marked() const noexcept;
-  bool is_opened() const noexcept;
+  bool is_open() const noexcept;
 
   void open() noexcept;
 

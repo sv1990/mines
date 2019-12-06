@@ -60,7 +60,7 @@ public:
   entry::state_t state(int row, int col) noexcept;
   entry::value_t value(int row, int col) noexcept;
 
-  bool is_done() const noexcept;
+  bool is_finished() const noexcept;
   bool lost() const noexcept { return _lost; }
   bool cheated() const noexcept { return _cheated; }
 signals:
