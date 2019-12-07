@@ -57,7 +57,7 @@ target_link_libraries(
   mines
   PRIVATE
     stdc++fs
-    range-v3
+    range-v3::range-v3
     fmt
     Qt5::Widgets
     Boost::serialization
