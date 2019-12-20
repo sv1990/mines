@@ -62,6 +62,7 @@ target_link_libraries(
     Qt5::Widgets
     Boost::serialization
 )
+target_precompile_headers(mines PRIVATE pch.hh)
 if (USE_CONCEPTS AND HAVE_CONCEPTS AND NOT USE_CLANG_TIDY)
   target_compile_options(mines PRIVATE -fconcepts)
 endif ()
