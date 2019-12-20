@@ -1,8 +1,8 @@
 #include "highscore.hh"
 
-#include <range/v3/view/enumerate.hpp>
+#include "util/format.hh"
 
-#include <fmt/format.h>
+#include <range/v3/view/enumerate.hpp>
 
 #include <boost/archive/binary_iarchive.hpp>
 #include <boost/archive/binary_oarchive.hpp>
@@ -90,9 +90,8 @@ void highscore::print_scores() noexcept {
     auto line = new QLabel(this);
 
     // TODO: Improve the alignment of the seconds
-    line->setText(QString::fromStdString(
-        fmt::format("{:>4} {:>18} {:>18.2f}s {:>22}", rang + 1, name, seconds,
-                    to_date(date))));
+    line->setText(util::format("{:>4} {:>18} {:>18.2f}s {:>22}", rang + 1, name,
+                               seconds, to_date(date)));
     _layout->addWidget(line);
   }
 }
