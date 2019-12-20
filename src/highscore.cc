@@ -89,8 +89,9 @@ void highscore::print_scores() noexcept {
 
     auto line = new QLabel(this);
 
+    // TODO: Improve the alignment of the seconds
     line->setText(QString::fromStdString(
-        fmt::format("{:>4} {:>18} {:>14}s {:>22}", rang + 1, name, seconds,
+        fmt::format("{:>4} {:>18} {:>18.2f}s {:>22}", rang + 1, name, seconds,
                     to_date(date))));
     _layout->addWidget(line);
   }
@@ -100,7 +101,7 @@ highscore::highscore(QWidget* parent)
     : QWidget(parent),
       _location(QStandardPaths::writableLocation(QStandardPaths::CacheLocation)
                     .toStdString() +
-                "/highscore") {
+                "/highscore1") {
   const auto dir =
       QStandardPaths::writableLocation(QStandardPaths::CacheLocation)
           .toStdString();
@@ -120,7 +121,7 @@ highscore::highscore(QWidget* parent)
   initialize_ui();
 }
 
-void highscore::add(int seconds) noexcept {
+void highscore::add(double seconds) noexcept {
   if (_scores.size() < 10 ||
       (!empty(_scores) && seconds < prev(end(_scores))->seconds)) {
     bool ok;

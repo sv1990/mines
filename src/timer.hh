@@ -5,6 +5,7 @@
 #include <QString>
 #include <QTimer>
 
+#include <chrono>
 #include <optional>
 
 /**
@@ -12,15 +13,16 @@
  */
 class timer : public QLCDNumber {
   Q_OBJECT
-  int _seconds = 0;
   QTimer* _timer;
-  std::optional<int> _first = std::nullopt;
-  std::optional<int> _last  = std::nullopt;
+  std::optional<double> _first = std::nullopt;
+  std::optional<double> _last  = std::nullopt;
+  std::chrono::high_resolution_clock::time_point _t_start;
+  std::chrono::high_resolution_clock::time_point _t_stop;
 
 public:
   explicit timer(std::optional<int> first, std::optional<int> last,
                  QWidget* parent = nullptr) noexcept;
-  int seconds() const noexcept;
+  double seconds() const noexcept;
 
 public slots:
   void show_time();

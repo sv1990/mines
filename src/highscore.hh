@@ -11,7 +11,7 @@
 #include <ctime>
 
 struct score {
-  int seconds;
+  double seconds;
   std::time_t date;
   std::string name;
 
@@ -31,8 +31,8 @@ class highscore : public QWidget {
   Q_OBJECT
   std::string _location;
   std::multiset<score> _scores;
-  std::optional<int> _first = std::nullopt;
-  std::optional<int> _last  = std::nullopt;
+  std::optional<double> _first = std::nullopt;
+  std::optional<double> _last  = std::nullopt;
 
   QVBoxLayout* _layout;
 
@@ -42,10 +42,10 @@ class highscore : public QWidget {
 
 public:
   explicit highscore(QWidget* parent = nullptr);
-  void add(int seconds) noexcept;
+  void add(double seconds) noexcept;
   void show() noexcept;
-  std::optional<int> first() const noexcept { return _first; }
-  std::optional<int> last() const noexcept { return _last; }
+  std::optional<double> first() const noexcept { return _first; }
+  std::optional<double> last() const noexcept { return _last; }
 };
 
 #endif // MINES_SRC_HIGHSCORE_HH_1538249909205925627_
