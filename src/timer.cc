@@ -34,7 +34,7 @@ void timer::show_time() {
   else if (_first.has_value() && dur >= _first.value()) {
     set_text_color(Qt::yellow);
   }
-  this->display(util::format("{:.2f}", dur));
+  this->display(util::format("{:.1f}", dur));
 }
 void timer::start() {
   _timer->start(100);
