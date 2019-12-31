@@ -32,11 +32,19 @@ public:
     this->setLayout(_layout);
   }
 
+private:
+  template <typename Self>
+  static auto* get_pixmap_at(Self& self, int row, int col) noexcept {
+    return dynamic_cast<pixmap*>(
+        self._layout->itemAtPosition(row, col)->widget());
+  }
+
+public:
   pixmap* operator()(int row, int col) noexcept {
-    return dynamic_cast<pixmap*>(_layout->itemAtPosition(row, col)->widget());
+    return get_pixmap_at(*this, row, col);
   }
   const pixmap* operator()(int row, int col) const noexcept {
-    return const_cast<gameboard&>(*this)(row, col);
+    return get_pixmap_at(*this, row, col);
   }
 
   void update_pixmaps() noexcept;

@@ -36,13 +36,20 @@ public:
   int cols() const noexcept { return _cols; }
   int bombs() const noexcept { return _num_bombs; }
 
-  entry& operator()(int row, int col) noexcept {
+private:
+  template <typename Self>
+  static auto& get_element_at(Self& self, int row, int col) noexcept {
     assert(row >= 0 && row < _rows);
     assert(col >= 0 && col < _cols);
-    return _entries[static_cast<std::size_t>(row * _cols + col)];
+    return self._entries[static_cast<std::size_t>(row * self._cols + col)];
+  }
+
+public:
+  entry& operator()(int row, int col) noexcept {
+    return get_element_at(*this, row, col);
   }
   const entry& operator()(int row, int col) const noexcept {
-    return const_cast<field&>(*this)(row, col);
+    return get_element_at(*this, row, col);
   }
   entry& operator()(const std::pair<int, int>& p) noexcept {
     return (*this)(p.first, p.second);
