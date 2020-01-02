@@ -5,7 +5,7 @@
 timer::timer(std::optional<int> first, std::optional<int> last,
              QWidget* parent) noexcept
     : QLCDNumber(parent), _first(first), _last(last) {
-  this->setDigitCount(8);
+  this->setDigitCount(4);
   this->setSegmentStyle(Flat);
   _timer = new QTimer(this);
   connect(_timer, &QTimer::timeout, this, &timer::show_time);
@@ -34,7 +34,7 @@ void timer::show_time() {
   else if (_first.has_value() && dur >= _first.value()) {
     set_text_color(Qt::yellow);
   }
-  this->display(util::format("{:.1f}", dur));
+  this->display(util::format("{:.0f}", dur));
 }
 void timer::start() {
   _timer->start(100);
