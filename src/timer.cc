@@ -1,13 +1,14 @@
 #include "timer.hh"
 
 #include "util/format.hh"
+#include "util/make_qobject.hh"
 
 timer::timer(std::optional<int> first, std::optional<int> last,
              QWidget* parent) noexcept
     : QLCDNumber(parent), _first(first), _last(last) {
   this->setDigitCount(4);
   this->setSegmentStyle(Flat);
-  _timer = new QTimer(this);
+  _timer = util::make_qobject<QTimer>(this);
   connect(_timer, &QTimer::timeout, this, &timer::show_time);
   set_text_color(Qt::green);
   this->display(0);

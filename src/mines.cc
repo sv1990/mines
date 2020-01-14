@@ -1,5 +1,7 @@
 #include "mines.hh"
 
+#include "util/make_qobject.hh"
+
 #include <QHBoxLayout>
 #include <QPushButton>
 
@@ -13,30 +15,31 @@ mines::mines() : QMainWindow(nullptr) {
   int cols      = 30;
   int num_bombs = 99;
 
-  _board      = new gameboard(rows, cols, num_bombs, this);
-  _highscore  = new highscore;
-  _timer      = new timer(_highscore->first(), _highscore->last(), this);
-  _bomb_count = new bomb_count(num_bombs, this);
+  _board     = util::make_qobject<gameboard>(rows, cols, num_bombs, this);
+  _highscore = util::make_qobject<highscore>();
+  _timer =
+      util::make_qobject<timer>(_highscore->first(), _highscore->last(), this);
+  _bomb_count = util::make_qobject<bomb_count>(num_bombs, this);
 
-  auto top_bar    = new QWidget(this);
-  auto top_layout = new QHBoxLayout(top_bar);
+  auto top_bar    = util::make_qobject<QWidget>(this);
+  auto top_layout = util::make_qobject<QHBoxLayout>(top_bar);
   top_bar->setLayout(top_layout);
   top_layout->addWidget(_timer);
   top_layout->addWidget(_bomb_count);
 
-  _central_widget = new QWidget(this);
-  _layout         = new QVBoxLayout(_central_widget);
+  _central_widget = util::make_qobject<QWidget>(this);
+  _layout         = util::make_qobject<QVBoxLayout>(_central_widget);
   _layout->addWidget(top_bar);
   _layout->addWidget(_board);
   _central_widget->setLayout(_layout);
 
-  auto bottom_bar    = new QWidget(this);
-  auto bottom_layout = new QHBoxLayout(bottom_bar);
+  auto bottom_bar    = util::make_qobject<QWidget>(this);
+  auto bottom_layout = util::make_qobject<QHBoxLayout>(bottom_bar);
   bottom_layout->addStretch(1);
-  auto highscore_button = new QPushButton(this);
+  auto highscore_button = util::make_qobject<QPushButton>(this);
   highscore_button->setText("&Highscores");
   bottom_layout->addWidget(highscore_button);
-  auto restart_button = new QPushButton(this);
+  auto restart_button = util::make_qobject<QPushButton>(this);
   restart_button->setText("&Restart");
   bottom_layout->addWidget(restart_button);
   _layout->addWidget(bottom_bar);
@@ -44,7 +47,8 @@ mines::mines() : QMainWindow(nullptr) {
   this->setCentralWidget(_central_widget);
   this->setFixedSize(cols * 20, rows * 26);
 
-  _open_all_shortcut = new QShortcut(QKeySequence(Qt::Key_O), this);
+  _open_all_shortcut =
+      util::make_qobject<QShortcut>(QKeySequence(Qt::Key_O), this);
   connect(_open_all_shortcut, &QShortcut::activated, _board,
           &gameboard::open_around_all_numbers);
 

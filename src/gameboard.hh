@@ -5,6 +5,8 @@
 #include "field.hh"
 #include "pixmap.hh"
 
+#include "util/make_qobject.hh"
+
 #include <QGridLayout>
 #include <QWidget>
 
@@ -22,10 +24,11 @@ public:
   gameboard(int rows, int cols, int num_bombs,
             QWidget* parent = nullptr) noexcept
       : QWidget(parent), _field(rows, cols, num_bombs) {
-    _layout = new QGridLayout(this);
+    _layout = util::make_qobject<QGridLayout>(this);
     for (int row = 0; row < rows; ++row) {
       for (int col = 0; col < cols; ++col) {
-        _layout->addWidget(new pixmap(this, row, col), row, col);
+        _layout->addWidget(util::make_qobject<pixmap>(this, row, col), row,
+                           col);
       }
     }
     _layout->setSpacing(1);

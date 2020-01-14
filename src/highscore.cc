@@ -1,6 +1,7 @@
 #include "highscore.hh"
 
 #include "util/format.hh"
+#include <util/make_qobject.hh>
 
 #include <range/v3/view/enumerate.hpp>
 
@@ -59,11 +60,11 @@ bool operator<(const score& lhs, const score& rhs) noexcept {
 }
 
 void highscore::add_ok_button() noexcept {
-  auto botton_bar    = new QWidget(this);
-  auto bottom_layout = new QHBoxLayout(botton_bar);
+  auto botton_bar    = util::make_qobject<QWidget>(this);
+  auto bottom_layout = util::make_qobject<QHBoxLayout>(botton_bar);
   botton_bar->setLayout(bottom_layout);
   bottom_layout->addStretch(1);
-  auto ok_button = new QPushButton(botton_bar);
+  auto ok_button = util::make_qobject<QPushButton>(botton_bar);
   ok_button->setText("Ok");
   bottom_layout->addWidget(ok_button);
   connect(ok_button, &QPushButton::clicked, this, &highscore::close);
@@ -71,7 +72,7 @@ void highscore::add_ok_button() noexcept {
 }
 
 void highscore::initialize_ui() noexcept {
-  _layout = new QVBoxLayout(this);
+  _layout = util::make_qobject<QVBoxLayout>(this);
   this->setWindowTitle("Highscores");
   this->setLayout(_layout);
   if (!empty(_scores)) {
@@ -84,7 +85,7 @@ void highscore::print_scores() noexcept {
   for (auto [rang, score] : ranges::views::enumerate(_scores)) {
     const auto& [seconds, date, name] = score;
 
-    auto line = new QLabel(this);
+    auto line = util::make_qobject<QLabel>(this);
 
     // TODO: Improve the alignment of the seconds
     line->setText(util::format("{:>4} {:>18} {:>18.2f}s {:>22}", rang + 1, name,
