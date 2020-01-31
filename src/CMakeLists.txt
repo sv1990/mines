@@ -54,15 +54,13 @@ target_compile_options(
 )
 target_compile_features(mines PUBLIC cxx_std_20)
 target_link_libraries(
-  mines
-  PRIVATE
-    stdc++fs
-    range-v3::range-v3
-    fmt
-    Qt5::Widgets
-    Boost::serialization
+  mines PRIVATE stdc++fs range-v3::range-v3 fmt Qt5::Widgets
+                Boost::serialization
 )
-if (USE_CONCEPTS AND HAVE_CONCEPTS AND NOT USE_CLANG_TIDY)
+if (USE_CONCEPTS
+    AND HAVE_CONCEPTS
+    AND NOT USE_CLANG_TIDY
+)
   target_compile_options(mines PRIVATE -fconcepts)
 endif ()
 
