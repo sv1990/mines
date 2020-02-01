@@ -113,7 +113,7 @@ void field::open_empty_around(int row, int col) noexcept {
     auto next = todo.front();
     if ((*this)(next.first, next.second).is_empty()) {
       for (auto p : adjacent_entries(*this, next.first, next.second)) {
-        if ((*this)(p).is_open()) {
+        if ((*this)(p).is_open() || (*this)(p).is_marked()) {
           continue;
         }
         (*this)(p.first, p.second).open();
