@@ -39,6 +39,12 @@ public:
   int mark() noexcept;
   state_t state() const noexcept;
   value_t value() const noexcept;
+
+  void swap(entry& other) noexcept { std::swap(_value, other._value); }
 };
+
+inline void swap(entry& lhs, entry& rhs) noexcept {
+  lhs.swap(rhs);
+}
 
 #endif // MINES_SRC_ENTRY_HH_1537645458639141469_

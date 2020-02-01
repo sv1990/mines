@@ -68,7 +68,6 @@ void gameboard::open_around_all_numbers() noexcept {
 }
 
 void gameboard::mark(int row, int col) noexcept {
-  start(row, col);
   auto mark_change = _field.mark(row, col);
   if (mark_change != 0) {
     emit marks_changed(mark_change);
