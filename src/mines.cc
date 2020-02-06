@@ -47,11 +47,6 @@ mines::mines() : QMainWindow(nullptr) {
   this->setCentralWidget(_central_widget);
   this->setFixedSize(cols * 20, rows * 26);
 
-  _open_all_shortcut =
-      util::make_qobject<QShortcut>(QKeySequence(Qt::Key_O), this);
-  connect(_open_all_shortcut, &QShortcut::activated, _board,
-          &gameboard::open_around_all_numbers);
-
   connect(_board, &gameboard::game_started, _timer, &timer::start);
   connect(_board, &gameboard::game_done, _timer, &timer::stop);
   connect(_board, &gameboard::game_done, [&] {
@@ -78,7 +73,7 @@ void mines::show_highscore() {
 }
 
 void mines::add_highscore() {
-  if (_board->is_finished() && !_board->is_lost() && !_board->cheated()) {
+  if (_board->is_finished() && !_board->is_lost()) {
     _highscore->add(_timer->seconds());
     _highscore->show();
   }

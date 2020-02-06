@@ -18,7 +18,6 @@ class gameboard : public QWidget {
   QGridLayout* _layout;
   bool _lost    = false;
   bool _started = false;
-  bool _cheated = false;
 
 public:
   gameboard(int rows, int cols, int num_bombs,
@@ -65,7 +64,6 @@ public:
   void start(int row, int col) noexcept;
   void open(int row, int col) noexcept;
   void open_around(int row, int col) noexcept;
-  void open_around_all_numbers() noexcept;
   void mark(int row, int col) noexcept;
   bool is_bomb(int row, int col) const noexcept;
   entry::state_t state(int row, int col) noexcept;
@@ -74,7 +72,6 @@ public:
   bool is_finished() const noexcept;
   bool is_lost() const noexcept { return _lost; }
   bool is_active() const noexcept { return !is_lost() && !is_finished(); }
-  bool cheated() const noexcept { return _cheated; }
 signals:
   void game_started();
   void game_done();
