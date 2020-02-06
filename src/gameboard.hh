@@ -72,7 +72,8 @@ public:
   entry::value_t value(int row, int col) noexcept;
 
   bool is_finished() const noexcept;
-  bool lost() const noexcept { return _lost; }
+  bool is_lost() const noexcept { return _lost; }
+  bool is_active() const noexcept { return !is_lost() && !is_finished(); }
   bool cheated() const noexcept { return _cheated; }
 signals:
   void game_started();

@@ -55,7 +55,7 @@ mines::mines() : QMainWindow(nullptr) {
   connect(_board, &gameboard::game_started, _timer, &timer::start);
   connect(_board, &gameboard::game_done, _timer, &timer::stop);
   connect(_board, &gameboard::game_done, [&] {
-    if (_board->lost()) {
+    if (_board->is_lost()) {
       _bomb_count->set_text_color(Qt::red);
     }
     else {
@@ -78,7 +78,7 @@ void mines::show_highscore() {
 }
 
 void mines::add_highscore() {
-  if (_board->is_finished() && !_board->lost() && !_board->cheated()) {
+  if (_board->is_finished() && !_board->is_lost() && !_board->cheated()) {
     _highscore->add(_timer->seconds());
     _highscore->show();
   }

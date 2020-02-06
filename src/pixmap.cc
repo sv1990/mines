@@ -94,7 +94,7 @@ void pixmap::update_pixmap() noexcept {
 }
 
 void pixmap::mousePressEvent(QMouseEvent* event) {
-  if (_board->lost() || _board->is_finished()) {
+  if (!_board->is_active()) {
     return;
   }
   auto buttons = event->buttons();
@@ -111,7 +111,7 @@ void pixmap::mousePressEvent(QMouseEvent* event) {
 }
 
 void pixmap::mouseDoubleClickEvent(QMouseEvent* event) {
-  if (_board->lost() || _board->is_finished()) {
+  if (!_board->is_active()) {
     return;
   }
   auto buttons = event->buttons();
