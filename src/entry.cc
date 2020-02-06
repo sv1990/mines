@@ -13,7 +13,7 @@ bool entry::is_empty() const noexcept {
 }
 std::optional<unsigned> entry::is_close_to() const noexcept {
   if (std::holds_alternative<close_to>(_value)) {
-    return {std::get<close_to>(_value).num};
+    return {std::get<close_to>(_value).value};
   }
   return {};
 }

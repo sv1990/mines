@@ -83,7 +83,7 @@ void pixmap::update_pixmap() noexcept {
                                 },
                                 [this](const entry::close_to& close_to) {
                                   this->setPixmap(
-                                      get_pixmap(std::to_string(close_to.num)));
+                                      get_pixmap(std::to_string(close_to.value)));
                                 },
                                 [this](const entry::bomb&) {
                                   this->setPixmap(get_pixmap("bomb"));
