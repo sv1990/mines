@@ -106,7 +106,7 @@ void field::open_empty_around(int row, int col) noexcept {
 
   std::queue<std::pair<int, int>> todo;
 
-  todo.push({row, col});
+  todo.emplace(row, col);
   (*this)(row, col).open();
 
   while (!empty(todo)) {
