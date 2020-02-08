@@ -15,7 +15,6 @@
 #include <range/v3/view/transform.hpp>
 
 #include <algorithm>
-#include <array>
 #include <functional>
 #include <queue>
 
