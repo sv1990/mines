@@ -1,11 +1,12 @@
 #include "field.hh"
 
 #include "util/random_gen.hh"
-#include "util/ssize.hh"
 
 #include <range/v3/algorithm/all_of.hpp>
 #include <range/v3/algorithm/count_if.hpp>
 #include <range/v3/algorithm/fill.hpp>
+#include <range/v3/algorithm/fill_n.hpp>
+#include <range/v3/algorithm/shuffle.hpp>
 #include <range/v3/algorithm/swap_ranges.hpp>
 #include <range/v3/numeric/accumulate.hpp>
 #include <range/v3/view/cartesian_product.hpp>
@@ -14,7 +15,6 @@
 #include <range/v3/view/reverse.hpp>
 #include <range/v3/view/transform.hpp>
 
-#include <algorithm>
 #include <functional>
 #include <queue>
 
@@ -51,10 +51,11 @@ void field::init(int row, int col) noexcept {
   // the last n entries in its place. The last n entries are then swapped with
   // the clicked ones.
 
-  std::fill_n(begin(_entries), _num_bombs, entry::bomb{});
-  std::shuffle(begin(_entries),
-               prev(end(_entries), util::ssize(clicked_fields)),
-               util::random_gen());
+  ranges::fill_n(ranges::begin(_entries), _num_bombs, entry::bomb{});
+  ranges::shuffle(
+      ranges::begin(_entries),
+      ranges::prev(ranges::end(_entries), ranges::distance(clicked_fields)),
+      util::random_gen());
 
   ranges::swap_ranges(
       clicked_fields //
