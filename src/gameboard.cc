@@ -35,24 +35,25 @@ void gameboard::start(int row, int col) noexcept {
   }
 }
 
-void gameboard::open(int row, int col) noexcept {
-  start(row, col);
-  _lost = !_field.open(row, col);
-  update_pixmaps();
+void gameboard::check_if_game_is_done() {
   if (_lost || is_finished()) {
     uncover();
     emit game_done();
   }
 }
 
+void gameboard::open(int row, int col) noexcept {
+  start(row, col);
+  _lost = !_field.open(row, col);
+  update_pixmaps();
+  check_if_game_is_done();
+}
+
 void gameboard::open_around(int row, int col) noexcept {
   start(row, col);
   _lost = !_field.open_around(row, col);
   update_pixmaps();
-  if (_lost || is_finished()) {
-    uncover();
-    emit game_done();
-  }
+  check_if_game_is_done();
 }
 
 void gameboard::mark(int row, int col) noexcept {
