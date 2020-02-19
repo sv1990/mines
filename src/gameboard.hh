@@ -57,6 +57,7 @@ public:
    * Uncover all bombs
    */
   void uncover() noexcept;
+  void mark_remaining_bombs() noexcept;
 
   void reset() noexcept;
   /**

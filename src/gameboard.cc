@@ -10,10 +10,18 @@ void gameboard::update_pixmaps() noexcept {
 }
 
 void gameboard::uncover() noexcept {
-  if (_lost) {
-    for (int irow = 0; irow < _layout->rowCount(); ++irow) {
-      for (int icol = 0; icol < _layout->columnCount(); ++icol) {
-        (*this)(irow, icol)->uncover();
+  for (int irow = 0; irow < _layout->rowCount(); ++irow) {
+    for (int icol = 0; icol < _layout->columnCount(); ++icol) {
+      (*this)(irow, icol)->uncover();
+    }
+  }
+}
+
+void gameboard::mark_remaining_bombs() noexcept {
+  for (int irow = 0; irow < _layout->rowCount(); ++irow) {
+    for (int icol = 0; icol < _layout->columnCount(); ++icol) {
+      if (is_bomb(irow, icol) && state(irow, icol) != entry::state_t::marked) {
+        mark(irow, icol);
       }
     }
   }
@@ -37,7 +45,12 @@ void gameboard::start(int row, int col) noexcept {
 
 void gameboard::check_if_game_is_done() {
   if (_lost || is_finished()) {
-    uncover();
+    if (_lost) {
+      uncover();
+    }
+    else {
+      mark_remaining_bombs();
+    }
     emit game_done();
   }
 }
