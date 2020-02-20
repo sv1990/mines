@@ -39,8 +39,8 @@ public:
 private:
   template <typename Self>
   static auto& get_element_at(Self& self, int row, int col) noexcept {
-    assert(row >= 0 && row < _rows);
-    assert(col >= 0 && col < _cols);
+    assert(row >= 0 && row < self._rows);
+    assert(col >= 0 && col < self._cols);
     return self._entries[static_cast<std::size_t>(row * self._cols + col)];
   }
 
