@@ -38,7 +38,7 @@ mines::mines() : QMainWindow(nullptr) {
   auto bottom_layout = util::make_qobject<QHBoxLayout>(bottom_bar);
   bottom_layout->addStretch(1);
   auto init_check_box =
-      util::make_qobject<QCheckBox>("&First click is always empty", this);
+      util::make_qobject<QCheckBox>("&First click is never a bomb", this);
   init_check_box->setChecked(true);
   bottom_layout->addWidget(init_check_box);
   auto highscore_button = util::make_qobject<QPushButton>(this);
