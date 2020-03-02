@@ -6,6 +6,7 @@
 #include "highscore.hh"
 #include "timer.hh"
 
+#include <QCheckBox>
 #include <QKeySequence>
 #include <QMainWindow>
 #include <QShortcut>

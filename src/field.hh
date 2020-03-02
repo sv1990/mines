@@ -17,6 +17,7 @@ class field {
   int _rows;
   int _cols;
   int _num_bombs;
+  bool _first_click_empty = true;
 
 public:
   /**
@@ -85,6 +86,10 @@ public:
   int mark(int row, int col) noexcept;
 
   bool is_finished() const noexcept;
+
+  void set_first_click_state(bool state) noexcept {
+    _first_click_empty = state;
+  }
 };
 
 #endif // MINES_SRC_FIELD_HH_1537645753731530997_

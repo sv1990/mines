@@ -43,26 +43,33 @@ auto adjacent_entries(const field& f, int row, int col) noexcept {
 void field::init(int row, int col) noexcept {
   assert(row >= 0 && row < _rows);
   assert(col >= 0 && col < _cols);
-  auto clicked_fields = adjacent_entries(*this, row, col) | ranges::to_vector;
-  clicked_fields.emplace_back(row, col);
-
-  // Let n be the number of entries around (row, col) and itself. Place the
-  // bombs in the beginning of the entries vector and shuffle them while keeping
-  // the last n entries in its place. The last n entries are then swapped with
-  // the clicked ones.
 
   ranges::fill_n(ranges::begin(_entries), _num_bombs, entry::bomb{});
-  ranges::shuffle(
-      ranges::begin(_entries),
-      ranges::prev(ranges::end(_entries), ranges::distance(clicked_fields)),
-      util::random_gen());
 
-  ranges::swap_ranges(
-      clicked_fields //
-          | ranges::views::transform([this](const auto& p) -> entry& {
-              return (*this)(p.first, p.second);
-            }),
-      _entries | ranges::views::reverse);
+  if (_first_click_empty) {
+    auto clicked_fields = adjacent_entries(*this, row, col) | ranges::to_vector;
+    clicked_fields.emplace_back(row, col);
+
+    // Let n be the number of entries around (row, col) and itself. Place the
+    // bombs in the beginning of the entries vector and shuffle them while
+    // keeping the last n entries in its place. The last n entries are then
+    // swapped with the clicked ones.
+
+    ranges::shuffle(
+        ranges::begin(_entries),
+        ranges::prev(ranges::end(_entries), ranges::distance(clicked_fields)),
+        util::random_gen());
+
+    ranges::swap_ranges(
+        clicked_fields //
+            | ranges::views::transform([this](const auto& p) -> entry& {
+                return (*this)(p.first, p.second);
+              }),
+        _entries | ranges::views::reverse);
+  }
+  else {
+    ranges::shuffle(_entries, util::random_gen());
+  }
 
   for (int irow = 0; irow < _rows; ++irow) {
     for (int icol = 0; icol < _cols; ++icol) {
