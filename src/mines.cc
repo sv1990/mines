@@ -2,6 +2,7 @@
 
 #include "util/make_qobject.hh"
 
+#include <QCheckBox>
 #include <QHBoxLayout>
 #include <QPushButton>
 
