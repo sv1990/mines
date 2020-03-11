@@ -6,8 +6,6 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOMOC ON)
 
-include(CheckCXXCompilerFlag)
-
 find_package(Qt5Widgets REQUIRED)
 find_package(range-v3 REQUIRED)
 if ("${range-v3_VERSION}" VERSION_LESS "0.9.0")
@@ -32,9 +30,6 @@ if (USE_CLANG_TIDY AND CLANG_TIDY_EXE)
   endif ()
 endif ()
 
-option(USE_CONCEPTS "Add the concepts ts" ON)
-check_cxx_compiler_flag("-fconcepts" HAVE_CONCEPTS)
-
 add_executable(
   mines
   main.cc
@@ -57,11 +52,5 @@ target_link_libraries(
   mines PRIVATE stdc++fs range-v3::range-v3 fmt Qt5::Widgets
                 Boost::serialization
 )
-if (USE_CONCEPTS
-    AND HAVE_CONCEPTS
-    AND NOT USE_CLANG_TIDY
-)
-  target_compile_options(mines PRIVATE -fconcepts)
-endif ()
 
 install(TARGETS mines RUNTIME DESTINATION bin)
