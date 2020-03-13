@@ -11,7 +11,7 @@ bool entry::is_bomb() const noexcept {
 bool entry::is_empty() const noexcept {
   return std::holds_alternative<empty>(_value);
 }
-std::optional<unsigned> entry::is_close_to() const noexcept {
+std::optional<unsigned> entry::is_close_to() const {
   if (std::holds_alternative<close_to>(_value)) {
     return {std::get<close_to>(_value).value};
   }

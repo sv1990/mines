@@ -25,7 +25,7 @@ public:
   void show_bomb() noexcept;
   void uncover() noexcept;
 
-  void update_pixmap() noexcept;
+  void update_pixmap();
 
   void mousePressEvent(QMouseEvent* event) override;
   void mouseDoubleClickEvent(QMouseEvent* event) override;

@@ -69,7 +69,7 @@ void pixmap::uncover() noexcept {
   }
 }
 
-void pixmap::update_pixmap() noexcept {
+void pixmap::update_pixmap()  {
   switch (_board->state(_row, _col)) {
   case entry::state_t::hidden:
     this->setPixmap(get_pixmap("hidden"));
