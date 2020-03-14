@@ -66,6 +66,7 @@ public:
    */
   void start(int row, int col) noexcept;
   void open(int row, int col) noexcept;
+  void open_field(int row, int col) noexcept;
   void open_around(int row, int col) noexcept;
   void mark(int row, int col) noexcept;
   bool is_bomb(int row, int col) const noexcept;

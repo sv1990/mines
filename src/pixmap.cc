@@ -69,7 +69,7 @@ void pixmap::uncover() noexcept {
   }
 }
 
-void pixmap::update_pixmap()  {
+void pixmap::update_pixmap() {
   switch (_board->state(_row, _col)) {
   case entry::state_t::hidden:
     this->setPixmap(get_pixmap("hidden"));
@@ -110,12 +110,3 @@ void pixmap::mousePressEvent(QMouseEvent* event) {
   }
 }
 
-void pixmap::mouseDoubleClickEvent(QMouseEvent* event) {
-  if (!_board->is_active()) {
-    return;
-  }
-  auto buttons = event->buttons();
-  if (buttons & Qt::LeftButton) {
-    _board->open_around(_row, _col);
-  }
-}

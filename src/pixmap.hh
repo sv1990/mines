@@ -28,7 +28,6 @@ public:
   void update_pixmap();
 
   void mousePressEvent(QMouseEvent* event) override;
-  void mouseDoubleClickEvent(QMouseEvent* event) override;
 };
 
 #endif // MINES_NEW_SRC_PIXMAP_HH_1537958690672118070_
