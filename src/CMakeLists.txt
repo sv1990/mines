@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.8)
 
-set(CMAKE_BUILD_TYPE Release)
+if (NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Release)
+endif ()
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTORCC ON)
@@ -13,22 +15,6 @@ if ("${range-v3_VERSION}" VERSION_LESS "0.9.0")
 endif ()
 find_package(fmt REQUIRED)
 find_package(Boost REQUIRED COMPONENTS serialization)
-
-option(USE_CLANG_TIDY "Use Clang-Tidy" OFF)
-option(CLANG_TIDY_FIX "Perform fixes for Clang-Tidy" OFF)
-find_program(
-  CLANG_TIDY_EXE
-  NAMES "clang-tidy"
-  DOC "Path to clang-tidy executable"
-)
-
-if (USE_CLANG_TIDY AND CLANG_TIDY_EXE)
-  if (CLANG_TIDY_FIX)
-    set(CMAKE_CXX_CLANG_TIDY "${CLANG_TIDY_EXE}" "-fix")
-  else ()
-    set(CMAKE_CXX_CLANG_TIDY "${CLANG_TIDY_EXE}")
-  endif ()
-endif ()
 
 add_executable(
   mines
