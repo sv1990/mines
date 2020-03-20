@@ -14,6 +14,7 @@
 #include <QInputDialog>
 #include <QLabel>
 #include <QMessageBox>
+#include <QDebug>
 #include <QPushButton>
 #include <QStandardPaths>
 
@@ -115,6 +116,7 @@ highscore::highscore(QWidget* parent)
       _last = prev(end(_scores))->seconds;
     }
   }
+  qInfo() << "Saving highscores in" << _location.c_str();
   initialize_ui();
 }
 
