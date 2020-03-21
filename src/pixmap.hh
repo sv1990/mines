@@ -24,6 +24,7 @@ public:
   void show_marked_bomb() noexcept;
   void show_bomb() noexcept;
   void uncover() noexcept;
+  void uncover_as_exploded() noexcept;
 
   void update_pixmap();
 

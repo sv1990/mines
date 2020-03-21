@@ -27,6 +27,7 @@ const QPixmap& get_pixmap(const std::string& name) noexcept {
       {"7", make_pixmap(":/images/7.png")},
       {"8", make_pixmap(":/images/8.png")},
       {"bomb", make_pixmap(":/images/bomb.png")},
+      {"exploded_bomb", make_pixmap(":/images/exploded_bomb.png")},
       {"empty", make_pixmap(":/images/empty.png")},
       {"hidden", make_pixmap(":/images/hidden.png")},
       {"marked_bomb", make_pixmap(":/images/marked_bomb.png")},
@@ -61,12 +62,12 @@ void pixmap::uncover() noexcept {
     }
     break;
   case entry::state_t::opened:
-    // This is needed since the last update_pixmaps is not called
-    if (is_bomb) {
-      this->setPixmap(get_pixmap("bomb"));
-    }
     break;
   }
+}
+
+void pixmap::uncover_as_exploded() noexcept {
+  this->setPixmap(get_pixmap("exploded_bomb"));
 }
 
 void pixmap::update_pixmap() {
@@ -109,4 +110,3 @@ void pixmap::mousePressEvent(QMouseEvent* event) {
     _board->mark(_row, _col);
   }
 }
-
