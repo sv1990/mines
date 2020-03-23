@@ -1,7 +1,7 @@
 #include "highscore.hh"
 
 #include "util/format.hh"
-#include <util/make_qobject.hh>
+#include "util/make_qobject.hh"
 
 #include <range/v3/view/enumerate.hpp>
 
@@ -10,11 +10,11 @@
 #include <boost/serialization/set.hpp>
 #include <boost/serialization/string.hpp>
 
+#include <QDebug>
 #include <QDir>
 #include <QInputDialog>
 #include <QLabel>
 #include <QMessageBox>
-#include <QDebug>
 #include <QPushButton>
 #include <QStandardPaths>
 
