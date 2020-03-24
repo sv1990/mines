@@ -1,7 +1,10 @@
 cmake_minimum_required(VERSION 3.8)
 
 if (NOT CMAKE_BUILD_TYPE)
+  message(STATUS "No build type set. Defaulting to RELEASE")
   set(CMAKE_BUILD_TYPE Release)
+else ()
+  message(STATUS "Using build type ${CMAKE_BUILD_TYPE}")
 endif ()
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
