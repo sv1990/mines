@@ -28,10 +28,8 @@ auto adjacent_entries(const field& f, int row, int col) noexcept {
 
   return ranges::views::cartesian_product(ranges::views::ints(-1, 2),
                                           ranges::views::ints(-1, 2)) //
-         | ranges::views::filter([](const auto& tpl) {
-             const auto& [x, y] = tpl;
-             return x != 0 || y != 0;
-           }) //
+         | ranges::views::filter(
+               std::bind_front(std::not_equal_to{}, std::make_tuple(0, 0))) //
          | ranges::views::transform([row, col](const auto& p) {
              auto [dr, dc] = p;
              return std::pair(row + dr, col + dc);
