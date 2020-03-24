@@ -38,8 +38,7 @@ target_compile_options(
 )
 target_compile_features(mines PUBLIC cxx_std_20)
 target_link_libraries(
-  mines PRIVATE stdc++fs range-v3::range-v3 fmt Qt5::Widgets
-                Boost::serialization
+  mines PRIVATE range-v3::range-v3 fmt::fmt Qt5::Widgets Boost::serialization
 )
 
 install(TARGETS mines RUNTIME DESTINATION bin)
