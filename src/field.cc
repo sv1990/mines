@@ -9,6 +9,7 @@
 #include <range/v3/algorithm/shuffle.hpp>
 #include <range/v3/algorithm/swap_ranges.hpp>
 #include <range/v3/numeric/accumulate.hpp>
+#include <range/v3/range/conversion.hpp>
 #include <range/v3/view/cartesian_product.hpp>
 #include <range/v3/view/filter.hpp>
 #include <range/v3/view/iota.hpp>
