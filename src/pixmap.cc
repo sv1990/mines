@@ -94,19 +94,24 @@ void pixmap::update_pixmap() {
   }
 }
 
+template <typename... Ts>
+bool is_clicked(Qt::MouseButtons clicked, Ts... buttons) {
+  return ((clicked & buttons) && ...);
+}
+
 void pixmap::mousePressEvent(QMouseEvent* event) {
   if (!_board->is_active()) {
     return;
   }
   auto buttons = event->buttons();
-  if ((buttons & Qt::LeftButton && buttons & Qt::RightButton) ||
-      buttons & Qt::MiddleButton) {
+  if (is_clicked(buttons, Qt::LeftButton, Qt::RightButton) ||
+      is_clicked(buttons, Qt::MiddleButton)) {
     _board->open_around(_row, _col);
   }
-  else if (buttons & Qt::LeftButton) {
+  else if (is_clicked(buttons, Qt::LeftButton)) {
     _board->open(_row, _col);
   }
-  else if (buttons & Qt::RightButton) {
+  else if (is_clicked(buttons, Qt::LeftButton)) {
     _board->mark(_row, _col);
   }
 }
