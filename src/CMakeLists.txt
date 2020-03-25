@@ -7,6 +7,11 @@ else ()
   message(STATUS "Using build type ${CMAKE_BUILD_TYPE}")
 endif ()
 
+# Let AUTOMOC and AUTOUIC process .hh files.
+if (POLICY CMP0100)
+  cmake_policy(SET CMP0100 NEW)
+endif ()
+
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOMOC ON)
