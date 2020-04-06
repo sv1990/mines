@@ -46,4 +46,10 @@ target_link_libraries(
   mines PRIVATE range-v3::range-v3 fmt::fmt Qt5::Widgets Boost::serialization
 )
 
+find_program(HAS_LLD lld)
+if (HAS_LLD)
+  message(STATUS "Using lld")
+  target_link_options(mines PUBLIC -fuse-ld=lld)
+endif ()
+
 install(TARGETS mines RUNTIME DESTINATION bin)
