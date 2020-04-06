@@ -23,8 +23,8 @@
  * Returns the a view of the indices of the surrounding fields of (row, col)
  */
 auto adjacent_entries(const field& f, int row, int col) noexcept {
-  assert(row >= 0 && row < f.rows());
-  assert(col >= 0 && col < f.cols());
+  EXPECT(row >= 0 && row < f.rows());
+  EXPECT(col >= 0 && col < f.cols());
 
   return ranges::views::cartesian_product(ranges::views::ints(-1, 2),
                                           ranges::views::ints(-1, 2)) //
@@ -40,8 +40,8 @@ auto adjacent_entries(const field& f, int row, int col) noexcept {
 }
 
 void field::init(int row, int col) noexcept {
-  assert(row >= 0 && row < _rows);
-  assert(col >= 0 && col < _cols);
+  EXPECT(row >= 0 && row < _rows);
+  EXPECT(col >= 0 && col < _cols);
 
   ranges::fill_n(ranges::begin(_entries), _num_bombs, entry::bomb{});
 
@@ -89,15 +89,15 @@ void field::reset() noexcept {
 
 field::field(int rows, int cols, int num_bombs) noexcept
     : _entries(), _rows(rows), _cols(cols), _num_bombs(num_bombs) {
-  assert(_rows > 0);
-  assert(_cols > 0);
-  assert(_num_bombs > 0);
+  EXPECT(_rows > 0);
+  EXPECT(_cols > 0);
+  EXPECT(_num_bombs > 0);
   _entries.resize(static_cast<std::size_t>(_rows * _cols));
 }
 
 int field::count_bombs_adjacent_to(int row, int col) const noexcept {
-  assert(row >= 0 && row < _rows);
-  assert(col >= 0 && col < _cols);
+  EXPECT(row >= 0 && row < _rows);
+  EXPECT(col >= 0 && col < _cols);
 
   auto adjacent = adjacent_entries(*this, row, col);
   return static_cast<int>(
@@ -107,7 +107,7 @@ int field::count_bombs_adjacent_to(int row, int col) const noexcept {
 }
 
 void field::open_empty_around(int row, int col) noexcept {
-  assert((*this)(row, col).is_empty());
+  EXPECT((*this)(row, col).is_empty());
   // Perform breadth first search
 
   std::queue<std::pair<int, int>> todo;
@@ -133,8 +133,8 @@ void field::open_empty_around(int row, int col) noexcept {
 }
 
 bool field::open(int row, int col) noexcept {
-  assert(row >= 0 && row < _rows);
-  assert(col >= 0 && col < _cols);
+  EXPECT(row >= 0 && row < _rows);
+  EXPECT(col >= 0 && col < _cols);
 
   auto& entry = (*this)(row, col);
   if (entry.is_hidden()) {
@@ -153,14 +153,14 @@ bool field::open(int row, int col) noexcept {
 }
 
 int field::mark(int row, int col) noexcept {
-  assert(row >= 0 && row < _rows);
-  assert(col >= 0 && col < _cols);
+  EXPECT(row >= 0 && row < _rows);
+  EXPECT(col >= 0 && col < _cols);
   return (*this)(row, col).mark();
 }
 
 bool field::open_around(int row, int col) noexcept {
-  assert(row >= 0 && row < _rows);
-  assert(col >= 0 && col < _cols);
+  EXPECT(row >= 0 && row < _rows);
+  EXPECT(col >= 0 && col < _cols);
 
   const auto& selected_entry = (*this)(row, col);
 

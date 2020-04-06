@@ -1,5 +1,6 @@
 #include "highscore.hh"
 
+#include "util/expect.hh"
 #include "util/format.hh"
 #include "util/make_qobject.hh"
 
@@ -24,8 +25,6 @@
 #include <set>
 #include <sstream>
 
-#include <cassert>
-
 std::multiset<score> load_highscore(std::istream& is) {
   boost::archive::binary_iarchive ia{is};
   std::multiset<score> scores;
@@ -45,7 +44,7 @@ std::string to_date(std::time_t seconds_since_epoch) noexcept {
 }
 
 void clear_layout(QLayout* layout) noexcept {
-  assert(layout);
+  EXPECT(layout);
   QLayoutItem* item;
   while ((item = layout->takeAt(0))) {
     auto widget = item->widget();

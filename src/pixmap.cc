@@ -2,14 +2,13 @@
 
 #include "gameboard.hh"
 
+#include "util/expect.hh"
 #include "util/overloaded.hh"
 
 #include <QPixmap>
 
 #include <unordered_map>
 #include <variant>
-
-#include <cassert>
 
 inline QPixmap make_pixmap(const char* filepath) noexcept {
   return QPixmap(filepath).scaled(16, 16, Qt::KeepAspectRatio,
@@ -35,7 +34,7 @@ const QPixmap& get_pixmap(const std::string& name) noexcept {
       {"marked", make_pixmap(":/images/marked.png")},
   };
   auto it = pixmaps.find(name);
-  assert(it != end(pixmaps));
+  EXPECT(it != end(pixmaps));
   return it->second;
 }
 pixmap::pixmap(gameboard* field, int row, int col) noexcept

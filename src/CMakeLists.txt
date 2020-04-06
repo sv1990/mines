@@ -41,6 +41,9 @@ target_compile_options(
   mines
   PUBLIC "-Wall;-Wextra;-pedantic;-Wconversion;-Wsign-conversion;-Wshadow"
 )
+if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  target_compile_options(mines PUBLIC -Wno-assume)
+endif ()
 target_compile_features(mines PUBLIC cxx_std_20)
 target_link_libraries(
   mines PRIVATE range-v3::range-v3 fmt::fmt Qt5::Widgets Boost::serialization
