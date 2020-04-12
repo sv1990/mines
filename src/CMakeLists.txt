@@ -49,18 +49,17 @@ target_link_libraries(
   mines PRIVATE range-v3::range-v3 fmt::fmt Qt5::Widgets Boost::serialization
 )
 
-find_program(HAS_LLD lld)
-if (HAS_LLD)
-  message(STATUS "Using lld")
-  target_link_options(mines PUBLIC -fuse-ld=lld)
-endif ()
-
-
 include(CheckIPOSupported)
-check_ipo_supported(RESULT have_ipo)
-if(have_ipo)
+check_ipo_supported(RESULT HAVE_IPO)
+if(HAVE_IPO)
   message(STATUS "Using lto")
   set_property(TARGET mines PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
 endif()
+
+find_program(HAVE_LLD lld)
+if (HAVE_LLD AND NOT (CMAKE_CXX_COMPILER_ID MATCHES GNU AND HAVE_IPO))
+  message(STATUS "Using lld")
+  target_link_options(mines PUBLIC -fuse-ld=lld)
+endif ()
 
 install(TARGETS mines RUNTIME DESTINATION bin)
