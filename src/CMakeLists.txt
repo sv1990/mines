@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.9)
 
 if (NOT CMAKE_BUILD_TYPE)
   message(STATUS "No build type set. Defaulting to RELEASE")
@@ -54,5 +54,13 @@ if (HAS_LLD)
   message(STATUS "Using lld")
   target_link_options(mines PUBLIC -fuse-ld=lld)
 endif ()
+
+
+include(CheckIPOSupported)
+check_ipo_supported(RESULT have_ipo)
+if(have_ipo)
+  message(STATUS "Using lto")
+  set_property(TARGET mines PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
+endif()
 
 install(TARGETS mines RUNTIME DESTINATION bin)
