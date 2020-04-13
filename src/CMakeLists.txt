@@ -1,5 +1,11 @@
 cmake_minimum_required(VERSION 3.9)
 
+find_program(CCACHE_PROGRAM ccache)
+if(CCACHE_PROGRAM)
+    message(STATUS "Using ccache")
+    set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE_PROGRAM}")
+endif()
+
 if (NOT CMAKE_BUILD_TYPE)
   message(STATUS "No build type set. Defaulting to RELEASE")
   set(CMAKE_BUILD_TYPE Release)
