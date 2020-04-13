@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 3.9)
 
 find_program(CCACHE_PROGRAM ccache)
-if(CCACHE_PROGRAM)
-    message(STATUS "Using ccache")
-    set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE_PROGRAM}")
-endif()
+if (CCACHE_PROGRAM)
+  message(STATUS "Using ccache")
+  set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE_PROGRAM}")
+endif ()
 
 if (NOT CMAKE_BUILD_TYPE)
   message(STATUS "No build type set. Defaulting to RELEASE")
@@ -57,10 +57,10 @@ target_link_libraries(
 
 include(CheckIPOSupported)
 check_ipo_supported(RESULT HAVE_IPO)
-if(HAVE_IPO)
+if (HAVE_IPO)
   message(STATUS "Using lto")
   set_property(TARGET mines PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
-endif()
+endif ()
 
 find_program(HAVE_LLD lld)
 if (HAVE_LLD AND NOT (CMAKE_CXX_COMPILER_ID MATCHES GNU AND HAVE_IPO))
