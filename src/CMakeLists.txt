@@ -43,10 +43,12 @@ add_executable(
   timer.cc
   images.qrc
 )
-target_compile_options(
-  mines
-  PUBLIC "-Wall;-Wextra;-pedantic;-Wconversion;-Wsign-conversion;-Wshadow"
-)
+if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+  target_compile_options(
+    mines
+    PUBLIC "-Wall;-Wextra;-pedantic;-Wconversion;-Wsign-conversion;-Wshadow"
+  )
+endif ()
 if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   target_compile_options(mines PUBLIC -Wno-assume)
 endif ()
