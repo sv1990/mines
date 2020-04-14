@@ -55,6 +55,13 @@ target_link_libraries(
   mines PRIVATE range-v3::range-v3 fmt::fmt Qt5::Widgets Boost::serialization
 )
 
+include(CheckCXXCompilerFlag)
+CHECK_CXX_COMPILER_FLAG("-march=native" COMPILER_SUPPORTS_MARCH_NATIVE)
+if(COMPILER_SUPPORTS_MARCH_NATIVE)
+    message(STATUS "Using -march=native")
+    target_compile_options(mines PRIVATE -march=native)
+endif()
+
 include(CheckIPOSupported)
 check_ipo_supported(RESULT HAVE_IPO)
 if (HAVE_IPO)
