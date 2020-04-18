@@ -43,10 +43,9 @@ void gameboard::start(int row, int col) noexcept {
   }
 }
 
-void gameboard::check_if_game_is_done(int row, int col) {
+void gameboard::check_if_game_is_done() {
   if (_lost || is_finished()) {
     if (_lost) {
-      (*this)(row, col)->uncover_as_exploded();
       uncover();
     }
     else {
@@ -60,14 +59,14 @@ void gameboard::open_field(int row, int col) noexcept {
   start(row, col);
   _lost = !_field.open(row, col);
   update_pixmaps();
-  check_if_game_is_done(row, col);
+  check_if_game_is_done();
 }
 
 void gameboard::open_around(int row, int col) noexcept {
   start(row, col);
   _lost = !_field.open_around(row, col);
   update_pixmaps();
-  check_if_game_is_done(row, col);
+  check_if_game_is_done();
 }
 
 void gameboard::open(int row, int col) noexcept {

@@ -41,7 +41,7 @@ private:
         self._layout->itemAtPosition(row, col)->widget());
   }
 
-  void check_if_game_is_done(int row, int col);
+  void check_if_game_is_done();
 
 public:
   pixmap* operator()(int row, int col) noexcept {
