@@ -50,7 +50,7 @@ mines::mines() : QMainWindow(nullptr) {
   _layout->addWidget(bottom_bar);
 
   this->setCentralWidget(_central_widget);
-  this->setFixedSize(cols * 20, rows * 26);
+  this->setFixedSize(cols * 20, rows * 27);
 
   connect(_board, &gameboard::game_started, _timer, &timer::start);
   connect(_board, &gameboard::game_done, _timer, &timer::stop);
