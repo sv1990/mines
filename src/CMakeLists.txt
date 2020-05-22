@@ -22,7 +22,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOMOC ON)
 
-find_package(Qt5Widgets REQUIRED)
+find_package(Qt5Widgets REQUIRED HINTS /usr/local/opt/qt/ )
 find_package(range-v3 REQUIRED)
 if ("${range-v3_VERSION}" VERSION_LESS "0.9.0")
   message(FATAL_ERROR "mines requires range-v3 version 0.9.0 or above")
