@@ -17,7 +17,7 @@ class field {
   int _rows;
   int _cols;
   int _num_bombs;
-  bool _first_click_empty = true;
+  bool _is_first_click_empty = true;
 
 public:
   /**
@@ -87,8 +87,8 @@ public:
 
   bool is_finished() const noexcept;
 
-  void set_first_click_state(bool state) noexcept {
-    _first_click_empty = state;
+  void set_first_click_empty(bool is_empty) noexcept {
+    _is_first_click_empty = is_empty;
   }
 };
 

@@ -45,7 +45,7 @@ void field::init(int row, int col) noexcept {
 
   ranges::fill_n(ranges::begin(_entries), _num_bombs, entry::bomb{});
 
-  if (_first_click_empty) {
+  if (_is_first_click_empty) {
     auto clicked_fields = adjacent_entries(*this, row, col) | ranges::to_vector;
     clicked_fields.emplace_back(row, col);
 

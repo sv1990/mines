@@ -102,6 +102,6 @@ bool gameboard::is_finished() const noexcept {
   return _field.is_finished();
 }
 
-void gameboard::set_first_click_state(int state) {
-  _field.set_first_click_state(static_cast<bool>(state));
+void gameboard::set_first_click_empty(int is_empty) {
+  _field.set_first_click_empty(static_cast<bool>(is_empty));
 }

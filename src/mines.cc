@@ -72,7 +72,7 @@ mines::mines() : QMainWindow(nullptr) {
   connect(_board, &gameboard::resetted_bombs, _bomb_count,
           &bomb_count::restart);
   connect(init_check_box, &QCheckBox::stateChanged, _board,
-          &gameboard::set_first_click_state);
+          &gameboard::set_first_click_empty);
 }
 
 void mines::show_highscore() {
