@@ -11,6 +11,7 @@
 #include <range/v3/numeric/accumulate.hpp>
 #include <range/v3/range/conversion.hpp>
 #include <range/v3/view/cartesian_product.hpp>
+#include <range/v3/view/drop_last.hpp>
 #include <range/v3/view/filter.hpp>
 #include <range/v3/view/iota.hpp>
 #include <range/v3/view/reverse.hpp>
@@ -55,8 +56,7 @@ void field::init(int row, int col) noexcept {
     // swapped with the clicked ones.
 
     ranges::shuffle(
-        ranges::begin(_entries),
-        ranges::prev(ranges::end(_entries), ranges::distance(clicked_fields)),
+        _entries | ranges::views::drop_last(ranges::distance(clicked_fields)),
         util::random_gen());
 
     ranges::swap_ranges(
