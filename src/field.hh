@@ -33,6 +33,7 @@ public:
   void init(int row, int col) noexcept;
   void reset() noexcept;
 
+  [[maybe_unused]] bool valid_coordinates(int row, int col) const noexcept;
   int rows() const noexcept { return _rows; }
   int cols() const noexcept { return _cols; }
   int bombs() const noexcept { return _num_bombs; }
@@ -40,8 +41,7 @@ public:
 private:
   template <typename Self>
   static auto& get_element_at(Self& self, int row, int col) noexcept {
-    EXPECT(row >= 0 && row < self._rows);
-    EXPECT(col >= 0 && col < self._cols);
+    EXPECT(self.valid_coordinates(row, col));
     return self._entries[static_cast<std::size_t>(row * self._cols + col)];
   }
 
@@ -61,7 +61,7 @@ public:
 
   // std::optional doesn't support optional references
   boost::optional<const entry&> at(int row, int col) const noexcept {
-    if (row >= 0 && row < _rows && col >= 0 && col < _cols) {
+    if (valid_coordinates(row, col)) {
       return (*this)(row, col);
     }
     return {};

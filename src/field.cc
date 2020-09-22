@@ -20,12 +20,16 @@
 #include <functional>
 #include <queue>
 
+[[maybe_unused]] bool field::valid_coordinates(int row,
+                                               int col) const noexcept {
+  return row >= 0 && row < _rows && col >= 0 && col < _cols;
+}
+
 /**
  * Returns the a view of the indices of the surrounding fields of (row, col)
  */
 auto adjacent_entries(const field& f, int row, int col) noexcept {
-  EXPECT(row >= 0 && row < f.rows());
-  EXPECT(col >= 0 && col < f.cols());
+  EXPECT(f.valid_coordinates(row, col));
 
   return ranges::views::cartesian_product(ranges::views::ints(-1, 2),
                                           ranges::views::ints(-1, 2)) //
@@ -41,8 +45,7 @@ auto adjacent_entries(const field& f, int row, int col) noexcept {
 }
 
 void field::init(int row, int col) noexcept {
-  EXPECT(row >= 0 && row < _rows);
-  EXPECT(col >= 0 && col < _cols);
+  EXPECT(valid_coordinates(row, col));
 
   ranges::fill_n(ranges::begin(_entries), _num_bombs, entry::bomb{});
 
@@ -96,8 +99,7 @@ field::field(int rows, int cols, int num_bombs) noexcept
 }
 
 int field::count_bombs_adjacent_to(int row, int col) const noexcept {
-  EXPECT(row >= 0 && row < _rows);
-  EXPECT(col >= 0 && col < _cols);
+  EXPECT(valid_coordinates(row, col));
 
   auto adjacent = adjacent_entries(*this, row, col);
   return static_cast<int>(
@@ -133,8 +135,7 @@ void field::open_empty_around(int row, int col) noexcept {
 }
 
 bool field::open(int row, int col) noexcept {
-  EXPECT(row >= 0 && row < _rows);
-  EXPECT(col >= 0 && col < _cols);
+  EXPECT(valid_coordinates(row, col));
 
   auto& entry = (*this)(row, col);
   if (entry.is_hidden()) {
@@ -153,14 +154,12 @@ bool field::open(int row, int col) noexcept {
 }
 
 int field::mark(int row, int col) noexcept {
-  EXPECT(row >= 0 && row < _rows);
-  EXPECT(col >= 0 && col < _cols);
+  EXPECT(valid_coordinates(row, col));
   return (*this)(row, col).mark();
 }
 
 bool field::open_around(int row, int col) noexcept {
-  EXPECT(row >= 0 && row < _rows);
-  EXPECT(col >= 0 && col < _cols);
+  EXPECT(valid_coordinates(row, col));
 
   const auto& selected_entry = (*this)(row, col);
 
