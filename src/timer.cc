@@ -16,10 +16,10 @@ timer::timer(std::optional<int> first, std::optional<int> last,
 }
 double timer::seconds() const noexcept {
   return static_cast<double>(
-             std::chrono::duration_cast<std::chrono::milliseconds>(_t_stop -
-                                                                   _t_start)
-                 .count()) /
-         1000.;
+             std::chrono::duration_cast<std::chrono::milliseconds>(_t_stop
+                                                                   - _t_start)
+                 .count())
+         / 1000.;
 }
 
 void timer::show_time() {
@@ -27,8 +27,8 @@ void timer::show_time() {
   const auto dur =
       static_cast<double>(
           std::chrono::duration_cast<std::chrono::milliseconds>(now - _t_start)
-              .count()) /
-      1000.;
+              .count())
+      / 1000.;
   if (_last.has_value() && dur >= _last.value()) {
     set_text_color(Qt::red);
   }

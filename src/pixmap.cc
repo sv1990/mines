@@ -102,8 +102,9 @@ void pixmap::mousePressEvent(QMouseEvent* event) {
     return;
   }
   auto buttons = event->buttons();
-  if (is_clicked(buttons, Qt::LeftButton, Qt::RightButton) ||
-      is_clicked(buttons, Qt::MiddleButton)) {
+  if (is_clicked(buttons, Qt::LeftButton, Qt::RightButton)
+      || is_clicked(buttons, Qt::MiddleButton))
+  {
     _board->open_around(_row, _col);
   }
   else if (is_clicked(buttons, Qt::LeftButton)) {
@@ -113,4 +114,3 @@ void pixmap::mousePressEvent(QMouseEvent* event) {
     _board->mark(_row, _col);
   }
 }
-

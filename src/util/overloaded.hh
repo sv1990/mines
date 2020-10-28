@@ -8,7 +8,7 @@ struct overloaded : Ts... {
 };
 
 template <class... Ts>
-overloaded(Ts...)->overloaded<Ts...>;
+overloaded(Ts...) -> overloaded<Ts...>;
 } // namespace util
 
 #endif // MINES_SRC_OVERLOADED_HH_1537685620275731873_

@@ -97,8 +97,8 @@ void highscore::print_scores() noexcept {
 highscore::highscore(QWidget* parent)
     : QWidget(parent),
       _location(QStandardPaths::writableLocation(QStandardPaths::CacheLocation)
-                    .toStdString() +
-                "/highscore1") {
+                    .toStdString()
+                + "/highscore1") {
   const auto dir =
       QStandardPaths::writableLocation(QStandardPaths::CacheLocation)
           .toStdString();
@@ -120,8 +120,9 @@ highscore::highscore(QWidget* parent)
 }
 
 void highscore::add(double seconds) noexcept {
-  if (_scores.size() < 10 ||
-      (!empty(_scores) && seconds < prev(end(_scores))->seconds)) {
+  if (_scores.size() < 10
+      || (!empty(_scores) && seconds < prev(end(_scores))->seconds))
+  {
     bool ok;
     auto name = QInputDialog::getText(
         this, "Highscore",
