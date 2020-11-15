@@ -1,7 +1,5 @@
 #include "field.hh"
 
-#include "util/random_gen.hh"
-
 #include <range/v3/algorithm/all_of.hpp>
 #include <range/v3/algorithm/count_if.hpp>
 #include <range/v3/algorithm/fill.hpp>
@@ -59,8 +57,7 @@ void field::init(int row, int col) noexcept {
     // swapped with the clicked ones.
 
     ranges::shuffle(
-        _entries | ranges::views::drop_last(ranges::distance(clicked_fields)),
-        util::random_gen());
+        _entries | ranges::views::drop_last(ranges::distance(clicked_fields)));
 
     ranges::swap_ranges(
         clicked_fields //
@@ -70,7 +67,7 @@ void field::init(int row, int col) noexcept {
         _entries | ranges::views::reverse);
   }
   else {
-    ranges::shuffle(_entries, util::random_gen());
+    ranges::shuffle(_entries);
   }
 
   for (int irow = 0; irow < _rows; ++irow) {
