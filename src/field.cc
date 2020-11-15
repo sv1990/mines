@@ -30,9 +30,9 @@ auto adjacent_entries(const field& f, int row, int col) noexcept {
   EXPECT(f.valid_coordinates(row, col));
 
   return ranges::views::cartesian_product(ranges::views::ints(-1, 2),
-                                          ranges::views::ints(-1, 2)) //
+                                          ranges::views::ints(-1, 2))
          | ranges::views::filter(
-             [](auto&& tpl) { return tpl != std::make_tuple(0, 0); }) //
+             [](auto&& tpl) { return tpl != std::make_tuple(0, 0); })
          | ranges::views::transform([row, col](const auto& p) {
              auto [dr, dc] = p;
              return std::pair(row + dr, col + dc);
@@ -60,7 +60,7 @@ void field::init(int row, int col) noexcept {
         _entries | ranges::views::drop_last(ranges::distance(clicked_fields)));
 
     ranges::swap_ranges(
-        clicked_fields //
+        clicked_fields
             | ranges::views::transform([this](const auto& p) -> entry& {
                 return (*this)(p.first, p.second);
               }),
@@ -169,7 +169,7 @@ bool field::open_around(int row, int col) noexcept {
       // Use accumulate instead of all_of to prevent short circuiting on the
       // first false return value
       alive = ranges::accumulate(
-          adjacent //
+          adjacent
               | ranges::views::filter(&entry::is_hidden,
                                       [this](auto&& p) { return (*this)(p); }),
           true, std::logical_and<bool>{},
