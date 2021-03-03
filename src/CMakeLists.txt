@@ -22,7 +22,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOMOC ON)
 
-find_package(Qt5Widgets REQUIRED HINTS /usr/local/opt/qt/ )
+find_package(Qt6Widgets REQUIRED HINTS /usr/local/opt/qt/ )
 find_package(range-v3 REQUIRED)
 if ("${range-v3_VERSION}" VERSION_LESS "0.9.0")
   message(FATAL_ERROR "mines requires range-v3 version 0.9.0 or above")
@@ -52,9 +52,9 @@ endif ()
 if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   target_compile_options(mines PUBLIC -Wno-assume)
 endif ()
-target_compile_features(mines PUBLIC cxx_std_20)
+target_compile_features(mines PUBLIC cxx_std_17)
 target_link_libraries(
-  mines PRIVATE range-v3::range-v3 fmt::fmt Qt5::Widgets Boost::serialization
+  mines PRIVATE range-v3::range-v3 fmt::fmt Qt6::Widgets Boost::serialization
 )
 
 include(CheckCXXCompilerFlag)
