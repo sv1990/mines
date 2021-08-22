@@ -10,7 +10,7 @@
 
 namespace util {
 template <typename... Args>
-QString format(std::string_view fmt, const Args&... args) {
+QString format(fmt::format_string<Args...> fmt, const Args&... args) {
   const auto sz = static_cast<int>(fmt::formatted_size(fmt, args...));
   QString result;
   result.reserve(sz);
