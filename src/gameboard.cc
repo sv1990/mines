@@ -38,7 +38,7 @@ void gameboard::reset() noexcept {
 void gameboard::start(int row, int col) noexcept {
   if (!_started) {
     _started = true;
-    _field.init(row, col);
+    _field.initialize(row, col);
     emit game_started();
   }
 }

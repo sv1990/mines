@@ -30,7 +30,7 @@ public:
    * (row, col) empty
    *
    */
-  void init(int row, int col) noexcept;
+  void initialize(int row, int col) noexcept;
   void reset() noexcept;
 
   [[maybe_unused]] bool valid_coordinates(int row, int col) const noexcept;

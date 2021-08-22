@@ -42,7 +42,7 @@ auto adjacent_entries(const field& f, int row, int col) noexcept {
            });
 }
 
-void field::init(int row, int col) noexcept {
+void field::initialize(int row, int col) noexcept {
   EXPECT(valid_coordinates(row, col));
 
   ranges::fill_n(ranges::begin(_entries), _num_bombs, entry::bomb{});
