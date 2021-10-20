@@ -101,7 +101,3 @@ entry::value_t gameboard::value(int row, int col) noexcept {
 bool gameboard::is_finished() const noexcept {
   return _field.is_finished();
 }
-
-void gameboard::set_first_click_empty(int is_empty) {
-  _field.set_first_click_empty(static_cast<bool>(is_empty));
-}

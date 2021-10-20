@@ -37,10 +37,6 @@ mines::mines() : QMainWindow(nullptr) {
   auto bottom_bar    = util::make_qobject<QWidget>(this);
   auto bottom_layout = util::make_qobject<QHBoxLayout>(bottom_bar);
   bottom_layout->addStretch(1);
-  auto init_check_box =
-      util::make_qobject<QCheckBox>("&First click is never a bomb", this);
-  init_check_box->setChecked(true);
-  bottom_layout->addWidget(init_check_box);
   auto highscore_button = util::make_qobject<QPushButton>(this);
   highscore_button->setText("&Highscores");
   bottom_layout->addWidget(highscore_button);
@@ -71,8 +67,6 @@ mines::mines() : QMainWindow(nullptr) {
   connect(restart_button, &QPushButton::clicked, _timer, &timer::reset);
   connect(_board, &gameboard::resetted_bombs, _bomb_count,
           &bomb_count::restart);
-  connect(init_check_box, &QCheckBox::stateChanged, _board,
-          &gameboard::set_first_click_empty);
 }
 
 void mines::show_highscore() {

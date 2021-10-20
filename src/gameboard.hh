@@ -81,9 +81,6 @@ signals:
   void game_done();
   void marks_changed(int);
   void resetted_bombs(int);
-
-public slots:
-  void set_first_click_empty(int is_empty);
 };
 
 #endif // MINES_NEW_SRC_GAMEBOARD_HH_1537958827568077733_

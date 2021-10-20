@@ -47,28 +47,23 @@ void field::initialize(int row, int col) noexcept {
 
   ranges::fill_n(ranges::begin(_entries), _num_bombs, entry::bomb{});
 
-  if (_is_first_click_empty) {
-    auto clicked_fields = adjacent_entries(*this, row, col) | ranges::to_vector;
-    clicked_fields.emplace_back(row, col);
+  auto clicked_fields = adjacent_entries(*this, row, col) | ranges::to_vector;
+  clicked_fields.emplace_back(row, col);
 
-    // Let n be the number of entries around (row, col) and itself. Place the
-    // bombs in the beginning of the entries vector and shuffle them while
-    // keeping the last n entries in its place. The last n entries are then
-    // swapped with the clicked ones.
+  // Let n be the number of entries around (row, col) and itself. Place the
+  // bombs in the beginning of the entries vector and shuffle them while
+  // keeping the last n entries in its place. The last n entries are then
+  // swapped with the clicked ones.
 
-    ranges::shuffle(
-        _entries | ranges::views::drop_last(ranges::distance(clicked_fields)));
+  ranges::shuffle(_entries
+                  | ranges::views::drop_last(ranges::distance(clicked_fields)));
 
-    ranges::swap_ranges(
-        clicked_fields
-            | ranges::views::transform([this](const auto& p) -> entry& {
-                return (*this)(p.first, p.second);
-              }),
-        _entries | ranges::views::reverse);
-  }
-  else {
-    ranges::shuffle(_entries);
-  }
+  ranges::swap_ranges(
+      clicked_fields
+          | ranges::views::transform([this](const auto& p) -> entry& {
+              return (*this)(p.first, p.second);
+            }),
+      _entries | ranges::views::reverse);
 
   for (int irow = 0; irow < _rows; ++irow) {
     for (int icol = 0; icol < _cols; ++icol) {
