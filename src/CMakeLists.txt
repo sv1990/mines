@@ -6,13 +6,6 @@ if (CCACHE_PROGRAM)
   set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE_PROGRAM}")
 endif ()
 
-if (NOT CMAKE_BUILD_TYPE)
-  message(STATUS "No build type set. Defaulting to RELEASE")
-  set(CMAKE_BUILD_TYPE Release)
-else ()
-  message(STATUS "Using build type ${CMAKE_BUILD_TYPE}")
-endif ()
-
 # Let AUTOMOC and AUTOUIC process .hh files.
 if (POLICY CMP0100)
   cmake_policy(SET CMP0100 NEW)
