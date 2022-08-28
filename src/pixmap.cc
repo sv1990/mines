@@ -17,20 +17,20 @@ inline QPixmap make_pixmap(const char* filepath) noexcept {
 
 const QPixmap& get_pixmap(const std::string& name) noexcept {
   static const std::unordered_map<std::string, QPixmap> pixmaps{
-      {"1", make_pixmap(":/images/1.png")},
-      {"2", make_pixmap(":/images/2.png")},
-      {"3", make_pixmap(":/images/3.png")},
-      {"4", make_pixmap(":/images/4.png")},
-      {"5", make_pixmap(":/images/5.png")},
-      {"6", make_pixmap(":/images/6.png")},
-      {"7", make_pixmap(":/images/7.png")},
-      {"8", make_pixmap(":/images/8.png")},
-      {"bomb", make_pixmap(":/images/bomb.png")},
-      {"empty", make_pixmap(":/images/empty.png")},
-      {"hidden", make_pixmap(":/images/hidden.png")},
-      {"marked_bomb", make_pixmap(":/images/marked_bomb.png")},
+      {           "1",            make_pixmap(":/images/1.png")},
+      {           "2",            make_pixmap(":/images/2.png")},
+      {           "3",            make_pixmap(":/images/3.png")},
+      {           "4",            make_pixmap(":/images/4.png")},
+      {           "5",            make_pixmap(":/images/5.png")},
+      {           "6",            make_pixmap(":/images/6.png")},
+      {           "7",            make_pixmap(":/images/7.png")},
+      {           "8",            make_pixmap(":/images/8.png")},
+      {        "bomb",         make_pixmap(":/images/bomb.png")},
+      {       "empty",        make_pixmap(":/images/empty.png")},
+      {      "hidden",       make_pixmap(":/images/hidden.png")},
+      { "marked_bomb",  make_pixmap(":/images/marked_bomb.png")},
       {"marked_empty", make_pixmap(":/images/marked_empty.png")},
-      {"marked", make_pixmap(":/images/marked.png")},
+      {      "marked",       make_pixmap(":/images/marked.png")},
   };
   auto it = pixmaps.find(name);
   EXPECT(it != end(pixmaps));
