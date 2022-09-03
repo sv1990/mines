@@ -37,6 +37,7 @@ const QPixmap& get_pixmap(const std::string& name) noexcept {
   EXPECT(it != end(pixmaps));
   return it->second;
 }
+
 pixmap::pixmap(gameboard* field, int row, int col) noexcept
     : QLabel(field), _board(field), _row(row), _col(col) {
   this->setPixmap(get_pixmap("hidden"));

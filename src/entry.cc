@@ -8,9 +8,11 @@ entry& entry::operator=(const value_t& rhs) noexcept {
 bool entry::is_bomb() const noexcept {
   return std::holds_alternative<bomb>(_value);
 }
+
 bool entry::is_empty() const noexcept {
   return std::holds_alternative<empty>(_value);
 }
+
 std::optional<unsigned> entry::is_close_to() const {
   if (std::holds_alternative<close_to>(_value)) {
     return {std::get<close_to>(_value).value};
@@ -21,9 +23,11 @@ std::optional<unsigned> entry::is_close_to() const {
 bool entry::is_hidden() const noexcept {
   return _state == state_t::hidden;
 }
+
 bool entry::is_marked() const noexcept {
   return _state == state_t::marked;
 }
+
 bool entry::is_open() const noexcept {
   return _state == state_t::opened;
 }

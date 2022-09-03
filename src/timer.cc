@@ -15,6 +15,7 @@ timer::timer(
   this->display(0);
   this->setToolTip("Green: Highscore\nYellow: Top 10\nRed: Below Top 10");
 }
+
 double timer::seconds() const noexcept {
   return static_cast<double>(
              std::chrono::duration_cast<std::chrono::milliseconds>(
@@ -41,17 +42,20 @@ void timer::show_time() {
   }
   this->display(util::format("{:.0f}", dur));
 }
+
 void timer::start() {
   _timer->start(100);
   _t_start = std::chrono::high_resolution_clock::now();
   show_time();
 }
+
 void timer::reset() {
   stop();
   _t_start = _t_stop = std::chrono::high_resolution_clock::now();
   set_text_color(Qt::green);
   this->display(0);
 }
+
 void timer::stop() {
   _t_stop = std::chrono::high_resolution_clock::now();
   _timer->stop();

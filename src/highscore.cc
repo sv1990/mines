@@ -31,6 +31,7 @@ std::multiset<score> load_highscore(std::istream& is) {
   ia >> scores;
   return scores;
 }
+
 void save_highscore(std::ostream& os, const std::multiset<score>& scores) {
   boost::archive::binary_oarchive oa{os};
   oa << scores;

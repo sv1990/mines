@@ -33,8 +33,11 @@ public:
   void reset() noexcept;
 
   [[maybe_unused]] bool valid_coordinates(int row, int col) const noexcept;
+
   int rows() const noexcept { return _rows; }
+
   int cols() const noexcept { return _cols; }
+
   int bombs() const noexcept { return _num_bombs; }
 
 private:
@@ -48,12 +51,15 @@ public:
   entry& operator()(int row, int col) noexcept {
     return get_element_at(*this, row, col);
   }
+
   const entry& operator()(int row, int col) const noexcept {
     return get_element_at(*this, row, col);
   }
+
   entry& operator()(const std::pair<int, int>& p) noexcept {
     return (*this)(p.first, p.second);
   }
+
   const entry& operator()(const std::pair<int, int>& p) const noexcept {
     return (*this)(p.first, p.second);
   }

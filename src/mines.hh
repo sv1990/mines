@@ -23,6 +23,7 @@ public:
   mines();
   void show_highscore();
   void add_highscore();
+
   virtual ~mines() {
     if (_highscore) {
       delete _highscore;

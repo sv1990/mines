@@ -44,7 +44,9 @@ public:
   explicit highscore(QWidget* parent = nullptr);
   void add(double seconds) noexcept;
   void show() noexcept;
+
   std::optional<double> first() const noexcept { return _first; }
+
   std::optional<double> last() const noexcept { return _last; }
 };
 

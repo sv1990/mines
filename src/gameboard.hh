@@ -49,6 +49,7 @@ public:
   pixmap* operator()(int row, int col) noexcept {
     return get_pixmap_at(*this, row, col);
   }
+
   const pixmap* operator()(int row, int col) const noexcept {
     return get_pixmap_at(*this, row, col);
   }
@@ -76,8 +77,11 @@ public:
   entry::value_t value(int row, int col) noexcept;
 
   bool is_finished() const noexcept;
+
   bool is_lost() const noexcept { return _lost; }
+
   bool is_active() const noexcept { return !is_lost() && !is_finished(); }
+
 signals:
   void game_started();
   void game_done();

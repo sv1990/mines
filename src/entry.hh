@@ -7,9 +7,11 @@
 class entry {
 public:
   struct empty {};
+
   struct close_to {
     int value;
   };
+
   struct bomb {};
 
   using value_t = std::variant<empty, close_to, bomb>;
