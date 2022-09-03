@@ -88,17 +88,20 @@ void highscore::print_scores() noexcept {
     auto line = util::make_qobject<QLabel>(this);
 
     // TODO: Improve the alignment of the seconds
-    line->setText(util::format("{:>4} {:>18} {:>18.2f}s {:>22}", rang + 1, name,
-                               seconds, to_date(date)));
+    line->setText(util::format(
+        "{:>4} {:>18} {:>18.2f}s {:>22}", rang + 1, name, seconds, to_date(date)
+    ));
     _layout->addWidget(line);
   }
 }
 
 highscore::highscore(QWidget* parent)
     : QWidget(parent),
-      _location(QStandardPaths::writableLocation(QStandardPaths::CacheLocation)
-                    .toStdString()
-                + "/highscore1") {
+      _location(
+          QStandardPaths::writableLocation(QStandardPaths::CacheLocation)
+              .toStdString()
+          + "/highscore1"
+      ) {
   const auto dir =
       QStandardPaths::writableLocation(QStandardPaths::CacheLocation)
           .toStdString();
@@ -125,16 +128,21 @@ void highscore::add(double seconds) noexcept {
   {
     bool ok;
     auto name = QInputDialog::getText(
-        this, "Highscore",
-        "You are in the Top 10! What is your name?:", QLineEdit::Normal,
-        "Anonymous", &ok);
+        this,
+        "Highscore",
+        "You are in the Top 10! What is your name?:",
+        QLineEdit::Normal,
+        "Anonymous",
+        &ok
+    );
     if (name.isEmpty()) {
       return;
     }
     auto it = _scores.insert(
         {seconds,
          std::chrono::system_clock::to_time_t(std::chrono::system_clock::now()),
-         name.toStdString()});
+         name.toStdString()}
+    );
     auto pos = std::distance(begin(_scores), it);
     if (_scores.size() > 10) {
       _scores.erase(prev(end(_scores)));

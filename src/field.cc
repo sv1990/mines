@@ -18,8 +18,8 @@
 #include <functional>
 #include <queue>
 
-[[maybe_unused]] bool field::valid_coordinates(int row,
-                                               int col) const noexcept {
+[[maybe_unused]] bool
+field::valid_coordinates(int row, int col) const noexcept {
   return row >= 0 && row < _rows && col >= 0 && col < _cols;
 }
 
@@ -29,10 +29,12 @@
 auto adjacent_entries(const field& f, int row, int col) noexcept {
   EXPECT(f.valid_coordinates(row, col));
 
-  return ranges::views::cartesian_product(ranges::views::ints(-1, 2),
-                                          ranges::views::ints(-1, 2))
-         | ranges::views::filter(
-             [](auto&& tpl) { return tpl != std::make_tuple(0, 0); })
+  return ranges::views::cartesian_product(
+             ranges::views::ints(-1, 2), ranges::views::ints(-1, 2)
+         )
+         | ranges::views::filter([](auto&& tpl) {
+             return tpl != std::make_tuple(0, 0);
+           })
          | ranges::views::transform([row, col](const auto& p) {
              auto [dr, dc] = p;
              return std::pair(row + dr, col + dc);
@@ -55,15 +57,17 @@ void field::initialize(int row, int col) noexcept {
   // keeping the last n entries in its place. The last n entries are then
   // swapped with the clicked ones.
 
-  ranges::shuffle(_entries
-                  | ranges::views::drop_last(ranges::distance(clicked_fields)));
+  ranges::shuffle(
+      _entries | ranges::views::drop_last(ranges::distance(clicked_fields))
+  );
 
   ranges::swap_ranges(
       clicked_fields
           | ranges::views::transform([this](const auto& p) -> entry& {
               return (*this)(p.first, p.second);
             }),
-      _entries | ranges::views::reverse);
+      _entries | ranges::views::reverse
+  );
 
   for (int irow = 0; irow < _rows; ++irow) {
     for (int icol = 0; icol < _cols; ++icol) {
@@ -94,10 +98,11 @@ int field::count_bombs_adjacent_to(int row, int col) const noexcept {
   EXPECT(valid_coordinates(row, col));
 
   auto adjacent = adjacent_entries(*this, row, col);
-  return static_cast<int>(
-      ranges::count_if(adjacent, &entry::is_bomb, [this](auto&& p) {
-        return this->at(p.first, p.second);
-      }));
+  return static_cast<int>(ranges::count_if(
+      adjacent,
+      &entry::is_bomb,
+      [this](auto&& p) { return this->at(p.first, p.second); }
+  ));
 }
 
 void field::open_empty_around(int row, int col) noexcept {
@@ -157,18 +162,23 @@ bool field::open_around(int row, int col) noexcept {
 
   bool alive = true;
   if (selected_entry.is_open() && selected_entry.is_close_to()) {
-    auto adjacent   = adjacent_entries(*this, row, col);
-    auto mark_count = ranges::count_if(adjacent, &entry::is_marked,
-                                       [this](auto&& p) { return (*this)(p); });
+    auto adjacent = adjacent_entries(*this, row, col);
+    auto mark_count =
+        ranges::count_if(adjacent, &entry::is_marked, [this](auto&& p) {
+          return (*this)(p);
+        });
     if (mark_count == selected_entry.is_close_to().value()) {
       // Use accumulate instead of all_of to prevent short circuiting on the
       // first false return value
       alive = ranges::accumulate(
           adjacent
-              | ranges::views::filter(&entry::is_hidden,
-                                      [this](auto&& p) { return (*this)(p); }),
-          true, std::logical_and<bool>{},
-          [this](const auto& p) { return this->open(p.first, p.second); });
+              | ranges::views::filter(
+                  &entry::is_hidden, [this](auto&& p) { return (*this)(p); }
+              ),
+          true,
+          std::logical_and<bool>{},
+          [this](const auto& p) { return this->open(p.first, p.second); }
+      );
     }
   }
   return alive;

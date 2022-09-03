@@ -20,14 +20,16 @@ class gameboard : public QWidget {
   bool _started = false;
 
 public:
-  gameboard(int rows, int cols, int num_bombs,
-            QWidget* parent = nullptr) noexcept
+  gameboard(
+      int rows, int cols, int num_bombs, QWidget* parent = nullptr
+  ) noexcept
       : QWidget(parent), _field(rows, cols, num_bombs) {
     _layout = util::make_qobject<QGridLayout>(this);
     for (int row = 0; row < rows; ++row) {
       for (int col = 0; col < cols; ++col) {
-        _layout->addWidget(util::make_qobject<pixmap>(this, row, col), row,
-                           col);
+        _layout->addWidget(
+            util::make_qobject<pixmap>(this, row, col), row, col
+        );
       }
     }
     _layout->setSpacing(1);
@@ -37,8 +39,8 @@ public:
 private:
   template <typename Self>
   static auto* get_pixmap_at(Self& self, int row, int col) noexcept {
-    return dynamic_cast<pixmap*>(
-        self._layout->itemAtPosition(row, col)->widget());
+    return dynamic_cast<pixmap*>(self._layout->itemAtPosition(row, col)->widget(
+    ));
   }
 
   void check_if_game_is_done();

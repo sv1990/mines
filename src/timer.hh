@@ -20,8 +20,11 @@ class timer : public QLCDNumber {
   std::chrono::high_resolution_clock::time_point _t_stop;
 
 public:
-  explicit timer(std::optional<int> first, std::optional<int> last,
-                 QWidget* parent = nullptr) noexcept;
+  explicit timer(
+      std::optional<int> first,
+      std::optional<int> last,
+      QWidget* parent = nullptr
+  ) noexcept;
   double seconds() const noexcept;
 
 public slots:

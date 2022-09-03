@@ -59,14 +59,17 @@ mines::mines() : QMainWindow(nullptr) {
     }
   });
   connect(_board, &gameboard::game_done, this, &mines::add_highscore);
-  connect(_board, &gameboard::marks_changed, _bomb_count,
-          &bomb_count::count_changed);
-  connect(highscore_button, &QPushButton::clicked, this,
-          &mines::show_highscore);
+  connect(
+      _board, &gameboard::marks_changed, _bomb_count, &bomb_count::count_changed
+  );
+  connect(
+      highscore_button, &QPushButton::clicked, this, &mines::show_highscore
+  );
   connect(restart_button, &QPushButton::clicked, _board, &gameboard::reset);
   connect(restart_button, &QPushButton::clicked, _timer, &timer::reset);
-  connect(_board, &gameboard::resetted_bombs, _bomb_count,
-          &bomb_count::restart);
+  connect(
+      _board, &gameboard::resetted_bombs, _bomb_count, &bomb_count::restart
+  );
 }
 
 void mines::show_highscore() {

@@ -11,8 +11,9 @@
 #include <variant>
 
 inline QPixmap make_pixmap(const char* filepath) noexcept {
-  return QPixmap(filepath).scaled(16, 16, Qt::KeepAspectRatio,
-                                  Qt::SmoothTransformation);
+  return QPixmap(filepath).scaled(
+      16, 16, Qt::KeepAspectRatio, Qt::SmoothTransformation
+  );
 }
 
 const QPixmap& get_pixmap(const std::string& name) noexcept {
@@ -77,17 +78,19 @@ void pixmap::update_pixmap() {
     this->setPixmap(get_pixmap("marked"));
     break;
   case entry::state_t::opened:
-    std::visit(util::overloaded{[this](const entry::empty&) {
-                                  this->setPixmap(get_pixmap("empty"));
-                                },
-                                [this](const entry::close_to& close_to) {
-                                  this->setPixmap(get_pixmap(
-                                      std::to_string(close_to.value)));
-                                },
-                                [this](const entry::bomb&) {
-                                  this->setPixmap(get_pixmap("bomb"));
-                                }},
-               _board->value(_row, _col));
+    std::visit(
+        util::overloaded{
+            [this](const entry::empty&) {
+              this->setPixmap(get_pixmap("empty"));
+            },
+            [this](const entry::close_to& close_to) {
+              this->setPixmap(get_pixmap(std::to_string(close_to.value)));
+            },
+            [this](const entry::bomb&) {
+              this->setPixmap(get_pixmap("bomb"));
+            }},
+        _board->value(_row, _col)
+    );
     break;
   }
 }
